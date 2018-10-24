@@ -1,4 +1,4 @@
-package noidle_server.controller;
+package ru.vsu.noidle_server.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

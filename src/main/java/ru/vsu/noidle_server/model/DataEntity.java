@@ -1,4 +1,4 @@
-package noidle_server.model;
+package ru.vsu.noidle_server.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

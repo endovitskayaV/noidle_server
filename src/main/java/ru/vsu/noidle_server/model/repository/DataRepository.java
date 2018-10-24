@@ -1,4 +1,4 @@
-package noidle_server.model.repository;
+package ru.vsu.noidle_server.model.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

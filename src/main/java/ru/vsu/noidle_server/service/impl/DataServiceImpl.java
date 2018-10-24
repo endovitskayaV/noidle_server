@@ -1,4 +1,4 @@
-package noidle_server.service.impl;
+package ru.vsu.noidle_server.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

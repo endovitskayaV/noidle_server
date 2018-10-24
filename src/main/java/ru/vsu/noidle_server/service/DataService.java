@@ -1,4 +1,4 @@
-package noidle_server.service;
+package ru.vsu.noidle_server.service;
 
 import ru.vsu.noidle_server.model.DataEntity;
 
