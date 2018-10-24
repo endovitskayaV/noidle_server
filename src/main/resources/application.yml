@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: ${JDBC_DATABASE_URL}
-    username: ${JDBC_DATABASE_USERNAME}
-    password: ${JDBC_DATABASE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: none
@@ -14,11 +14,11 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL9Dialect
     show-sql: true
-#
-#  flyway:
-#    baseline-description: baseline
-#    baseline-version: 0.1.0
-#    baseline-on-migrate: true
-#    out-of-order: true
-#    user: ${JDBC_DATABASE_USERNAME}
-#    password: ${JDBC_DATABASE_PASSWORD}
+
+  flyway:
+    baseline-description: baseline
+    baseline-version: 0.1.0
+    baseline-on-migrate: true
+    out-of-order: true
+    user: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
