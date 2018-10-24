@@ -79,7 +79,9 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <configuration>
                     <url>${env.JDBC_DATABASE_URL}</url>
-                </configuration>
+                    <user>${env.JDBC_DATABASE_USERNAME}</user>
+                    <password>${env.JDBC_DATABASE_PASSWORD}</password>
+               </configuration>
             </plugin>
             <!--<plugin>-->
             <!--<groupId>org.apache.maven.plugins</groupId>-->
