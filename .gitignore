@@ -1,0 +1,9 @@
+# Maven project build directories
+/target
+
+# IDEA-related files and directories
+/*.iml
+/.idea
+mvnw
+mvnw.cmd
+/.mvn
