@@ -4,3 +4,5 @@ INSERT INTO data (newcolumn) VALUES
  ('foo2'),
  ('bar3'),
  ('baz4');
+
+update data set  newcolumn='lala' where id>1;
