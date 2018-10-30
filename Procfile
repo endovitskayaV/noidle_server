@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/*.jar
+release: java -cp target/noidle_server-1.0-SNAPSHOT.jar:target/dependency/* sample.flyway.Migrations
