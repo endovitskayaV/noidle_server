@@ -1,1 +1,1 @@
-release: ./mvnw flyway:migrate
+web: java -Dserver.port=$PORT -jar target/*.jar
