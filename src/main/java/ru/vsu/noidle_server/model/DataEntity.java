@@ -20,4 +20,7 @@ public class DataEntity implements Serializable {
 
     @Column(name = "content")
     private String content;
+
+    @Column(name = "newcolumn")
+    private String newcolumn;
 }
