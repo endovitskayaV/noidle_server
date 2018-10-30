@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/*.jar
+release: java -cp target/*.jar:target/dependency/* ru.vsu.noidle_server.Migrations
