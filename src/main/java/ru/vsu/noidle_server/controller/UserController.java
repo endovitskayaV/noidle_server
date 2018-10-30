@@ -4,20 +4,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.vsu.noidle_server.model.DataEntity;
-import ru.vsu.noidle_server.service.DataService;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+import ru.vsu.noidle_server.model.UserEntity;
+import ru.vsu.noidle_server.service.UserService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/data")
-public class DataController {
-    private final  DataService dataService;
+@RequestMapping("/users")
+public class UserController {
+    private final UserService dataService;
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DataEntity> getDataById(@PathVariable Integer id) {
-        DataEntity data = dataService.getById(id);
+    public ResponseEntity<UserEntity> getDataById(@PathVariable UUID id) {
+        UserEntity data = dataService.getById(id);
         if (data != null) {
             return ResponseEntity.ok(data);
         } else {
@@ -26,13 +29,13 @@ public class DataController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<DataEntity>> getAllData() {
-        List<DataEntity> data = dataService.getAll();
+    public ResponseEntity<List<UserEntity>> getAllData() {
+        List<UserEntity> data = dataService.getAll();
         return ResponseEntity.ok(data);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DataEntity> saveData(@RequestBody DataEntity dataEntity) {
+    public ResponseEntity<UserEntity> saveData(@RequestBody UserEntity dataEntity) {
         return ResponseEntity.ok(dataService.saveDataEntity(dataEntity));
     }
 }
