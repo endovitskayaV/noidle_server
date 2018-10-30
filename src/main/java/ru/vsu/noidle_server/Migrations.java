@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.flywaydb.core.Flyway;
 
 @SpringBootApplication
-public class NoidleServerApplication {
+public class Migrations {
 
 	public static void main(String[] args) {
         Flyway flyway = new Flyway();
@@ -13,6 +13,6 @@ public class NoidleServerApplication {
                 System.getenv("JDBC_DATABASE_USERNAME"),
                 System.getenv("JDBC_DATABASE_PASSWORD"));
         flyway.migrate();
-		SpringApplication.run(NoidleServerApplication.class, args);
+		SpringApplication.run(Migrations.class, args);
 	}
 }
