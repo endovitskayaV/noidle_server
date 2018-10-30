@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/*.jar --spring.datasource.url=${JDBC_DATABASE_URL} --spring.datasource.username=${JDBC_DATABASE_USERNAME} --spring.datasource.password=${JDBC_DATABASE_PASSWORD} --spring.flyway.url=${JDBC_DATABASE_URL} --spring.flyway.user=${JDBC_DATABASE_USERNAME} --spring.flyway.password=${JDBC_DATABASE_PASSWORD}
+web: java -Dserver.port=$PORT -jar target/*.jar --spring.datasource.url=${JDBC_DATABASE_URL}
