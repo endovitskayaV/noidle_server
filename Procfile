@@ -1,1 +1,1 @@
-release: java -cp target/noidle_server-1.0-SNAPSHOT.jar:target/dependency/* BOOT-INF.classes.ru.vsu.noidle_server.Migrations
+web: java -Dserver.port=$PORT -jar target/*.jar
