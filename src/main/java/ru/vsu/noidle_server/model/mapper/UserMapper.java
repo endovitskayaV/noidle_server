@@ -13,8 +13,16 @@ public interface UserMapper {
     @SuppressWarnings(value = "unchecked")
     default UserEntity convert(OAuth2Authentication user) {
         LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
-        String photo=details.containsKey("avatar_url")? details.get("avatar_url"): details.get("picture");
-        return new UserEntity(null, details.get("email"), details.get("name"),photo);
+        String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
+        String name=null;
+        if (details.containsKey("login")) {
+            name = details.get("login");
+        } else if (details.containsKey("username")) {
+            name = details.get("username");
+        } else {
+            details.get("name");
+        }
+        return new UserEntity(null, details.get("email"), name, photo);
     }
 
     UserDto convert(UserEntity userEntity);
