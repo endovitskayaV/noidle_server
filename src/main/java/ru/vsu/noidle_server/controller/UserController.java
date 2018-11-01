@@ -17,4 +17,9 @@ public class UserController {
     public UserDto user(OAuth2Authentication user) {
         return userService.getUser(user);
     }
+
+    @GetMapping("/users/{}")
+    public UserDto user(OAuth2Authentication user) {
+        return userService.getUser(user);
+    }
 }

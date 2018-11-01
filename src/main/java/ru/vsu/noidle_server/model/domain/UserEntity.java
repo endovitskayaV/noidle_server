@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.UUID;
 
 @Entity
@@ -32,4 +33,7 @@ public class UserEntity {
 
     @Column(name = "photo")
     private String photo;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Collection<AchievementEntity> achievements;
 }

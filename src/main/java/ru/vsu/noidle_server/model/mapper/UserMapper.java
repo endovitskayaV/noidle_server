@@ -11,14 +11,14 @@ import java.util.LinkedHashMap;
 public interface UserMapper {
 
     @SuppressWarnings(value = "unchecked")
-    default UserEntity authToEntity(OAuth2Authentication user) {
+    default UserEntity toEntity(OAuth2Authentication user) {
         LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
         String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
-        return new UserEntity(null, details.get("email").toLowerCase(), getName(details), photo);
+        return new UserEntity(null, details.get("email").toLowerCase(), getName(details), photo, null);
     }
 
     @SuppressWarnings(value = "unchecked")
-    default UserDto authToDto(OAuth2Authentication user) {
+    default UserDto toDto(OAuth2Authentication user) {
         LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
         String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
 
@@ -37,5 +37,7 @@ public interface UserMapper {
         return  name;
     }
 
-    UserDto authToEntity(UserEntity userEntity);
+    UserDto toDto(UserEntity userEntity);
+
+    UserEntity toEntity(UserDto userDto);
 }
