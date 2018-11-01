@@ -56,11 +56,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new ClientResources();
     }
 
+    @Bean
+    @ConfigurationProperties("gitlab")
+    public ClientResources gitlab() {
+        return new ClientResources();
+    }
+
+
     private Filter ssoFilter() {
         CompositeFilter filter = new CompositeFilter();
         List<Filter> filters = new ArrayList<>();
         filters.add(ssoFilter(github(), "/login/github"));
         filters.add(ssoFilter(google(), "/google/login"));
+        filters.add(ssoFilter(gitlab(), "/login/gitlab"));
         filter.setFilters(filters);
         return filter;
     }

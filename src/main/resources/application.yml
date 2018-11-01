@@ -46,3 +46,16 @@ google:
     scope: email
   resource:
     userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
+
+gitlab:
+  client:
+    clientId: ${GITLAB_CLIENT_ID}
+    clientSecret: ${GITLAB_CLIENT_SECRET}
+    accessTokenUri: https://gitlab.com/oauth/token
+    userAuthorizationUri:  https://gitlab.com/oauth/authorize
+    clientAuthenticationScheme: form
+    scope:
+      - openid
+      - api
+  resource:
+    userInfoUri: https://gitlab.com/api/v4/user

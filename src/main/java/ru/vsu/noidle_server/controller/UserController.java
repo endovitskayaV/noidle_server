@@ -14,7 +14,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @RequestMapping("/user")
+    @RequestMapping({"/user", "/login/gitlab"})
     public UserDto user(OAuth2Authentication user) {
         return userService.saveUser(user);
     }
