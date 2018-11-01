@@ -39,8 +39,8 @@
         }
     });
 
-    $.get("/user", function (data) {
-        $("#user").html(data.userAuthentication.details.name);
+    $.get("/user", function (user) {
+        $("#user").html(user.name);
         $(".unauthenticated").hide();
         $(".authenticated").show();
     });
@@ -50,7 +50,7 @@
             $("#user").html('');
             $(".unauthenticated").show();
             $(".authenticated").hide();
-        })
+        });
         return true;
     }
 </script>

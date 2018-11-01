@@ -2,31 +2,39 @@ package ru.vsu.noidle_server.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
-import ru.vsu.noidle_server.model.UserEntity;
+import ru.vsu.noidle_server.model.domain.UserEntity;
+import ru.vsu.noidle_server.model.dto.UserDto;
+import ru.vsu.noidle_server.model.mapper.UserMapper;
 import ru.vsu.noidle_server.model.repository.UserRepository;
 import ru.vsu.noidle_server.service.UserService;
-
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
 
-    public UserEntity getById(UUID id) {
-        return userRepository.getOne(id);
-    }
+//    public UserEntity getById(UUID id) {
+//        return userRepository.getOne(id);
+//    }
+//
+//    public List<UserEntity> getAll() {
+//        return userRepository.findAll();
+//    }
 
-    public List<UserEntity> getAll() {
-        return userRepository.findAll();
-    }
-
-    public UserEntity saveDataEntity(UserEntity dataEntity) {
-        log.info("Saved {}", dataEntity);
-        return userRepository.save(dataEntity);
+    public UserDto saveUser(OAuth2Authentication user) {
+        UserEntity userEntity = userMapper.convert(user);
+        UserEntity existingUser = userRepository.findByEmail(userEntity.getEmail());
+        if (existingUser != null) {
+            userEntity.setId(existingUser.getId());
+        }
+        userRepository.save(userEntity);
+        log.info("Saved {}", userEntity);
+        return userMapper.convert(userEntity);
     }
 }

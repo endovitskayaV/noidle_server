@@ -1,15 +1,15 @@
 package ru.vsu.noidle_server.service;
 
-import ru.vsu.noidle_server.model.UserEntity;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import ru.vsu.noidle_server.model.dto.UserDto;
 
-import java.util.List;
-import java.util.UUID;
+import java.security.Principal;
 
 public interface UserService {
 
-    UserEntity getById(UUID id);
+//    UserEntity getById(UUID id);
+//
+//    List<UserEntity> getAll();
 
-    List<UserEntity> getAll();
-
-    UserEntity saveDataEntity(UserEntity dataEntity);
+    UserDto saveUser(OAuth2Authentication user);
 }

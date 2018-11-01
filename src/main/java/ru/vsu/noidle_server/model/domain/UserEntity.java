@@ -1,14 +1,10 @@
-package ru.vsu.noidle_server.model;
+package ru.vsu.noidle_server.model.domain;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
+@ToString
 @Proxy(lazy = false)
 public class UserEntity {
 
@@ -29,9 +26,6 @@ public class UserEntity {
 
     @Column(name = "email", nullable = false)
     private String email;
-
-    @Column(name = "password", nullable = false)
-    private String password;
 
     @Column(name = "name", nullable = false)
     private String name;
