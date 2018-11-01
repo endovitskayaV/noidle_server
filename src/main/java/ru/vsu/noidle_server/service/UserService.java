@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface UserService {
 
-    UserDto getById(UUID uuid);
+    UserDto getById(UUID id);
 
     UserDto saveUser(OAuth2Authentication user);
 

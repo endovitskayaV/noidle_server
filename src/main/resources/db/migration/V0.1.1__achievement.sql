@@ -6,3 +6,7 @@ create table achievement (
   user_id uuid references user_data (id) not null
 );
 
+
+
+insert into achievement (id, type, name, "value", user_id) values
+('123e4567-e89b-12d3-a456-556642440000', 'time', 'name', 123, '123e4567-e89b-12d3-a456-556642440000');

@@ -1,14 +1,25 @@
 package ru.vsu.noidle_server.model.mapper;
 
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import ru.vsu.noidle_server.model.domain.AchievementEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
+import ru.vsu.noidle_server.model.dto.AchievementDto;
 import ru.vsu.noidle_server.model.dto.UserDto;
 
 import java.util.LinkedHashMap;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
+
+    @Mapping(source = "achievementDto.userId", target = "user.id")
+    AchievementEntity toEntity(AchievementDto achievementDto, @Context  CycleAvoidingMappingContext context);
+
+    @Mapping(source = "achievementEntity.user.id", target = "userId")
+    AchievementDto toDto(AchievementEntity achievementEntity, @Context  CycleAvoidingMappingContext context);
+
 
     @SuppressWarnings(value = "unchecked")
     default UserEntity toEntity(OAuth2Authentication user) {
@@ -22,7 +33,7 @@ public interface UserMapper {
         LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
         String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
 
-        return new UserDto(details.get("email"), getName(details), photo);
+        return new UserDto(details.get("email"), getName(details), photo, null);
     }
 
     default String getName( LinkedHashMap<String, String> details){
@@ -37,7 +48,5 @@ public interface UserMapper {
         return  name;
     }
 
-    UserDto toDto(UserEntity userEntity);
-
-    UserEntity toEntity(UserDto userDto);
+    UserDto toDto(UserEntity userEntity, @Context CycleAvoidingMappingContext context);
 }

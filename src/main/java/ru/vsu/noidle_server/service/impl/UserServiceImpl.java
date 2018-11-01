@@ -6,6 +6,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import ru.vsu.noidle_server.model.domain.UserEntity;
 import ru.vsu.noidle_server.model.dto.UserDto;
+import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
 import ru.vsu.noidle_server.model.mapper.UserMapper;
 import ru.vsu.noidle_server.model.repository.UserRepository;
 import ru.vsu.noidle_server.service.UserService;
@@ -21,8 +22,8 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public UserDto getById(UUID uuid) {
-        return userMapper.toDto(userRepository.findById(uuid).orElse(null));
+    public UserDto getById(UUID id) {
+        return userMapper.toDto(userRepository.findById(id).orElse(null), new CycleAvoidingMappingContext());
     }
 
     public UserDto saveUser(OAuth2Authentication user) {
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.save(userEntity);
         log.info("Saved {}", userEntity);
-        return userMapper.toDto(userEntity);
+        return userMapper.toDto(userEntity, new CycleAvoidingMappingContext());
     }
 
     @Override

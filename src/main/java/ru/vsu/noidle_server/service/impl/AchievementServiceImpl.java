@@ -5,7 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.vsu.noidle_server.model.domain.AchievementEntity;
 import ru.vsu.noidle_server.model.dto.AchievementDto;
-import ru.vsu.noidle_server.model.mapper.AchievementMapper;
+import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
+import ru.vsu.noidle_server.model.mapper.UserMapper;
 import ru.vsu.noidle_server.model.repository.AchievementRepository;
 import ru.vsu.noidle_server.service.AchievementService;
 
@@ -15,14 +16,14 @@ import ru.vsu.noidle_server.service.AchievementService;
 public class AchievementServiceImpl implements AchievementService {
 
     private final AchievementRepository achievementRepository;
-    private final AchievementMapper achievementMapper;
+    private final UserMapper userMapper;
 
     @Override
     public AchievementDto save(AchievementDto achievementDto) {
         AchievementEntity achievementEntity = achievementRepository.save(
-                achievementMapper.toEntity(achievementDto)
+                userMapper.toEntity(achievementDto, new CycleAvoidingMappingContext())
         );
         log.info("Saved {}", achievementEntity);
-        return achievementMapper.toDto(achievementEntity);
+        return userMapper.toDto(achievementEntity, new CycleAvoidingMappingContext());
     }
 }
