@@ -19,13 +19,18 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     public UserDto saveUser(OAuth2Authentication user) {
-        UserEntity userEntity = userMapper.convert(user);
+        UserEntity userEntity = userMapper.authToEntity(user);
         UserEntity existingUser = userRepository.findByEmail(userEntity.getEmail());
         if (existingUser != null) {
             userEntity.setId(existingUser.getId());
         }
         userRepository.save(userEntity);
         log.info("Saved {}", userEntity);
-        return userMapper.convert(userEntity);
+        return userMapper.authToEntity(userEntity);
+    }
+
+    @Override
+    public UserDto getUser(OAuth2Authentication user) {
+        return userMapper.authToDto(user);
     }
 }

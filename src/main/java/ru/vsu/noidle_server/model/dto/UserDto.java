@@ -8,10 +8,8 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "email")
 public class UserDto {
-
-    private UUID id;
 
     private String email;
 

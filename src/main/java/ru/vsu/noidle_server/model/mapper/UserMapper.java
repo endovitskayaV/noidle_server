@@ -11,10 +11,22 @@ import java.util.LinkedHashMap;
 public interface UserMapper {
 
     @SuppressWarnings(value = "unchecked")
-    default UserEntity convert(OAuth2Authentication user) {
+    default UserEntity authToEntity(OAuth2Authentication user) {
         LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
         String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
-        String name=null;
+        return new UserEntity(null, details.get("email").toLowerCase(), getName(details), photo);
+    }
+
+    @SuppressWarnings(value = "unchecked")
+    default UserDto authToDto(OAuth2Authentication user) {
+        LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
+        String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
+
+        return new UserDto(details.get("email"), getName(details), photo);
+    }
+
+    default String getName( LinkedHashMap<String, String> details){
+        String name;
         if (details.containsKey("login")) {
             name = details.get("login");
         } else if (details.containsKey("username")) {
@@ -22,8 +34,8 @@ public interface UserMapper {
         } else {
             name=details.get("name");
         }
-        return new UserEntity(null, details.get("email"), name, photo);
+        return  name;
     }
 
-    UserDto convert(UserEntity userEntity);
+    UserDto authToEntity(UserEntity userEntity);
 }

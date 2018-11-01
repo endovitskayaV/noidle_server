@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.filter.CompositeFilter;
@@ -34,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/", "/login**", "/webjars/**", "/error**")
+                .antMatchers("/", "/login**", "/webjars/**", "/error**", "/callback**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -66,9 +67,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private Filter ssoFilter() {
         CompositeFilter filter = new CompositeFilter();
         List<Filter> filters = new ArrayList<>();
-        filters.add(ssoFilter(github(), "/login/github"));
-        filters.add(ssoFilter(google(), "/google/login"));
-        filters.add(ssoFilter(gitlab(), "/login/gitlab"));
+        filters.add(ssoFilter(github(), "/callback/github"));
+        filters.add(ssoFilter(google(), "/callback/google"));
+        filters.add(ssoFilter(gitlab(), "/callback/gitlab"));
         filter.setFilters(filters);
         return filter;
     }
@@ -82,6 +83,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 client.getResource().getUserInfoUri(), client.getClient().getClientId());
         tokenServices.setRestTemplate(template);
         filter.setTokenServices(tokenServices);
+        filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler("/oauth"));
         return filter;
     }
 
