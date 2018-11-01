@@ -50,13 +50,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new ClientResources();
     }
 
+    @Bean
+    @ConfigurationProperties("google")
+    public ClientResources google() {
+        return new ClientResources();
+    }
+
     private Filter ssoFilter() {
         CompositeFilter filter = new CompositeFilter();
         List<Filter> filters = new ArrayList<>();
         filters.add(ssoFilter(github(), "/login/github"));
+        filters.add(ssoFilter(google(), "/google/login"));
         filter.setFilters(filters);
         return filter;
     }
+
 
     private Filter ssoFilter(ClientResources client, String path) {
         OAuth2ClientAuthenticationProcessingFilter filter = new OAuth2ClientAuthenticationProcessingFilter(path);

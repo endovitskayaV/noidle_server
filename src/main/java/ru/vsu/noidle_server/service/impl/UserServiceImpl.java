@@ -18,15 +18,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-
-//    public UserEntity getById(UUID id) {
-//        return userRepository.getOne(id);
-//    }
-//
-//    public List<UserEntity> getAll() {
-//        return userRepository.findAll();
-//    }
-
     public UserDto saveUser(OAuth2Authentication user) {
         UserEntity userEntity = userMapper.convert(user);
         UserEntity existingUser = userRepository.findByEmail(userEntity.getEmail());
