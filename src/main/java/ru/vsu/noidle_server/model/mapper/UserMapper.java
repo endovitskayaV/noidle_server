@@ -20,7 +20,7 @@ public interface UserMapper {
         } else if (details.containsKey("username")) {
             name = details.get("username");
         } else {
-            details.get("name");
+            name=details.get("name");
         }
         return new UserEntity(null, details.get("email"), name, photo);
     }
