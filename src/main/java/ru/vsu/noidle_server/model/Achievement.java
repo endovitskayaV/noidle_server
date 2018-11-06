@@ -3,15 +3,15 @@ package ru.vsu.noidle_server.model;
 public enum Achievement {
     TIME("time"), SYMBOL("symbol"), TEST("test");
 
-    private String name;
+    private String shortcut;
 
-    Achievement(String name) {
-        this.name = name;
+    Achievement(String shortcut) {
+        this.shortcut = shortcut;
     }
 
-    public static Achievement byName(String name) {
+    public static Achievement byShortcut(String name) {
         for (Achievement achievement : Achievement.values()) {
-            if (achievement.name.equals(name)) {
+            if (achievement.shortcut.equals(name)) {
                 return achievement;
             }
         }

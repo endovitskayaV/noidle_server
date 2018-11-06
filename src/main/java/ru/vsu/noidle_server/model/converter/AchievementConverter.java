@@ -14,7 +14,7 @@ public class AchievementConverter implements AttributeConverter<Achievement, Str
     }
 
     @Override
-    public Achievement convertToEntityAttribute(String name) {
-        return Achievement.byName(name);
+    public Achievement convertToEntityAttribute(String shortcut) {
+        return Achievement.byShortcut(shortcut);
     }
 }
