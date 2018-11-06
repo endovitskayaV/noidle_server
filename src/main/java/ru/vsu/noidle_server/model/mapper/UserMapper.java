@@ -3,6 +3,7 @@ package ru.vsu.noidle_server.model.mapper;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import ru.vsu.noidle_server.model.domain.AchievementEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
@@ -10,15 +11,23 @@ import ru.vsu.noidle_server.model.dto.AchievementDto;
 import ru.vsu.noidle_server.model.dto.UserDto;
 
 import java.util.LinkedHashMap;
+import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    @Mapping(source = "achievementDto.userId", target = "user.id")
-    AchievementEntity toEntity(AchievementDto achievementDto, @Context  CycleAvoidingMappingContext context);
+    @Mapping(source = "achievementDto.userId", target = "user", qualifiedByName = "mapUserId")
+    AchievementEntity toEntity(AchievementDto achievementDto, @Context CycleAvoidingMappingContext context);
+
+    @Named("mapUserId")
+    default UserEntity mapUserId(UUID userId) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(userId);
+        return userEntity;
+    }
 
     @Mapping(source = "achievementEntity.user.id", target = "userId")
-    AchievementDto toDto(AchievementEntity achievementEntity, @Context  CycleAvoidingMappingContext context);
+    AchievementDto toDto(AchievementEntity achievementEntity, @Context CycleAvoidingMappingContext context);
 
 
     @SuppressWarnings(value = "unchecked")
@@ -36,16 +45,16 @@ public interface UserMapper {
         return new UserDto(details.get("email"), getName(details), photo, null);
     }
 
-    default String getName( LinkedHashMap<String, String> details){
+    default String getName(LinkedHashMap<String, String> details) {
         String name;
         if (details.containsKey("login")) {
             name = details.get("login");
         } else if (details.containsKey("username")) {
             name = details.get("username");
         } else {
-            name=details.get("name");
+            name = details.get("name");
         }
-        return  name;
+        return name;
     }
 
     UserDto toDto(UserEntity userEntity, @Context CycleAvoidingMappingContext context);
