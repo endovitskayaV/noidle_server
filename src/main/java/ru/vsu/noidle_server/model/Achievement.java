@@ -1,5 +1,8 @@
 package ru.vsu.noidle_server.model;
 
+import lombok.Getter;
+
+@Getter
 public enum Achievement {
     TIME("time"), SYMBOL("symbol"), TEST("test");
 

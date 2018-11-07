@@ -21,4 +21,15 @@ public class AchievementDto {
     private Long value;
 
     private UUID userId;
+
+    @Override
+    public String toString() {
+        return "AchievementDto{" +
+                "id=" + id +
+                ", type=" + type.getShortcut() +
+                ", name=" + name +
+                ", value=" + value +
+                ", userId=" + userId +
+                '}';
+    }
 }

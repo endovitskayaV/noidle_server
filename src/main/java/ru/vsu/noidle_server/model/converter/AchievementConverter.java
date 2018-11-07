@@ -10,7 +10,7 @@ public class AchievementConverter implements AttributeConverter<Achievement, Str
 
     @Override
     public String convertToDatabaseColumn(Achievement achievement) {
-        return achievement == null ? null : achievement.toString();
+        return achievement == null ? null : achievement.getShortcut();
     }
 
     @Override

@@ -20,6 +20,11 @@ public class AchievementServiceImpl implements AchievementService {
 
     @Override
     public AchievementDto save(AchievementDto achievementDto) {
+        AchievementEntity dbEntity=achievementRepository.getByNameAndUserId(achievementDto.getName(), achievementDto.getUserId());
+         if (dbEntity!=null){
+             achievementDto.setId(dbEntity.getId());
+         }
+
         AchievementEntity achievementEntity = achievementRepository.save(
                 userMapper.toEntity(achievementDto, new CycleAvoidingMappingContext())
         );

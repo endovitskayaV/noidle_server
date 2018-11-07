@@ -41,8 +41,8 @@ public class AchievementEntity {
     public String toString() {
         return "AchievementEntity{" +
                 "id=" + id +
-                ", type=" + type +
-                ", name='" + name + '\'' +
+                ", type=" + type.getShortcut() +
+                ", name=" + name  +
                 ", value=" + value +
                 ", userId=" + user.getId() +
                 '}';
