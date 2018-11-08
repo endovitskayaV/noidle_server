@@ -59,3 +59,18 @@ gitlab:
       - api
   resource:
     userInfoUri: https://gitlab.com/api/v4/user
+
+jetbrains:
+  client:
+    clientId: 76cdb4c7-880d-410a-abc6-c8818232a42a
+    clientSecret: UrHNedEnyDJi
+    accessTokenUri: https://hub.jetbrains.com/api/rest/oauth2/token
+    userAuthorizationUri: https://hub.jetbrains.com/api/rest/oauth2/auth
+    clientAuthenticationScheme: form
+    grand_type: client_credentials
+    scope:
+      - 0-0-0-0
+      - 76cdb4c7-880d-410a-abc6-c8818232a42a
+    state: some-unique-state-id
+  resource:
+    userInfoUri: https://hub.jetbrains.com/api/users

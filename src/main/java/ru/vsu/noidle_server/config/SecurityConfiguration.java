@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/", "/login**", "/webjars/**", "/error**", "/callback**", "/achievements/**", "/users/**")
+                .antMatchers("/", "/login**", "/webjars/**", "/error**", "/callback/**", "/achievements/**", "/users/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -63,6 +63,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new ClientResources();
     }
 
+    @Bean
+    @ConfigurationProperties("jetbrains")
+    public ClientResources jetbrains() {
+        return new ClientResources();
+    }
 
     private Filter ssoFilter() {
         CompositeFilter filter = new CompositeFilter();
@@ -70,6 +75,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         filters.add(ssoFilter(github(), "/callback/github"));
         filters.add(ssoFilter(google(), "/callback/google"));
         filters.add(ssoFilter(gitlab(), "/callback/gitlab"));
+        filters.add(ssoFilter(jetbrains(), "/callback/jetbrains"));
         filter.setFilters(filters);
         return filter;
     }
