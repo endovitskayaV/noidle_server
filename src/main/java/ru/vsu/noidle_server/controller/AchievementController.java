@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.vsu.noidle_server.model.dto.AchievementDto;
 import ru.vsu.noidle_server.service.AchievementService;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/achievements")
@@ -16,13 +18,14 @@ public class AchievementController {
     private final AchievementService achievementService;
 
     @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AchievementDto> save(@RequestBody AchievementDto achievementDto) {
-        return new ResponseEntity<>(achievementService.save(achievementDto), HttpStatus.OK);
+    public ResponseEntity<AchievementDto> save(@RequestBody List<AchievementDto> achievements) {
+        achievementService.save(achievements);
+        return ResponseEntity.noContent().build();
     }
 
 
     @GetMapping(value = "/try")
     public ResponseEntity save() {
-        return  ResponseEntity.ok().build();
+        return ResponseEntity.ok().build();
     }
 }
