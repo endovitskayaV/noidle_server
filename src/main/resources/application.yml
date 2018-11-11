@@ -62,15 +62,14 @@ gitlab:
 
 jetbrains:
   client:
-    clientId: 76cdb4c7-880d-410a-abc6-c8818232a42a
-    clientSecret: UrHNedEnyDJi
-    accessTokenUri: https://hub.jetbrains.com/api/rest/oauth2/token
-    userAuthorizationUri: https://hub.jetbrains.com/api/rest/oauth2/auth
+    clientId: 0-0-0-0-0
+    clientSecret: Q3B10rlpAEac
+    accessTokenUri: http://localhost:8080/hub/api/rest/oauth2/token
+    userAuthorizationUri: http://localhost:8080/hub/api/rest/oauth2/auth
     clientAuthenticationScheme: form
     grand_type: client_credentials
     scope:
-      - 0-0-0-0
-      - 76cdb4c7-880d-410a-abc6-c8818232a42a
+    - 0-0-0-0-0
     state: some-unique-state-id
   resource:
-    userInfoUri: https://hub.jetbrains.com/api/users
+    userInfoUri: http://localhost:8080/hub/api/users
