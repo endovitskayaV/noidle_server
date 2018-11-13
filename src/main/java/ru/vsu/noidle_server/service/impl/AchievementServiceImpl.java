@@ -10,8 +10,6 @@ import ru.vsu.noidle_server.model.mapper.UserMapper;
 import ru.vsu.noidle_server.model.repository.AchievementRepository;
 import ru.vsu.noidle_server.service.AchievementService;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -36,8 +34,4 @@ public class AchievementServiceImpl implements AchievementService {
         return userMapper.toDto(achievementEntity, new CycleAvoidingMappingContext());
     }
 
-    @Override
-    public List<AchievementDto> getNotifications() {
-        return null;
-    }
 }

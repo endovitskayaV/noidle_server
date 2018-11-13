@@ -1,6 +1,7 @@
 --DROP EXTENSION "uuid-ossp";
 --CREATE EXTENSION "uuid-ossp";
 
+--TODO: CREATE EXTENSION "uuid-ossp" IF NOT EXISIS
 --if not exists ("uuid-ossp") then
   --    CREATE EXTENSION "uuid-ossp";
 

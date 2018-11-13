@@ -3,10 +3,7 @@ package ru.vsu.noidle_server.model.dto;
 import lombok.*;
 import ru.vsu.noidle_server.model.SubType;
 import ru.vsu.noidle_server.model.Type;
-import ru.vsu.noidle_server.model.converter.SubTypeConverter;
-import ru.vsu.noidle_server.model.converter.TypeConverter;
 
-import javax.persistence.*;
 import java.util.UUID;
 
 @Getter
@@ -27,4 +24,6 @@ public class NotificationDto {
 
     private Long value;
 
+    //when sending info about colleagues
+    private UUID userId;
 }
