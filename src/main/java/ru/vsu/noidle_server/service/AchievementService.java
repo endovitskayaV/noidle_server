@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface AchievementService {
 
-   void save( List<AchievementDto> achievementDto);
+    void save(List<AchievementDto> achievements);
 }
