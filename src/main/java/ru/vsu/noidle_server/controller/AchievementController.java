@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.vsu.noidle_server.model.dto.AchievementDto;
 import ru.vsu.noidle_server.service.AchievementService;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/achievements")
@@ -21,8 +23,18 @@ public class AchievementController {
     }
 
 
-    @GetMapping(value = "/try")
+    //get achievements that are ready to show to the user
+    @GetMapping(value = "/notifications", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<AchievementDto>> getNotifications() {
+        List<AchievementDto> notifications = achievementService.getNotifications();
+        return notifications.isEmpty() ?
+                ResponseEntity.noContent().build() :
+                new ResponseEntity<>(notifications, HttpStatus.OK);
+    }
+
+    //to check plugin interaction with server
+    @GetMapping(value = "/check")
     public ResponseEntity save() {
-        return  ResponseEntity.ok().build();
+        return ResponseEntity.ok().build();
     }
 }

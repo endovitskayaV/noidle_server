@@ -3,7 +3,10 @@ package ru.vsu.noidle_server.model.dto;
 import lombok.*;
 import ru.vsu.noidle_server.model.SubType;
 import ru.vsu.noidle_server.model.Type;
+import ru.vsu.noidle_server.model.converter.SubTypeConverter;
+import ru.vsu.noidle_server.model.converter.TypeConverter;
 
+import javax.persistence.*;
 import java.util.UUID;
 
 @Getter
@@ -12,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
-public class AchievementDto {
+public class NotificationDto {
 
     private UUID id;
 
@@ -20,9 +23,8 @@ public class AchievementDto {
 
     private SubType subType;
 
-    private String name;
+    private Integer level;
 
     private Long value;
 
-    private UUID userId;
 }

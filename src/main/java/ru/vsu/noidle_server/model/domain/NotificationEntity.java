@@ -1,7 +1,6 @@
 package ru.vsu.noidle_server.model.domain;
 
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 import ru.vsu.noidle_server.model.SubType;
 import ru.vsu.noidle_server.model.Type;
 import ru.vsu.noidle_server.model.converter.SubTypeConverter;
@@ -11,17 +10,16 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "achievement")
+@Table(name = "notification")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class AchievementEntity {
+@ToString
+public class NotificationEntity {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "id", nullable = false)
     private UUID id;
 
@@ -33,25 +31,10 @@ public class AchievementEntity {
     @Column(name = "subType")
     private SubType subType;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "level", nullable = false)
+    private Integer level;
 
     @Column(name = "value", nullable = false)
     private Long value;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserEntity user;
-
-    @Override
-    public String toString() {
-        return "AchievementEntity{" +
-                "id=" + id +
-                ", type=" + type.getShortcut() +
-                ", subType=" + subType.getShortcut() +
-                ", name=" + name +
-                ", value=" + value +
-                ", userId=" + user.getId() +
-                '}';
-    }
 }

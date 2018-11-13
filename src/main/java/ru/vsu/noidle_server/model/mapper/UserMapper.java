@@ -30,14 +30,16 @@ public interface UserMapper {
     AchievementDto toDto(AchievementEntity achievementEntity, @Context CycleAvoidingMappingContext context);
 
 
-    @SuppressWarnings(value = "unchecked")
+    @SuppressWarnings(value = "unchecked") //user.getUserAuthentication().getDetails()) - Object
     default UserEntity toEntity(OAuth2Authentication user) {
         LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
         String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
-        return new UserEntity(null, details.get("email").toLowerCase(), getName(details), photo, null);
+
+        //TODO: check if assigning null to map annuls relationships
+        return new UserEntity(null, details.get("email").toLowerCase(), getName(details), photo, null, null);
     }
 
-    @SuppressWarnings(value = "unchecked")
+    @SuppressWarnings(value = "unchecked") //user.getUserAuthentication().getDetails()) - Object
     default UserDto toDto(OAuth2Authentication user) {
         LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
         String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
