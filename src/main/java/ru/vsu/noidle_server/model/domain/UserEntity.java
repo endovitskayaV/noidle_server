@@ -36,4 +36,8 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Collection<AchievementEntity> achievements;
+
+    @ManyToOne
+    @JoinColumn(name = "level_order", nullable = false)
+    private LevelEntity level;
 }

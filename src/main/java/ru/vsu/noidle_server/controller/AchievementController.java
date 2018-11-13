@@ -23,8 +23,8 @@ public class AchievementController {
         return ResponseEntity.noContent().build();
     }
 
-
-    @GetMapping(value = "/try")
+    //to check plugin interaction with server
+    @GetMapping(value = "/check")
     public ResponseEntity save() {
         return ResponseEntity.ok().build();
     }

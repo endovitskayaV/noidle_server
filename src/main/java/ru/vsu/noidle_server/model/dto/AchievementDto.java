@@ -1,7 +1,8 @@
 package ru.vsu.noidle_server.model.dto;
 
 import lombok.*;
-import ru.vsu.noidle_server.model.Achievement;
+import ru.vsu.noidle_server.model.SubType;
+import ru.vsu.noidle_server.model.Type;
 
 import java.util.UUID;
 
@@ -10,26 +11,18 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
+@ToString
 public class AchievementDto {
 
     private UUID id;
 
-    private Achievement type;
+    private Type type;
+
+    private SubType subType;
 
     private String name;
 
     private Long value;
 
     private UUID userId;
-
-    @Override
-    public String toString() {
-        return "AchievementDto{" +
-                "id=" + id +
-                ", type=" + type.getShortcut() +
-                ", name=" + name +
-                ", value=" + value +
-                ", userId=" + userId +
-                '}';
-    }
 }

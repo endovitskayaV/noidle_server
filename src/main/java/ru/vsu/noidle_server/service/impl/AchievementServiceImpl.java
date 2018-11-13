@@ -23,8 +23,9 @@ public class AchievementServiceImpl implements AchievementService {
     @Override
     public void save(List<AchievementDto> achievements) {
         achievements.forEach(achievementDto -> {
-            AchievementEntity dbEntity = achievementRepository.getByTypeAndNameAndUserId(
+            AchievementEntity dbEntity = achievementRepository.getByTypeAndSubTypeAndNameAndUserId(
                     achievementDto.getType(),
+                    achievementDto.getSubType(),
                     achievementDto.getName(),
                     achievementDto.getUserId());
             if (dbEntity != null) {
@@ -37,4 +38,5 @@ public class AchievementServiceImpl implements AchievementService {
             log.info("Saved {}", achievementEntity);
         });
     }
+
 }

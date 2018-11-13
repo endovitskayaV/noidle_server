@@ -2,8 +2,10 @@ package ru.vsu.noidle_server.model.domain;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import ru.vsu.noidle_server.model.Achievement;
-import ru.vsu.noidle_server.model.converter.AchievementConverter;
+import ru.vsu.noidle_server.model.SubType;
+import ru.vsu.noidle_server.model.Type;
+import ru.vsu.noidle_server.model.converter.SubTypeConverter;
+import ru.vsu.noidle_server.model.converter.TypeConverter;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -23,14 +25,18 @@ public class AchievementEntity {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Convert(converter = AchievementConverter.class)
-    @Column(name = "type")
-    private Achievement type;
+    @Convert(converter = TypeConverter.class)
+    @Column(name = "type", nullable = false)
+    private Type type;
+
+    @Convert(converter = SubTypeConverter.class)
+    @Column(name = "subType", nullable = false)
+    private SubType subType;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "value")
+    @Column(name = "value", nullable = false)
     private Long value;
 
     @ManyToOne(optional = false)
@@ -42,7 +48,8 @@ public class AchievementEntity {
         return "AchievementEntity{" +
                 "id=" + id +
                 ", type=" + type.getShortcut() +
-                ", name=" + name  +
+                ", subType=" + subType.getShortcut() +
+                ", name=" + name +
                 ", value=" + value +
                 ", userId=" + user.getId() +
                 '}';
