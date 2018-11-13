@@ -10,6 +10,8 @@ import ru.vsu.noidle_server.model.mapper.UserMapper;
 import ru.vsu.noidle_server.model.repository.AchievementRepository;
 import ru.vsu.noidle_server.service.AchievementService;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -19,19 +21,22 @@ public class AchievementServiceImpl implements AchievementService {
     private final UserMapper userMapper;
 
     @Override
-    public AchievementDto save(AchievementDto achievementDto) {
-        AchievementEntity dbEntity = achievementRepository.getByTypeAndSubTypeAndNameAndUserId(
-                achievementDto.getType(), achievementDto.getSubType(),
-                achievementDto.getName(), achievementDto.getUserId());
-        if (dbEntity != null) {
-            achievementDto.setId(dbEntity.getId());
-        }
+    public void save(List<AchievementDto> achievements) {
+        achievements.forEach(achievementDto -> {
+            AchievementEntity dbEntity = achievementRepository.getByTypeAndSubTypeAndNameAndUserId(
+                    achievementDto.getType(),
+                    achievementDto.getSubType(),
+                    achievementDto.getName(),
+                    achievementDto.getUserId());
+            if (dbEntity != null) {
+                achievementDto.setId(dbEntity.getId());
+            }
 
-        AchievementEntity achievementEntity = achievementRepository.save(
-                userMapper.toEntity(achievementDto, new CycleAvoidingMappingContext())
-        );
-        log.info("Saved {}", achievementEntity);
-        return userMapper.toDto(achievementEntity, new CycleAvoidingMappingContext());
+            AchievementEntity achievementEntity = achievementRepository.save(
+                    userMapper.toEntity(achievementDto, new CycleAvoidingMappingContext())
+            );
+            log.info("Saved {}", achievementEntity);
+        });
     }
 
 }

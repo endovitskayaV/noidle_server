@@ -6,7 +6,6 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.Map;
 import java.util.UUID;
 
 @Entity
@@ -38,9 +37,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Collection<AchievementEntity> achievements;
 
-    @ElementCollection
-    @CollectionTable(name = "users_notifications", joinColumns = @JoinColumn(name="user_id"))
-    @MapKeyJoinColumn(name = "notification_id")
-    @Column(name="sent")
-    private Map<NotificationEntity, Boolean> notificationSent;
+    @ManyToOne
+    @JoinColumn(name = "level_order", nullable = false)
+    private LevelEntity level;
 }

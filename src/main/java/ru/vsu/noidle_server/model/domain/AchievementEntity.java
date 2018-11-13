@@ -26,11 +26,11 @@ public class AchievementEntity {
     private UUID id;
 
     @Convert(converter = TypeConverter.class)
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private Type type;
 
     @Convert(converter = SubTypeConverter.class)
-    @Column(name = "subType")
+    @Column(name = "subType", nullable = false)
     private SubType subType;
 
     @Column(name = "name")

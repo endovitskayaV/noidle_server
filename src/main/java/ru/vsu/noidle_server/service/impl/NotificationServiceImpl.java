@@ -3,15 +3,18 @@ package ru.vsu.noidle_server.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.vsu.noidle_server.model.domain.NotificationEntity;
+import ru.vsu.noidle_server.exception.ServiceException;
+import ru.vsu.noidle_server.model.domain.RequirementEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
+import ru.vsu.noidle_server.model.dto.AchievementForNotification;
 import ru.vsu.noidle_server.model.dto.NotificationDto;
-import ru.vsu.noidle_server.model.repository.AchievementRepository;
-import ru.vsu.noidle_server.model.repository.NotificationRepository;
+import ru.vsu.noidle_server.model.mapper.LevelMapper;
+import ru.vsu.noidle_server.model.repository.LevelRepository;
+import ru.vsu.noidle_server.model.repository.RequirementRepository;
 import ru.vsu.noidle_server.model.repository.UserRepository;
 import ru.vsu.noidle_server.service.NotificationService;
 
-import java.util.ArrayList;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,42 +23,36 @@ import java.util.UUID;
 @Slf4j
 public class NotificationServiceImpl implements NotificationService {
 
-    private final NotificationRepository notificationRepository;
-    private final AchievementRepository achievementRepository;
+    private final RequirementRepository requirementRepository;
+    private final LevelRepository levelRepository;
     private final UserRepository userRepository;
+    private final LevelMapper levelMapper;
 
     @Override
-    public List<NotificationDto> getAll(UUID userId) {
-        UserEntity userEntity = userRepository.findById(userId).orElse(null);
-        if (userEntity == null) {
+    public NotificationDto get(UUID userId) throws ServiceException {
+        UserEntity user;
+        try {
+            user=userRepository.getOne(userId);
+        }catch (EntityNotFoundException e) {
+            throw new ServiceException(e);
+        }
+        List<RequirementEntity> requirements = requirementRepository.getAllByLevelOrder(user.getLevel().getOrder() + 1);
+
+        boolean levelAchieved = requirements.stream().allMatch(requirement -> requirement.anyFits(user.getAchievements()));
+        if (levelAchieved) {
+            user.setLevel(levelRepository.getByOrder(user.getLevel().getOrder() + 1));
+            userRepository.save(user);
+            return formNotification(user, requirements);
+        } else {
             return null;
         }
-        List<NotificationDto> notificationsToSend = new ArrayList<>();
-        List<NotificationEntity> allNotifications = notificationRepository.findAll();
+    }
 
-        achievementRepository.getAllByUserId(userId).forEach(achievement -> {
-            NotificationEntity notificationEntity = allNotifications.stream()
-                    .filter(notification ->
-                            notification.getType().equals(achievement.getType()) &&
-                                    notification.getSubType().equals(achievement.getSubType()))
-                    .findFirst().orElse(null);
-            if (notificationEntity != null) {
-
-                //achievement value >= notification value
-                if ((achievement.getValue().compareTo(notificationEntity.getValue()) > -1) &&
-                        !userEntity.getNotificationSent().get(notificationEntity)) {
-                    notificationsToSend.add(new NotificationDto(
-                            UUID.randomUUID(),
-                            notificationEntity.getType(),
-                            notificationEntity.getSubType(),
-                            notificationEntity.getLevel(),
-                            notificationEntity.getValue(),
-                            userId
-                    ));
-                    userEntity.getNotificationSent().put(notificationEntity, true);
-                }
-            }
-        });
-        return notificationsToSend;
+    private NotificationDto formNotification(UserEntity user, List<RequirementEntity> requirements) {
+        return new NotificationDto(
+                levelMapper.toDto(user.getLevel()),
+                user.getId(),
+                AchievementForNotification.fromRequirements(requirements)
+        );
     }
 }
