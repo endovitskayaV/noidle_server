@@ -14,7 +14,7 @@ insert into level ("order", name) values
   (7, 'Somelevel');
 
 
-alter table user_data add column level_order bigint default 0 references level("order");
+alter table user_data add column level_order bigint not null default 0 references level("order");
 
 create table requirement (
   id bigint primary key,

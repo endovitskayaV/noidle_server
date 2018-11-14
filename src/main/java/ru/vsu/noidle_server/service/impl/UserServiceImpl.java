@@ -8,6 +8,7 @@ import ru.vsu.noidle_server.model.domain.UserEntity;
 import ru.vsu.noidle_server.model.dto.UserDto;
 import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
 import ru.vsu.noidle_server.model.mapper.UserMapper;
+import ru.vsu.noidle_server.model.repository.LevelRepository;
 import ru.vsu.noidle_server.model.repository.UserRepository;
 import ru.vsu.noidle_server.service.UserService;
 
@@ -20,6 +21,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final LevelRepository levelRepository;
 
     @Override
     public UserDto getById(UUID id) {
@@ -31,6 +33,8 @@ public class UserServiceImpl implements UserService {
         UserEntity existingUser = userRepository.findByEmail(userEntity.getEmail());
         if (existingUser != null) {
             userEntity.setId(existingUser.getId());
+        }else{
+            userEntity.setLevel(levelRepository.getByOrder(0L));
         }
         userRepository.save(userEntity);
         log.info("Saved {}", userEntity);
