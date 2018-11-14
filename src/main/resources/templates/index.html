@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="container authenticated" style="display:none">
-        <p> Logged in as: <span id="user"></span></p>
+        <p> Logged in as: <span id="user"><span id="userName"></span>&nbsp;<span id="userId"></span></span></p>
         <div><p>
             <button onClick="logout()" class="btn btn-primary">Logout</button>
         </p></div>
@@ -40,7 +40,8 @@
     // });
 
     $.get("/user", function (user) {
-        $("#user").html(user.name);
+        $("#userName").html(user.name);
+        $("#userId").html(user.id);
         $(".unauthenticated").hide();
         $(".authenticated").show();
     });

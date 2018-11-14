@@ -36,15 +36,21 @@ public interface UserMapper {
         String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
 
         //TODO: check if assigning null to map annuls relationships
-        return new UserEntity(null, details.get("email").toLowerCase(), getName(details), photo, null, null);
+        return new UserEntity(null, getEmail(user), getName(details), photo, null, null);
     }
 
-    @SuppressWarnings(value = "unchecked") //user.getUserAuthentication().getDetails()) - Object
-    default UserDto toDto(OAuth2Authentication user) {
-        LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
-        String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
+//    @SuppressWarnings(value = "unchecked") //user.getUserAuthentication().getDetails()) - Object
+//    default UserDto toDto(OAuth2Authentication user) {
+//        LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
+//        String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
+//
+//        return new UserDto(details.get("email"), getName(details), photo, null);
+//    }
 
-        return new UserDto(details.get("email"), getName(details), photo, null);
+    @SuppressWarnings(value = "unchecked") //user.getUserAuthentication().getDetails()) - Object
+    static String getEmail(OAuth2Authentication user){
+        LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
+        return  details.get("email").toLowerCase();
     }
 
     default String getName(LinkedHashMap<String, String> details) {

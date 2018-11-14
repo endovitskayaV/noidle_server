@@ -39,6 +39,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUser(OAuth2Authentication user) {
-        return userMapper.toDto(user);
+         return userMapper.toDto(
+                userRepository.findByEmail(UserMapper.getEmail(user)),
+                new CycleAvoidingMappingContext());
     }
 }

@@ -3,6 +3,7 @@ package ru.vsu.noidle_server.model.dto;
 import lombok.*;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -11,6 +12,8 @@ import java.util.Collection;
 @EqualsAndHashCode(of = "email")
 @ToString(exclude = "achievements")
 public class UserDto {
+
+    private UUID id;
 
     private String email;
 
