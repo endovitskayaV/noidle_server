@@ -28,15 +28,22 @@ public class AchievementServiceImpl implements AchievementService {
                     achievementDto.getSubType(),
                     achievementDto.getName(),
                     achievementDto.getUserId());
-            if (dbEntity != null) {
+            boolean canSave;
+            if (dbEntity != null) { //not new achievement
                 achievementDto.setId(dbEntity.getId());
+
+                canSave = (dbEntity.getDate().compareTo(achievementDto.getDate()) <= 0) &&
+                        (dbEntity.getValue() < achievementDto.getValue());
+            } else {
+                canSave = true;
             }
 
-            AchievementEntity achievementEntity = achievementRepository.save(
-                    userMapper.toEntity(achievementDto, new CycleAvoidingMappingContext())
-            );
-            log.info("Saved {}", achievementEntity);
+            if (canSave) {
+                AchievementEntity achievementEntity = achievementRepository.save(
+                        userMapper.toEntity(achievementDto, new CycleAvoidingMappingContext())
+                );
+                log.info("Saved {}", achievementEntity);
+            }
         });
     }
-
 }

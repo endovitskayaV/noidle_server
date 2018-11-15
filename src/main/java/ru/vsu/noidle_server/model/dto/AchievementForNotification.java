@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"type", "subType", "name", "value"})
+@ToString
 public class AchievementForNotification {
     private Type type;
 

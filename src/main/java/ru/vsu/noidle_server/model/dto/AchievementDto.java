@@ -4,6 +4,7 @@ import lombok.*;
 import ru.vsu.noidle_server.model.SubType;
 import ru.vsu.noidle_server.model.Type;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Getter
@@ -23,6 +24,8 @@ public class AchievementDto {
     private String name;
 
     private Long value;
+
+    private Long date;
 
     private UUID userId;
 }

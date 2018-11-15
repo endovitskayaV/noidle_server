@@ -8,6 +8,7 @@ import ru.vsu.noidle_server.model.converter.SubTypeConverter;
 import ru.vsu.noidle_server.model.converter.TypeConverter;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
@@ -39,6 +40,9 @@ public class AchievementEntity {
     @Column(name = "value", nullable = false)
     private Long value;
 
+    @Column(name = "date", nullable = false)
+    private Long date;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
@@ -47,10 +51,11 @@ public class AchievementEntity {
     public String toString() {
         return "AchievementEntity{" +
                 "id=" + id +
-                ", type=" + type.getShortcut() +
-                ", subType=" + subType.getShortcut() +
-                ", name=" + name +
+                ", type=" + type +
+                ", subType=" + subType +
+                ", name='" + name + '\'' +
                 ", value=" + value +
+                ", date=" + date +
                 ", userId=" + user.getId() +
                 '}';
     }
