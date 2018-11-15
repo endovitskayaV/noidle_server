@@ -6,7 +6,7 @@ import lombok.ToString;
 @Getter
 @ToString(of = "shortcut")
 public enum Type {
-    TIME("time"), SYMBOL("symbol"), TEST("test");
+    TIME("time"), SYMBOL("symbol"), COMMIT("commit");
 
     private String shortcut;
 
