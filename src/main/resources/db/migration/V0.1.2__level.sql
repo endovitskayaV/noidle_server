@@ -27,21 +27,22 @@ create table requirement (
   unique (type, sub_type, name)
 );
 
-insert into requirement (id, type, sub_type, level_order, value)
-values (1, 'time', 'per_life', 1, 0),
-       (2, 'time', 'per_life', 2, 100),
-       (3, 'time', 'per_life', 3, 200),
-       (4, 'symbol', 'per_life', 1, 10),
-       (5, 'symbol', 'per_life', 2, 1000),
-       (6, 'symbol', 'per_life', 3, 2000),
-       (7, 'time', 'continuous_per_life', 1, 0),
-       (8, 'time', 'continuous_per_life', 2, 1000 * 60 * 60),
-       (9, 'time', 'continuous_per_life', 3, 1000 * 60 * 60 * 2);
+insert into requirement (id, type, sub_type, level_order, name, value)
+values (1, 'time', 'per_life', 1, null, 0),
+       (2, 'time', 'per_life', 2, null, 100),
+       (3, 'time', 'per_life', 3, null, 200),
+       (4, 'symbol', 'per_life', 1, null, 10),
+       (5, 'symbol', 'per_life', 2, null, 1000),
+       (6, 'symbol', 'per_life', 3, null, 2000),
+       (7, 'time', 'continuous_per_life', 1, null, 0),
+       (8, 'time', 'continuous_per_life', 2, null, 1000 * 60 * 60),
+       (9, 'time', 'continuous_per_life', 3, null, 1000 * 60 * 60 * 2),
 
 --   (10, 'symbol','continuous_per_life', 1, 1),
 --   (11 ,'symbol','continuous_per_life', 2, 500),
 --   (12, 'symbol','continuous_per_life', 3, 1000);
 
---   (13, 'symbol','single_key', 1, 0),
+      (13, 'symbol','single_key', 1, 'A', 1),
 --   (14, 'symbol','single_key', 2, 2000),
 --   (15, 'symbol','single_key', 3, 5000);
+      (16, 'commit', 'per_life', 1, 'successful', 1);
