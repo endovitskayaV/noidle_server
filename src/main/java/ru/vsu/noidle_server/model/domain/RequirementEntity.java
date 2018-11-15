@@ -51,7 +51,7 @@ public class RequirementEntity {
                         type.equals(achievement.getType()) &&
                         subType.equals(achievement.getSubType()) &&
                         Objects.equals(name, achievement.getName()) &&
-                        value.compareTo(achievement.getValue()) <= -1); //value <  achievement.getValue()
+                        value.compareTo(achievement.getValue()) <= 0); //value <=  achievement.getValue()
         return anyFits;
     }
 }
