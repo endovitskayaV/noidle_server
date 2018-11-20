@@ -45,4 +45,6 @@ values (1, 'time', 'per_life', 1, null, 0),
       (13, 'symbol','single_key', 1, 'A', 1),
 --   (14, 'symbol','single_key', 2, 2000),
 --   (15, 'symbol','single_key', 3, 5000);
-      (16, 'commit', 'per_life', 1, 'successful', 1);
+      (16, 'commit', 'per_life', 1, 'successful', 1),
+      (17, 'exec', 'per_life', 1, 'successful', 1),
+      (18, 'exec', 'per_life', 1, 'failed', 2);
