@@ -9,7 +9,9 @@ public enum Type {
     TIME("time"),
     SYMBOL("symbol"),
     COMMIT("commit"),
-    EXEC("exec");
+    EXEC("exec"),
+    LANG_TIME ("lang_time"),
+    LANG_SYMBOL ("lang_symbol");
 
     private String shortcut;
 

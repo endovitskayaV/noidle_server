@@ -47,4 +47,6 @@ values (1, 'time', 'per_life', 1, null, 0),
 --   (15, 'symbol','single_key', 3, 5000);
       (16, 'commit', 'per_life', 1, 'successful', 1),
       (17, 'exec', 'per_life', 1, 'successful', 1),
-      (18, 'exec', 'per_life', 1, 'failed', 2);
+      (18, 'exec', 'per_life', 1, 'failed', 2),
+      (19, 'lang_time', 'per_life', 1, 'Java', 1),
+      (20, 'lang_symbol', 'per_day', 1, 'Kotlin', 10);
