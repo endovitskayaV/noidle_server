@@ -9,14 +9,14 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"level", "userId"})
+@EqualsAndHashCode(of = {"level", "user"})
 @ToString
 public class NotificationDto {
 
     private LevelDto level;
 
     //when sending info about colleagues
-    private UUID userId;
+    private  UserDtoForNotification user;
 
     private List<AchievementForNotification> achievements;
 }

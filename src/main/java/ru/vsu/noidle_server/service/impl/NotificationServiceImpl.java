@@ -8,6 +8,7 @@ import ru.vsu.noidle_server.model.domain.RequirementEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
 import ru.vsu.noidle_server.model.dto.AchievementForNotification;
 import ru.vsu.noidle_server.model.dto.NotificationDto;
+import ru.vsu.noidle_server.model.dto.UserDtoForNotification;
 import ru.vsu.noidle_server.model.mapper.LevelMapper;
 import ru.vsu.noidle_server.model.repository.LevelRepository;
 import ru.vsu.noidle_server.model.repository.RequirementRepository;
@@ -32,8 +33,8 @@ public class NotificationServiceImpl implements NotificationService {
     public NotificationDto get(UUID userId) throws ServiceException {
         UserEntity user;
         try {
-            user=userRepository.getOne(userId);
-        }catch (EntityNotFoundException e) {
+            user = userRepository.getOne(userId);
+        } catch (EntityNotFoundException e) {
             throw new ServiceException(e);
         }
         List<RequirementEntity> requirements = requirementRepository.getAllByLevelOrder(user.getLevel().getOrder() + 1);
@@ -51,7 +52,7 @@ public class NotificationServiceImpl implements NotificationService {
     private NotificationDto formNotification(UserEntity user, List<RequirementEntity> requirements) {
         return new NotificationDto(
                 levelMapper.toDto(user.getLevel()),
-                user.getId(),
+                new UserDtoForNotification(user.getEmail(), user.getName()),
                 AchievementForNotification.fromRequirements(requirements)
         );
     }
