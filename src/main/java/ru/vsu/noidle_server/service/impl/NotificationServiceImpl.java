@@ -12,12 +12,12 @@ import ru.vsu.noidle_server.model.dto.UserDtoForNotification;
 import ru.vsu.noidle_server.model.mapper.LevelMapper;
 import ru.vsu.noidle_server.model.repository.LevelRepository;
 import ru.vsu.noidle_server.model.repository.RequirementRepository;
+import ru.vsu.noidle_server.model.repository.TeamRepository;
 import ru.vsu.noidle_server.model.repository.UserRepository;
 import ru.vsu.noidle_server.service.NotificationService;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +30,27 @@ public class NotificationServiceImpl implements NotificationService {
     private final LevelMapper levelMapper;
 
     @Override
-    public NotificationDto get(UUID userId) throws ServiceException {
+    public List<NotificationDto> getAll(UUID userId) throws ServiceException {
+        List<NotificationDto> notifications = new ArrayList<>();
+        notifications.add(getNotification(userId));
+        UserEntity user;
+        try {
+            user = userRepository.getOne(userId);
+        } catch (EntityNotFoundException e) {
+            throw new ServiceException(e);
+        }
+
+        Set<UserEntity> colleagues = new HashSet<>();
+        user.getTeams().forEach(teamEntity -> colleagues.addAll(teamEntity.getUsers()));
+
+        for (UserEntity colleague : colleagues) {
+            notifications.add(getNotification(colleague.getId()));
+        }
+        return notifications;
+    }
+
+
+    private NotificationDto getNotification(UUID userId) throws ServiceException {
         UserEntity user;
         try {
             user = userRepository.getOne(userId);

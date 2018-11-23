@@ -40,4 +40,12 @@ public class UserEntity {
     @ManyToOne
     @JoinColumn(name = "level_order", nullable = false)
     private LevelEntity level;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_data_team",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "team_id", referencedColumnName = "id")
+    )
+    private Collection<TeamEntity> teams;
 }
