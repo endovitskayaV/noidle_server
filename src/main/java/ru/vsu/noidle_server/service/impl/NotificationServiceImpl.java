@@ -12,12 +12,12 @@ import ru.vsu.noidle_server.model.dto.UserDtoForNotification;
 import ru.vsu.noidle_server.model.mapper.LevelMapper;
 import ru.vsu.noidle_server.model.repository.LevelRepository;
 import ru.vsu.noidle_server.model.repository.RequirementRepository;
-import ru.vsu.noidle_server.model.repository.TeamRepository;
 import ru.vsu.noidle_server.model.repository.UserRepository;
 import ru.vsu.noidle_server.service.NotificationService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +32,10 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public List<NotificationDto> getAll(UUID userId) throws ServiceException {
         List<NotificationDto> notifications = new ArrayList<>();
-        notifications.add(getNotification(userId));
+        NotificationDto newNotification = getNotification(userId);
+        if (newNotification != null) {
+            notifications.add(newNotification);
+        }
         UserEntity user;
         try {
             user = userRepository.getOne(userId);
@@ -41,10 +44,19 @@ public class NotificationServiceImpl implements NotificationService {
         }
 
         Set<UserEntity> colleagues = new HashSet<>();
-        user.getTeams().forEach(teamEntity -> colleagues.addAll(teamEntity.getUsers()));
+        user.getTeams().forEach(teamEntity ->
+                colleagues.addAll(
+                        teamEntity.getUsers().stream()
+                                .filter(colleague -> !colleague.equals(user))
+                                .collect(Collectors.toSet())
+                )
+        );
 
         for (UserEntity colleague : colleagues) {
-            notifications.add(getNotification(colleague.getId()));
+            newNotification = getNotification(colleague.getId());
+            if (newNotification != null) {
+                notifications.add(newNotification);
+            }
         }
         return notifications;
     }
@@ -59,7 +71,8 @@ public class NotificationServiceImpl implements NotificationService {
         }
         List<RequirementEntity> requirements = requirementRepository.getAllByLevelOrder(user.getLevel().getOrder() + 1);
 
-        boolean levelAchieved = requirements.stream().allMatch(requirement -> requirement.anyFits(user.getAchievements()));
+        boolean levelAchieved = !requirements.isEmpty() &&
+                requirements.stream().allMatch(requirement -> requirement.anyFits(user.getAchievements()));
         if (levelAchieved) {
             user.setLevel(levelRepository.getByOrder(user.getLevel().getOrder() + 1));
             userRepository.save(user);

@@ -36,7 +36,7 @@ public interface UserMapper {
         String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
 
         //TODO: check if assigning null to map annuls relationships
-        return new UserEntity(null, getEmail(user), getName(details), photo, null, null);
+        return new UserEntity(null, getEmail(user), getName(details), photo, null, null, null);
     }
 
 //    @SuppressWarnings(value = "unchecked") //user.getUserAuthentication().getDetails()) - Object
