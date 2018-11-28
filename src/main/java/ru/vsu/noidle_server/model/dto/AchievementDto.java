@@ -4,6 +4,7 @@ import lombok.*;
 import ru.vsu.noidle_server.model.SubType;
 import ru.vsu.noidle_server.model.Type;
 
+import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class AchievementDto {
 
     private String name;
 
-    private Long value;
+    private BigInteger value;
 
     private Long date;
 

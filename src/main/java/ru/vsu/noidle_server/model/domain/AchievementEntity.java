@@ -8,6 +8,7 @@ import ru.vsu.noidle_server.model.converter.SubTypeConverter;
 import ru.vsu.noidle_server.model.converter.TypeConverter;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -38,7 +39,7 @@ public class AchievementEntity {
     private String name;
 
     @Column(name = "value", nullable = false)
-    private Long value;
+    private BigInteger value;
 
     @Column(name = "date", nullable = false)
     private Long date;

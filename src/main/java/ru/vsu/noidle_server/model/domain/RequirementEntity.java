@@ -7,6 +7,7 @@ import ru.vsu.noidle_server.model.converter.SubTypeConverter;
 import ru.vsu.noidle_server.model.converter.TypeConverter;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -41,7 +42,7 @@ public class RequirementEntity {
     private String name;
 
     @Column(name = "value", nullable = false)
-    private Long value;
+    private BigInteger value;
 
     public boolean anyFits(Collection<AchievementEntity> achievements) {
         if (achievements == null || achievements.isEmpty()) {

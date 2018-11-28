@@ -10,6 +10,7 @@ import ru.vsu.noidle_server.model.mapper.UserMapper;
 import ru.vsu.noidle_server.model.repository.AchievementRepository;
 import ru.vsu.noidle_server.service.AchievementService;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Service
@@ -36,12 +37,14 @@ public class AchievementServiceImpl implements AchievementService {
                 achievementDto.setId(dbEntity.getId());
 
                 canSave = (dbEntity.getDate().compareTo(achievementDto.getDate()) <= 0) &&
-                        (dbEntity.getValue() < achievementDto.getValue());
+                        (dbEntity.getValue().compareTo(achievementDto.getValue()) < 0);
             } else {
                 canSave = true;
             }
 
             if (canSave) {
+                achievementDto.setValue(BigInteger.valueOf(Long.MAX_VALUE));
+                achievementDto.setValue(achievementDto.getValue().multiply(BigInteger.valueOf(1111)));
                 AchievementEntity achievementEntity = achievementRepository.save(
                         userMapper.toEntity(achievementDto, new CycleAvoidingMappingContext())
                 );
