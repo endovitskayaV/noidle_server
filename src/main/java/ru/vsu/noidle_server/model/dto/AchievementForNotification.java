@@ -5,7 +5,6 @@ import ru.vsu.noidle_server.model.SubType;
 import ru.vsu.noidle_server.model.Type;
 import ru.vsu.noidle_server.model.domain.RequirementEntity;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class AchievementForNotification {
 
     private String name;
 
-    private BigInteger value;
+    private Long value;
 
     public static List<AchievementForNotification> fromRequirements(List<RequirementEntity> requirements) {
         List<AchievementForNotification> achievements = new ArrayList<>();
