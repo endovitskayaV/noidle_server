@@ -5,6 +5,6 @@ create table statistics (
   name     text,
   value    bigint                         not null,
   user_id  uuid references user_data (id) not null,
-  date     bigint                         not null,
+  date     timestamp                      not null,
   unique (type, sub_type, name, user_id)
 );

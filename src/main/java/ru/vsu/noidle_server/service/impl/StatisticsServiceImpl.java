@@ -44,7 +44,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             if (dbEntity != null) { //not new statistics
                 statisticsDto.setId(dbEntity.getId());
 
-                canSave = (dbEntity.getDate().compareTo(statisticsDto.getDate()) <= 0) &&
+                canSave = (dbEntity.getDate().isBefore(statisticsDto.getDate())) &&
                         (dbEntity.getValue() < statisticsDto.getValue());
             } else { //new statistics
                 canSave = true;

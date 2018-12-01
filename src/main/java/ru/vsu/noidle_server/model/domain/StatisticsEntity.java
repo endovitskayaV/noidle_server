@@ -41,7 +41,7 @@ public class StatisticsEntity {
     private Long value;
 
     @Column(name = "date", nullable = false)
-    private Long date;
+    private OffsetDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

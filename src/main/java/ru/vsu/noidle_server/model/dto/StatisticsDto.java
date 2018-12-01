@@ -25,5 +25,5 @@ public class StatisticsDto {
 
     private Long value;
 
-    private Long date;
+    private OffsetDateTime date;
 }
