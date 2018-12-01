@@ -2,22 +2,22 @@ package ru.vsu.noidle_server.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.vsu.noidle_server.exception.ServiceException;
+import ru.vsu.noidle_server.model.domain.NotificationEntity;
 import ru.vsu.noidle_server.model.domain.RequirementEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
-import ru.vsu.noidle_server.model.dto.AchievementForNotification;
 import ru.vsu.noidle_server.model.dto.NotificationDto;
-import ru.vsu.noidle_server.model.dto.UserDtoForNotification;
-import ru.vsu.noidle_server.model.mapper.LevelMapper;
-import ru.vsu.noidle_server.model.repository.LevelRepository;
-import ru.vsu.noidle_server.model.repository.RequirementRepository;
-import ru.vsu.noidle_server.model.repository.UserRepository;
+import ru.vsu.noidle_server.model.mapper.DataMapper;
+import ru.vsu.noidle_server.model.repository.*;
 import ru.vsu.noidle_server.service.NotificationService;
+import ru.vsu.noidle_server.service.UserService;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.OffsetDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,68 +25,81 @@ import java.util.stream.Collectors;
 public class NotificationServiceImpl implements NotificationService {
 
     private final RequirementRepository requirementRepository;
-    private final LevelRepository levelRepository;
-    private final UserRepository userRepository;
-    private final LevelMapper levelMapper;
+    private final AchievementRepository achievementRepository;
+    private final UserService userService;
+    private final DataMapper dataMapper;
+
+    @Transactional
+    @Override
+    public void setNotifications(UUID userId) throws ServiceException {
+        Set<NotificationEntity> notifications = new HashSet<>();
+        UserEntity user = userService.getEntityById(userId);
+
+        //level
+        Long newLevel = user.getLevel().getLevelNumber() + 1;
+        addIfNotNull(doSetNotification(user, newLevel), notifications);
+
+
+        //not level
+        achievementRepository.getAllByLevelNumberNull().forEach(achievement ->
+                addIfNotNull(doSetNotification(user, achievement.getId()), notifications)
+        );
+
+        //colleagues
+        user.getColleagues().forEach(colleague -> {
+            colleague.setNotifications(notifications);
+        });
+
+        userService.save(user);
+        log.info("Set user notifications {}", user.getNotifications());
+    }
 
     @Override
     public List<NotificationDto> getAll(UUID userId) throws ServiceException {
-        List<NotificationDto> notifications = new ArrayList<>();
-        NotificationDto newNotification = getNotification(userId);
-        if (newNotification != null) {
-            notifications.add(newNotification);
-        }
-        UserEntity user;
-        try {
-            user = userRepository.getOne(userId);
-        } catch (EntityNotFoundException e) {
-            throw new ServiceException(e);
+        return formNotifications(userService.getEntityById(userId));
+    }
+
+    private List<NotificationDto> formNotifications(UserEntity user) {
+        if (user.getNotifications().isEmpty()) {
+            return Collections.emptyList();
         }
 
-        Set<UserEntity> colleagues = new HashSet<>();
-        user.getTeams().forEach(teamEntity ->
-                colleagues.addAll(
-                        teamEntity.getUsers().stream()
-                                .filter(colleague -> !colleague.equals(user))
-                                .collect(Collectors.toSet())
+        List<NotificationDto> notifications = new ArrayList<>();
+
+        user.getNotifications().forEach(notification ->
+                notifications.add(
+                        new NotificationDto(
+                                dataMapper.toDto(notification.getAchievement()),
+                                dataMapper.toDtoForNotification(user),
+                                dataMapper.toDto(requirementRepository.getAllByAchievementId(notification.getAchievement().getId()))
+                        )
                 )
         );
-
-        for (UserEntity colleague : colleagues) {
-            newNotification = getNotification(colleague.getId());
-            if (newNotification != null) {
-                notifications.add(newNotification);
-            }
-        }
         return notifications;
     }
 
-
-    private NotificationDto getNotification(UUID userId) throws ServiceException {
-        UserEntity user;
-        try {
-            user = userRepository.getOne(userId);
-        } catch (EntityNotFoundException e) {
-            throw new ServiceException(e);
-        }
-        List<RequirementEntity> requirements = requirementRepository.getAllByLevelOrder(user.getLevel().getOrder() + 1);
+    @Nullable
+    private NotificationEntity doSetNotification(UserEntity user, Long achievementId) {
+        List<RequirementEntity> requirements =
+                requirementRepository.getAllByAchievementId(achievementId);
 
         boolean levelAchieved = !requirements.isEmpty() &&
-                requirements.stream().allMatch(requirement -> requirement.anyFits(user.getAchievements()));
+                requirements.stream().allMatch(requirement ->
+                        requirement.anyFits(user.getStatistics()));
+
+        NotificationEntity notification = null;
         if (levelAchieved) {
-            user.setLevel(levelRepository.getByOrder(user.getLevel().getOrder() + 1));
-            userRepository.save(user);
-            return formNotification(user, requirements);
-        } else {
-            return null;
+            notification = new NotificationEntity(
+                    user,
+                    achievementRepository.getByLevelNumber(user.getLevel().getLevelNumber() + 1),
+                    OffsetDateTime.now()
+            );
+            user.addNotification(notification);
         }
+        return notification;
     }
 
-    private NotificationDto formNotification(UserEntity user, List<RequirementEntity> requirements) {
-        return new NotificationDto(
-                levelMapper.toDto(user.getLevel()),
-                new UserDtoForNotification(user.getEmail(), user.getName()),
-                AchievementForNotification.fromRequirements(requirements)
-        );
+    private <T> void addIfNotNull(T elem, Collection<T> collection) {
+        if (elem != null) collection.add(elem);
     }
 }

@@ -1,4 +1,4 @@
-create table achievement (
+create table statistics (
   id       uuid primary key,
   type     text                           not null,
   sub_type text                           not null,

@@ -1,5 +1,5 @@
 create table team (
-  id uuid primary key,
+  id uuid not null primary key,
   name text unique not null,
   photo text
 );

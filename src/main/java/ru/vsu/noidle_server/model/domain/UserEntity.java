@@ -5,8 +5,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 @Table(name = "user_data")
@@ -15,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-@ToString
+@ToString(of = {"id", "email", "name", "photo"})
 @Proxy(lazy = false)
 public class UserEntity {
 
@@ -35,11 +36,7 @@ public class UserEntity {
     private String photo;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Collection<AchievementEntity> achievements;
-
-    @ManyToOne
-    @JoinColumn(name = "level_order", nullable = false)
-    private LevelEntity level;
+    private Collection<StatisticsEntity> statistics;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -48,4 +45,49 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "team_id", referencedColumnName = "id")
     )
     private Collection<TeamEntity> teams;
+
+
+    @OneToMany(mappedBy = "user")
+    private Set<NotificationEntity> notifications;
+
+
+    public AchievementEntity getLevel() {
+        return notifications.stream()
+                .filter(notificationEntity -> notificationEntity.getAchievement().isLevel())
+                .max(Comparator.comparing(NotificationEntity::getAchievement))
+                .map(NotificationEntity::getAchievement)
+                .orElse(null);
+    }
+
+    public List<AchievementEntity> getAchievements() {
+        return Stream.concat(
+                Stream.of(getLevel()),
+                notifications.stream()
+                        .filter(notificationEntity -> !notificationEntity.getAchievement().isLevel())
+                        .map(NotificationEntity::getAchievement))
+                .collect(Collectors.toList());
+    }
+
+    public void addNotification(NotificationEntity notification) {
+        notifications.add(notification);
+    }
+
+    public Set<UserEntity> getColleagues() {
+        Set<UserEntity> colleagues = new HashSet<>();
+        teams.forEach(teamEntity ->
+                colleagues.addAll(
+                        teamEntity.getUsers().stream()
+                                .filter(colleague -> !colleague.equals(this))
+                                .collect(Collectors.toSet())
+                )
+        );
+
+        return colleagues;
+    }
+
+    public void setNotifications(Set<NotificationEntity> notifications) {
+        if (notifications != null && !notifications.isEmpty()) {
+            this.notifications.addAll(notifications);
+        }
+    }
 }

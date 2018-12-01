@@ -3,20 +3,19 @@ package ru.vsu.noidle_server.model.dto;
 import lombok.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"level", "user"})
+@EqualsAndHashCode(of = {"achievement", "user"})
 @ToString
 public class NotificationDto {
 
-    private LevelDto level;
+    private AchievementDto achievement;
 
     //when sending info about colleagues
     private  UserDtoForNotification user;
 
-    private List<AchievementForNotification> achievements;
+    private List<RequirementDto> requirements;
 }

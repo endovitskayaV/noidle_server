@@ -10,7 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "email")
-@ToString(exclude = "achievements")
+//@ToString(exclude = "statistics")
 public class UserDto {
 
     private UUID id;
@@ -21,5 +21,5 @@ public class UserDto {
 
     private String photo;
 
-    private Collection<AchievementDto> achievements;
+    //private Collection<StatisticsDto> statistics;
 }

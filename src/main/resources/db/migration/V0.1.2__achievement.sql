@@ -1,33 +1,38 @@
-create table level (
-  "order" bigint not null primary key,
-  name    text   not null
+create table achievement (
+  id            bigint not null primary key,
+  level_number  bigint,
+  "name"        text   not null
 );
 
-insert into level ("order", name)
-values (0, 'Somelevel'),
-       (1, 'Junior'),
-       (2, 'Somelevel'),
-       (3, 'Somelevel'),
-       (4, 'Somelevel'),
-       (5, 'Somelevel'),
-       (6, 'Somelevel'),
-       (7, 'Somelevel');
+insert into achievement (id, level_number, "name")
+values (1, 1, 'Junior'),
+       (2, 2, 'Somelevel'),
+       (3, 3, 'Somelevel'),
+       (4, 4, 'Somelevel'),
+       (5, 5, 'Somelevel'),
+       (6, 6, 'Somelevel'),
+       (7, 7, 'Somelevel');
 
-
-alter table user_data
-  add column level_order bigint not null default 0 references level ("order");
+create table notification (
+    id              uuid not null primary key,
+    user_id         uuid not null references user_data (id),
+    achievement_id  bigint not null references achievement (id),
+    is_sent         boolean not null,
+    date            timestamp not null,
+    unique (user_id, achievement_id)
+);
 
 create table requirement (
-  id          bigint primary key,
-  type        text   not null,
-  sub_type    text   not null,
-  level_order bigint not null references level ("order"),
-  name        text,
-  value       bigint not null,
+  id              bigint primary key,
+  type            text   not null,
+  sub_type        text   not null,
+  achievement_id  bigint not null references achievement (id),
+  name            text,
+  value           bigint not null,
   unique (type, sub_type, name)
 );
 
-insert into requirement (id, type, sub_type, level_order, name, value)
+insert into requirement (id, type, sub_type, achievement_id, name, value)
 values (1, 'time', 'per_life', 1, null, 0);
 --        (2, 'time', 'per_life', 2, null, 100),
 --        (3, 'time', 'per_life', 3, null, 200),

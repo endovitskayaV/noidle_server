@@ -4,14 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.domain.UserEntity;
 import ru.vsu.noidle_server.model.dto.UserDto;
 import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
-import ru.vsu.noidle_server.model.mapper.UserMapper;
-import ru.vsu.noidle_server.model.repository.LevelRepository;
+import ru.vsu.noidle_server.model.mapper.DataMapper;
 import ru.vsu.noidle_server.model.repository.UserRepository;
 import ru.vsu.noidle_server.service.UserService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.UUID;
 
 @Service
@@ -20,31 +21,42 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
-    private final LevelRepository levelRepository;
+    private final DataMapper dataMapper;
+
+    @Override
+    public UserEntity getEntityById(UUID id) throws ServiceException {
+        try {
+            return userRepository.getOne(id);
+        } catch (EntityNotFoundException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void save(UserEntity userEntity) {
+        userRepository.save(userEntity);
+        log.info("Saved {}", userEntity);
+    }
 
     @Override
     public UserDto getById(UUID id) {
-        return userMapper.toDto(userRepository.findById(id).orElse(null), new CycleAvoidingMappingContext());
+        return dataMapper.toDto(userRepository.findById(id).orElse(null), new CycleAvoidingMappingContext());
     }
 
-    public UserDto saveUser(OAuth2Authentication user) {
-        UserEntity userEntity = userMapper.toEntity(user);
+    public UserDto save(OAuth2Authentication user) {
+        UserEntity userEntity = dataMapper.toEntity(user);
         UserEntity existingUser = userRepository.findByEmail(userEntity.getEmail());
         if (existingUser != null) {
             userEntity.setId(existingUser.getId());
-        }else{
-            userEntity.setLevel(levelRepository.getByOrder(0L));
         }
-        userRepository.save(userEntity);
-        log.info("Saved {}", userEntity);
-        return userMapper.toDto(userEntity, new CycleAvoidingMappingContext());
+        save(userEntity);
+        return dataMapper.toDto(userEntity, new CycleAvoidingMappingContext());
     }
 
     @Override
-    public UserDto getUser(OAuth2Authentication user) {
-         return userMapper.toDto(
-                userRepository.findByEmail(UserMapper.getEmail(user)),
+    public UserDto getDto(OAuth2Authentication user) {
+        return dataMapper.toDto(
+                userRepository.findByEmail(DataMapper.getEmail(user)),
                 new CycleAvoidingMappingContext());
     }
 }

@@ -18,7 +18,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
-public class RequirementEntity {
+public class RequirementEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +34,8 @@ public class RequirementEntity {
     private SubType subType;
 
     @ManyToOne
-    @JoinColumn(name = "level_order", nullable = false)
-    private LevelEntity level;
+    @JoinColumn(name = "achievement_id", referencedColumnName = "id")
+    private AchievementEntity achievement;
 
     @Column(name = "name")
     private String name;
@@ -43,7 +43,7 @@ public class RequirementEntity {
     @Column(name = "value", nullable = false)
     private Long value;
 
-    public boolean anyFits(Collection<AchievementEntity> achievements) {
+    public boolean anyFits(Collection<StatisticsEntity> achievements) {
         if (achievements == null || achievements.isEmpty()) {
             return false;
         }

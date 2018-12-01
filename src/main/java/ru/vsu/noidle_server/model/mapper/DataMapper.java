@@ -6,29 +6,22 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import ru.vsu.noidle_server.model.domain.AchievementEntity;
+import ru.vsu.noidle_server.model.domain.RequirementEntity;
+import ru.vsu.noidle_server.model.domain.StatisticsEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
-import ru.vsu.noidle_server.model.dto.AchievementDto;
-import ru.vsu.noidle_server.model.dto.UserDto;
+import ru.vsu.noidle_server.model.dto.*;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.UUID;
 
 @Mapper(componentModel = "spring")
-public interface UserMapper {
+public interface DataMapper {
 
-    @Mapping(source = "achievementDto.userId", target = "user", qualifiedByName = "mapUserId")
-    AchievementEntity toEntity(AchievementDto achievementDto, @Context CycleAvoidingMappingContext context);
-
-    @Named("mapUserId")
-    default UserEntity mapUserId(UUID userId) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setId(userId);
-        return userEntity;
-    }
-
-    @Mapping(source = "achievementEntity.user.id", target = "userId")
-    AchievementDto toDto(AchievementEntity achievementEntity, @Context CycleAvoidingMappingContext context);
-
+    @Mapping(source = "statisticsDto.id", target = "id")
+    @Mapping(source = "statisticsDto.name", target = "name")
+    @Mapping(source = "userEntity", target = "user")
+    StatisticsEntity toEntity(StatisticsDto statisticsDto, UserEntity userEntity, @Context CycleAvoidingMappingContext context);
 
     @SuppressWarnings(value = "unchecked") //user.getUserAuthentication().getDetails()) - Object
     default UserEntity toEntity(OAuth2Authentication user) {
@@ -48,9 +41,9 @@ public interface UserMapper {
 //    }
 
     @SuppressWarnings(value = "unchecked") //user.getUserAuthentication().getDetails()) - Object
-    static String getEmail(OAuth2Authentication user){
+    static String getEmail(OAuth2Authentication user) {
         LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
-        return  details.get("email").toLowerCase();
+        return details.get("email").toLowerCase();
     }
 
     default String getName(LinkedHashMap<String, String> details) {
@@ -66,4 +59,10 @@ public interface UserMapper {
     }
 
     UserDto toDto(UserEntity userEntity, @Context CycleAvoidingMappingContext context);
+
+    UserDtoForNotification toDtoForNotification(UserEntity userEntity);
+
+    AchievementDto toDto(AchievementEntity achievementEntity);
+
+    List<RequirementDto> toDto(List<RequirementEntity> requirementEntity);
 }
