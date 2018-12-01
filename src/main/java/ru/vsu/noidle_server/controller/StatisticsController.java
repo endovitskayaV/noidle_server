@@ -23,9 +23,9 @@ public class StatisticsController {
     private final StatisticsService statisticsService;
 
     @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public RedirectView save(@RequestBody List<StatisticsDto> achievements, UUID userId) {
+    public RedirectView save(@RequestBody List<StatisticsDto> statistics, @RequestParam("userId") UUID userId) {
         try {
-            statisticsService.save(achievements, userId);
+            statisticsService.save(statistics, userId);
         } catch (ServiceException e) {
             return new RedirectView("/error");
         }
