@@ -20,6 +20,12 @@ public class TeamController {
         return teamDto == null ? ResponseEntity.ok().build() : ResponseEntity.ok(teamDto);
     }
 
+    @GetMapping
+    public ResponseEntity getById(@RequestParam("idOrName") String idORName) {
+        TeamDto teamDto = teamService.getByIdOrName(idORName);
+        return teamDto == null ? ResponseEntity.ok().build() : ResponseEntity.ok(teamDto);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<TeamDto> save(TeamDto teamDto) {
         return ResponseEntity.ok(teamService.save(teamDto));

@@ -12,6 +12,7 @@ import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
 import ru.vsu.noidle_server.model.mapper.DataMapper;
 import ru.vsu.noidle_server.model.repository.TeamRepository;
 import ru.vsu.noidle_server.model.repository.UserRepository;
+import ru.vsu.noidle_server.service.TeamService;
 import ru.vsu.noidle_server.service.UserService;
 
 import java.util.UUID;
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
     private final DataMapper dataMapper;
+    private final TeamService teamService;
 
     @Override
     public UserEntity getEntityById(UUID id) throws ServiceException {
@@ -65,13 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public TeamEntity addTeam(UUID userId, String teamNameOrId) {
-        TeamEntity teamEntity;
-        try {
-            UUID id = UUID.fromString(teamNameOrId);
-            teamEntity = teamRepository.findById(id).orElse(null);
-        } catch (IllegalArgumentException e) {
-            teamEntity = teamRepository.getByName(teamNameOrId);
-        }
+        TeamEntity teamEntity = teamService.getEntityByIdOrName(teamNameOrId);
         if (teamEntity == null) {
             return null;
         } else {

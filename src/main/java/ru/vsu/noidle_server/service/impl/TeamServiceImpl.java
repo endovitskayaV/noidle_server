@@ -34,4 +34,24 @@ public class TeamServiceImpl implements TeamService {
                 new CycleAvoidingMappingContext()
         );
     }
+
+    @Override
+    public TeamDto getByIdOrName(String idOrName) {
+        return dataMapper.toDto(
+                getEntityByIdOrName(idOrName),
+                new CycleAvoidingMappingContext()
+        );
+    }
+
+    @Override
+    public TeamEntity getEntityByIdOrName(String idOrName) {
+        TeamEntity teamEntity;
+        try {
+            UUID id = UUID.fromString(idOrName);
+            teamEntity = teamRepository.findById(id).orElse(null);
+        } catch (IllegalArgumentException e) {
+            teamEntity = teamRepository.getByName(idOrName);
+        }
+        return teamEntity;
+    }
 }
