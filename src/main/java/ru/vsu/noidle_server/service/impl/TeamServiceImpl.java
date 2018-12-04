@@ -10,6 +10,8 @@ import ru.vsu.noidle_server.model.mapper.DataMapper;
 import ru.vsu.noidle_server.model.repository.TeamRepository;
 import ru.vsu.noidle_server.service.TeamService;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -23,5 +25,13 @@ public class TeamServiceImpl implements TeamService {
         TeamEntity teamEntity = teamRepository.save(dataMapper.toEntity(teamDto, new CycleAvoidingMappingContext()));
         log.info("Saved new team {}", teamEntity);
         return dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext());
+    }
+
+    @Override
+    public TeamDto getById(UUID id) {
+        return dataMapper.toDto(
+                teamRepository.findById(id).orElse(null),
+                new CycleAvoidingMappingContext()
+        );
     }
 }
