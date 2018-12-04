@@ -97,4 +97,8 @@ public class UserEntity {
             ownNotifications.addAll(notifications);
         }
     }
+
+    public void addTeam(TeamEntity teamEntity){
+        teams.add(teamEntity);
+    }
 }

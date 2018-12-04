@@ -5,10 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import ru.vsu.noidle_server.exception.ServiceException;
+import ru.vsu.noidle_server.model.domain.TeamEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
 import ru.vsu.noidle_server.model.dto.UserDto;
 import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
 import ru.vsu.noidle_server.model.mapper.DataMapper;
+import ru.vsu.noidle_server.model.repository.TeamRepository;
 import ru.vsu.noidle_server.model.repository.UserRepository;
 import ru.vsu.noidle_server.service.UserService;
 
@@ -20,6 +22,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final TeamRepository teamRepository;
     private final DataMapper dataMapper;
 
     @Override
@@ -58,5 +61,28 @@ public class UserServiceImpl implements UserService {
         return dataMapper.toDto(
                 userRepository.findByEmail(DataMapper.getEmail(user)),
                 new CycleAvoidingMappingContext());
+    }
+
+    @Override
+    public TeamEntity addTeam(UUID userId, String teamNameOrId) {
+        TeamEntity teamEntity;
+        try {
+            UUID id = UUID.fromString(teamNameOrId);
+            teamEntity = teamRepository.findById(id).orElse(null);
+        } catch (IllegalArgumentException e) {
+            teamEntity = teamRepository.getByName(teamNameOrId);
+        }
+        if (teamEntity == null) {
+            return null;
+        } else {
+            UserEntity userEntity = userRepository.findById(userId).orElse(null);
+            if (userEntity == null) {
+                return null;
+            } else {
+                userEntity.addTeam(teamEntity);
+                userRepository.save(userEntity);
+                return teamEntity;
+            }
+        }
     }
 }
