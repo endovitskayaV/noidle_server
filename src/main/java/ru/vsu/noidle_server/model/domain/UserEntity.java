@@ -2,7 +2,6 @@ package ru.vsu.noidle_server.model.domain;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.util.*;
@@ -46,12 +45,21 @@ public class UserEntity {
     private Collection<TeamEntity> teams;
 
 
-    @OneToMany(mappedBy = "toWhomUser", cascade =CascadeType.ALL)
-    private Set<NotificationEntity> notifications;
+    @OneToMany(mappedBy = "aboutUser", cascade = CascadeType.ALL)
+    private Set<NotificationEntity> ownNotifications;
+
+    @OneToMany(mappedBy = "toWhomUser", cascade = CascadeType.ALL)
+    private Set<NotificationEntity> colleaguesNotifications;
+
+    public UserEntity(String email, String name, String photo) {
+        this.email = email;
+        this.name = name;
+        this.photo = photo;
+    }
 
 
     public AchievementEntity getLevel() {
-        return notifications.stream()
+        return ownNotifications.stream()
                 .filter(notificationEntity -> notificationEntity.getAchievement().isLevel())
                 .max(Comparator.comparing(NotificationEntity::getAchievement))
                 .map(NotificationEntity::getAchievement)
@@ -61,14 +69,14 @@ public class UserEntity {
     public List<AchievementEntity> getAchievements() {
         return Stream.concat(
                 Stream.of(getLevel()),
-                notifications.stream()
+                ownNotifications.stream()
                         .filter(notificationEntity -> !notificationEntity.getAchievement().isLevel())
                         .map(NotificationEntity::getAchievement))
                 .collect(Collectors.toList());
     }
 
-    public void addNotification(NotificationEntity notification) {
-        notifications.add(notification);
+    public void addOwnNotification(NotificationEntity notification) {
+        ownNotifications.add(notification);
     }
 
     public Set<UserEntity> getColleagues() {
@@ -84,9 +92,9 @@ public class UserEntity {
         return colleagues;
     }
 
-    public void setNotifications(Set<NotificationEntity> notifications) {
+    public void setOwnNotifications(Set<NotificationEntity> notifications) {
         if (notifications != null && !notifications.isEmpty()) {
-            this.notifications.addAll(notifications);
+            ownNotifications.addAll(notifications);
         }
     }
 }

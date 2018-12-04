@@ -3,7 +3,6 @@ package ru.vsu.noidle_server.model.mapper;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import ru.vsu.noidle_server.model.domain.AchievementEntity;
 import ru.vsu.noidle_server.model.domain.RequirementEntity;
@@ -13,7 +12,6 @@ import ru.vsu.noidle_server.model.dto.*;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public interface DataMapper {
@@ -29,7 +27,7 @@ public interface DataMapper {
         String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
 
         //TODO: check if assigning null to map annuls relationships
-        return new UserEntity(null, getEmail(user), getName(details), photo, null, null, null);
+        return new UserEntity(getEmail(user), getName(details), photo);
     }
 
 //    @SuppressWarnings(value = "unchecked") //aboutUser.getUserAuthentication().getDetails()) - Object

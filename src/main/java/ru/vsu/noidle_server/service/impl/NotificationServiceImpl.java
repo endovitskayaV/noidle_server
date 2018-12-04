@@ -39,21 +39,21 @@ public class NotificationServiceImpl implements NotificationService {
         UserEntity user = userService.getEntityById(userId);
 
         //level
-        addIfNotNull(doSetNotification(user, getNextLevelNumber(user)), notifications);
+        addIfNotNull(doSetOwnNotification(user, getNextLevelNumber(user)), notifications);
 
         //not level
         achievementRepository.getAllByLevelNumberNull().forEach(achievement ->
-                addIfNotNull(doSetNotification(user, achievement.getId()), notifications)
+                addIfNotNull(doSetOwnNotification(user, achievement.getId()), notifications)
         );
 
         notifications.forEach(notificationRepository::save);
-        log.info("Set user notifications {}", user.getNotifications());
+        log.info("Set user notifications {}", user.getOwnNotifications());
 
         //colleagues
 
         user.getColleagues().forEach(colleague -> {
             notifications.forEach(notification -> notification.setToWhomUser(colleague));
-            colleague.setNotifications(notifications);
+            colleague.setOwnNotifications(notifications);
             notifications.forEach(notificationRepository::save);
         });
     }
@@ -65,18 +65,22 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     private List<NotificationDto> formNotifications(UserEntity user) {
-        if (user.getNotifications().isEmpty()) {
+
+        List<NotificationEntity> notificationEntities = new ArrayList<>(user.getOwnNotifications());
+        notificationEntities.addAll(user.getColleaguesNotifications());
+
+        if (notificationEntities.isEmpty()) {
             return Collections.emptyList();
         }
 
         List<NotificationDto> notifications = new ArrayList<>();
 
-        user.getNotifications().stream()
+        notificationEntities.stream()
                 .filter(notification -> !notification.isSent())
                 .forEach(notification -> {
                     notifications.add(new NotificationDto(
                             dataMapper.toDto(notification.getAchievement()),
-                            dataMapper.toDtoForNotification(user),
+                            dataMapper.toDtoForNotification(notification.getAboutUser()),
                             dataMapper.toDto(requirementRepository.getAllByAchievementId(notification.getAchievement().getId())),
                             notification.getDate().toInstant().toEpochMilli()
                     ));
@@ -88,7 +92,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Nullable
-    private NotificationEntity doSetNotification(UserEntity user, Long achievementId) {
+    private NotificationEntity doSetOwnNotification(UserEntity user, Long achievementId) {
         List<RequirementEntity> requirements =
                 requirementRepository.getAllByAchievementId(achievementId);
 
@@ -103,7 +107,7 @@ public class NotificationServiceImpl implements NotificationService {
                     achievementRepository.getByLevelNumber(getNextLevelNumber(user)),
                     OffsetDateTime.now()
             );
-            user.addNotification(notification);
+            user.addOwnNotification(notification);
         }
         return notification;
     }
