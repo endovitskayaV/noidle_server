@@ -21,9 +21,9 @@ public class TeamController {
     }
 
     @GetMapping
-    public ResponseEntity getById(@RequestParam("idOrName") String idORName) {
+    public ResponseEntity getByIdOrName(@RequestParam("idOrName") String idORName) {
         TeamDto teamDto = teamService.getByIdOrName(idORName);
-        return teamDto == null ? ResponseEntity.ok().build() : ResponseEntity.ok(teamDto);
+        return teamDto == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(teamDto);
     }
 
     @PostMapping("/add")
