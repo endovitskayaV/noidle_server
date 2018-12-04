@@ -15,7 +15,9 @@ public class NotificationDto {
     private AchievementDto achievement;
 
     //when sending info about colleagues
-    private  UserDtoForNotification user;
+    private UserDtoForNotification user;
 
     private List<RequirementDto> requirements;
+
+    private Long date;
 }

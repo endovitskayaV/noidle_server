@@ -12,7 +12,6 @@ import ru.vsu.noidle_server.model.mapper.DataMapper;
 import ru.vsu.noidle_server.model.repository.UserRepository;
 import ru.vsu.noidle_server.service.UserService;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.UUID;
 
 @Service
@@ -25,11 +24,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity getEntityById(UUID id) throws ServiceException {
-        try {
-            return userRepository.getOne(id);
-        } catch (EntityNotFoundException e) {
-            throw new ServiceException(e);
+        UserEntity user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            log.info("Unable to find user with id " + id);
+            throw new ServiceException("Unable to find user with id " + id);
         }
+        return user;
     }
 
     @Override

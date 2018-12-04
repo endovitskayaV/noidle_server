@@ -18,7 +18,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
-public class RequirementEntity{
+public class RequirementEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,11 +47,17 @@ public class RequirementEntity{
         if (achievements == null || achievements.isEmpty()) {
             return false;
         }
-       boolean anyFits= achievements.stream().anyMatch(achievement ->
-                        type.equals(achievement.getType()) &&
+        boolean anyFits = achievements.stream().anyMatch(achievement ->
+                type.equals(achievement.getType()) &&
                         subType.equals(achievement.getSubType()) &&
-                        Objects.equals(name, achievement.getName()) &&
+                        compareName(achievement.getName()) &&
                         value.compareTo(achievement.getValue()) <= 0); //value <=  achievement.getValue()
         return anyFits;
+    }
+
+    private boolean compareName(String anotherName) {
+        return (name == null && (anotherName == null || anotherName.isEmpty())) ||
+                (name != null && name.isEmpty() && (anotherName == null || anotherName.isEmpty())) ||
+                Objects.equals(name, anotherName);
     }
 }

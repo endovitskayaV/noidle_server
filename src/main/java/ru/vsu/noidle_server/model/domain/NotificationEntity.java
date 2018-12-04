@@ -2,7 +2,6 @@ package ru.vsu.noidle_server.model.domain;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -16,7 +15,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
-@Proxy(lazy = false)
 public class NotificationEntity {
 
     @Id
@@ -26,11 +24,15 @@ public class NotificationEntity {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserEntity user;
+    @JoinColumn(name = "about_user_id", referencedColumnName = "id")
+    private UserEntity aboutUser;
 
     @ManyToOne
-    @JoinColumn(name = "achievement_id",  referencedColumnName = "id")
+    @JoinColumn(name = "to_whom_user_id", referencedColumnName = "id")
+    private UserEntity toWhomUser;
+
+    @ManyToOne
+    @JoinColumn(name = "achievement_id", referencedColumnName = "id")
     private AchievementEntity achievement;
 
     @Column(name = "is_sent", nullable = false)
@@ -39,10 +41,15 @@ public class NotificationEntity {
     @Column(name = "date", nullable = false)
     private OffsetDateTime date;
 
-    public NotificationEntity(UserEntity user, AchievementEntity achievement, OffsetDateTime date) {
-        this.user = user;
+    public NotificationEntity(UserEntity aboutUser, UserEntity toWhomUser, AchievementEntity achievement, OffsetDateTime date) {
+        this.aboutUser = aboutUser;
         this.achievement = achievement;
-        this.isSent = false;
         this.date = date;
+        this.toWhomUser = toWhomUser;
+        isSent = false;
+    }
+
+    public NotificationEntity(UserEntity aboutUser, AchievementEntity achievement, OffsetDateTime date) {
+        this (aboutUser, aboutUser, achievement, date);
     }
 }

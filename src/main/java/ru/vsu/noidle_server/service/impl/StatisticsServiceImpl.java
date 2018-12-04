@@ -10,7 +10,7 @@ import ru.vsu.noidle_server.model.dto.StatisticsDto;
 import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
 import ru.vsu.noidle_server.model.mapper.DataMapper;
 import ru.vsu.noidle_server.model.repository.StatisticsRepository;
-import ru.vsu.noidle_server.model.repository.UserRepository;
+import ru.vsu.noidle_server.service.NotificationService;
 import ru.vsu.noidle_server.service.StatisticsService;
 import ru.vsu.noidle_server.service.UserService;
 
@@ -23,6 +23,7 @@ import java.util.UUID;
 public class StatisticsServiceImpl implements StatisticsService {
 
     private final StatisticsRepository statisticsRepository;
+    private final NotificationService notificationService;
     private final UserService userService;
     private final DataMapper dataMapper;
 
@@ -57,5 +58,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                 log.info("Saved {}", statisticsEntity);
             }
         });
+
+        notificationService.setNotifications(userId);
     }
 }

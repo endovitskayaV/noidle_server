@@ -23,7 +23,7 @@ public interface DataMapper {
     @Mapping(source = "userEntity", target = "user")
     StatisticsEntity toEntity(StatisticsDto statisticsDto, UserEntity userEntity, @Context CycleAvoidingMappingContext context);
 
-    @SuppressWarnings(value = "unchecked") //user.getUserAuthentication().getDetails()) - Object
+    @SuppressWarnings(value = "unchecked") //aboutUser.getUserAuthentication().getDetails()) - Object
     default UserEntity toEntity(OAuth2Authentication user) {
         LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
         String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
@@ -32,15 +32,15 @@ public interface DataMapper {
         return new UserEntity(null, getEmail(user), getName(details), photo, null, null, null);
     }
 
-//    @SuppressWarnings(value = "unchecked") //user.getUserAuthentication().getDetails()) - Object
-//    default UserDto toDto(OAuth2Authentication user) {
-//        LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
+//    @SuppressWarnings(value = "unchecked") //aboutUser.getUserAuthentication().getDetails()) - Object
+//    default UserDto toDto(OAuth2Authentication aboutUser) {
+//        LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) aboutUser.getUserAuthentication().getDetails());
 //        String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
 //
 //        return new UserDto(details.get("email"), getName(details), photo, null);
 //    }
 
-    @SuppressWarnings(value = "unchecked") //user.getUserAuthentication().getDetails()) - Object
+    @SuppressWarnings(value = "unchecked") //aboutUser.getUserAuthentication().getDetails()) - Object
     static String getEmail(OAuth2Authentication user) {
         LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
         return details.get("email").toLowerCase();

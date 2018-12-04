@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString(of = {"id", "email", "name", "photo"})
-@Proxy(lazy = false)
 public class UserEntity {
 
     @Id
@@ -47,7 +46,7 @@ public class UserEntity {
     private Collection<TeamEntity> teams;
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "toWhomUser", cascade =CascadeType.ALL)
     private Set<NotificationEntity> notifications;
 
 
