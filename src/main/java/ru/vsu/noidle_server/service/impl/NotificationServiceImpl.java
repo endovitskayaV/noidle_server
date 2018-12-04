@@ -67,7 +67,6 @@ public class NotificationServiceImpl implements NotificationService {
     private List<NotificationDto> formNotifications(UserEntity user) {
 
         List<NotificationEntity> notificationEntities = new ArrayList<>(user.getOwnNotifications());
-        notificationEntities.addAll(user.getColleaguesNotifications());
 
         if (notificationEntities.isEmpty()) {
             return Collections.emptyList();

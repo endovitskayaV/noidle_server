@@ -45,10 +45,10 @@ public class UserEntity {
     private Collection<TeamEntity> teams;
 
 
-    @OneToMany(mappedBy = "aboutUser", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "toWhomUser", cascade = CascadeType.ALL)
     private Set<NotificationEntity> ownNotifications;
 
-    @OneToMany(mappedBy = "toWhomUser", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "aboutUser", cascade = CascadeType.ALL)
     private Set<NotificationEntity> colleaguesNotifications;
 
     public UserEntity(String email, String name, String photo) {
@@ -60,7 +60,7 @@ public class UserEntity {
 
     public AchievementEntity getLevel() {
         return ownNotifications.stream()
-                .filter(notificationEntity -> notificationEntity.getAchievement().isLevel())
+                .filter(notificationEntity -> notificationEntity.getAchievement().isLevel() && notificationEntity.getAboutUser().equals(this))
                 .max(Comparator.comparing(NotificationEntity::getAchievement))
                 .map(NotificationEntity::getAchievement)
                 .orElse(null);
