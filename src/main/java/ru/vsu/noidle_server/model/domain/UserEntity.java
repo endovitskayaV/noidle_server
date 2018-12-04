@@ -24,10 +24,10 @@ public class UserEntity {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "photo")
