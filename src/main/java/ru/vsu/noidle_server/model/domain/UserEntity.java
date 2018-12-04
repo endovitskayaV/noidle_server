@@ -42,7 +42,7 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "team_id", referencedColumnName = "id")
     )
-    private Collection<TeamEntity> teams;
+    private Set<TeamEntity> teams;
 
 
     @OneToMany(mappedBy = "toWhomUser", cascade = CascadeType.ALL)
