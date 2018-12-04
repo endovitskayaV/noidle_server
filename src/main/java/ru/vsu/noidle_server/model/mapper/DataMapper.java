@@ -4,10 +4,7 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import ru.vsu.noidle_server.model.domain.AchievementEntity;
-import ru.vsu.noidle_server.model.domain.RequirementEntity;
-import ru.vsu.noidle_server.model.domain.StatisticsEntity;
-import ru.vsu.noidle_server.model.domain.UserEntity;
+import ru.vsu.noidle_server.model.domain.*;
 import ru.vsu.noidle_server.model.dto.*;
 
 import java.util.LinkedHashMap;
@@ -63,4 +60,8 @@ public interface DataMapper {
     AchievementDto toDto(AchievementEntity achievementEntity);
 
     List<RequirementDto> toDto(List<RequirementEntity> requirementEntity);
+
+    TeamEntity toEntity(TeamDto teamDto, @Context CycleAvoidingMappingContext context);
+
+    TeamDto toDto(TeamEntity teamEntity, @Context CycleAvoidingMappingContext context);
 }
