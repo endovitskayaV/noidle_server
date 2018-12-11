@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.noidle_server.model.dto.TeamDto;
+import ru.vsu.noidle_server.model.dto.TeamDtoShort;
 import ru.vsu.noidle_server.service.TeamService;
 
 import java.util.UUID;
@@ -20,10 +21,10 @@ public class TeamController {
         return teamDto == null ? ResponseEntity.ok().build() : ResponseEntity.ok(teamDto);
     }
 
-    @GetMapping
+    @GetMapping("/short")
     public ResponseEntity getByIdOrName(@RequestParam("idOrName") String idORName) {
-        TeamDto teamDto = teamService.getByIdOrName(idORName);
-        return teamDto == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(teamDto);
+        TeamDtoShort teamDtoShort = teamService.getByIdOrName(idORName);
+        return teamDtoShort== null ? ResponseEntity.notFound().build() : ResponseEntity.ok(teamDtoShort);
     }
 
     @PostMapping("/add")

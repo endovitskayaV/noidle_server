@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.domain.TeamEntity;
 import ru.vsu.noidle_server.model.dto.TeamDto;
+import ru.vsu.noidle_server.model.dto.TeamDtoShort;
 import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
 import ru.vsu.noidle_server.model.mapper.DataMapper;
 import ru.vsu.noidle_server.model.repository.TeamRepository;
@@ -47,10 +48,9 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public TeamDto getByIdOrName(String idOrName) {
-        return dataMapper.toDto(
-                getEntityByIdOrName(idOrName),
-                new CycleAvoidingMappingContext()
+    public TeamDtoShort getByIdOrName(String idOrName) {
+        return dataMapper.toDtoShort(
+                getEntityByIdOrName(idOrName)
         );
     }
 

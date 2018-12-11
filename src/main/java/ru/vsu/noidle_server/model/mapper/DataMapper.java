@@ -63,4 +63,6 @@ public interface DataMapper {
     TeamEntity toEntity(TeamDto teamDto, @Context CycleAvoidingMappingContext context);
 
     TeamDto toDto(TeamEntity teamEntity, @Context CycleAvoidingMappingContext context);
+
+    TeamDtoShort toDtoShort(TeamEntity teamEntity);
 }
