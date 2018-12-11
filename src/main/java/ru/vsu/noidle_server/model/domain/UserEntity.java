@@ -44,12 +44,32 @@ public class UserEntity {
     )
     private Set<TeamEntity> teams;
 
-
     @OneToMany(mappedBy = "toWhomUser", cascade = CascadeType.ALL)
-    private Set<NotificationEntity> ownNotifications;
+    private Set<NotificationEntity> allNotifications;
+
+    private void setAllNotifications(Set<NotificationEntity> allNotifications) {
+        this.allNotifications = allNotifications;
+    }
+
+    public void addNotification(NotificationEntity notification) {
+        if (notification != null) {
+            allNotifications.add(notification);
+            if (notification.getAboutUser().equals(this)) {
+                personalNotifications.add(notification);
+            }
+        }
+    }
 
     @OneToMany(mappedBy = "aboutUser", cascade = CascadeType.ALL)
-    private Set<NotificationEntity> colleaguesNotifications;
+    private Set<NotificationEntity> personalNotifications;
+
+    private Set<NotificationEntity> getPersonalNotifications() {
+        return personalNotifications;
+    }
+
+    private void setPersonalNotifications(Set<NotificationEntity> personalNotifications) {
+        this.personalNotifications = personalNotifications;
+    }
 
     public UserEntity(String email, String name, String photo) {
         this.email = email;
@@ -57,26 +77,21 @@ public class UserEntity {
         this.photo = photo;
     }
 
-
     public AchievementEntity getLevel() {
-        return ownNotifications.stream()
+        return personalNotifications.stream()
                 .filter(notificationEntity -> notificationEntity.getAchievement().isLevel() && notificationEntity.getAboutUser().equals(this))
                 .max(Comparator.comparing(NotificationEntity::getAchievement))
                 .map(NotificationEntity::getAchievement)
                 .orElse(null);
     }
 
-    public List<AchievementEntity> getAchievements() {
+    public Set<AchievementEntity> getExtraAchievements() {
         return Stream.concat(
                 Stream.of(getLevel()),
-                ownNotifications.stream()
+                personalNotifications.stream()
                         .filter(notificationEntity -> !notificationEntity.getAchievement().isLevel())
                         .map(NotificationEntity::getAchievement))
-                .collect(Collectors.toList());
-    }
-
-    public void addOwnNotification(NotificationEntity notification) {
-        ownNotifications.add(notification);
+                .collect(Collectors.toSet());
     }
 
     public Set<UserEntity> getColleagues() {
@@ -92,13 +107,7 @@ public class UserEntity {
         return colleagues;
     }
 
-    public void setOwnNotifications(Set<NotificationEntity> notifications) {
-        if (notifications != null && !notifications.isEmpty()) {
-            ownNotifications.addAll(notifications);
-        }
-    }
-
-    public void addTeam(TeamEntity teamEntity){
+    public void addTeam(TeamEntity teamEntity) {
         teams.add(teamEntity);
     }
 }

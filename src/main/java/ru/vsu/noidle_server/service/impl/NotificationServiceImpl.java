@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vsu.noidle_server.exception.ServiceException;
+import ru.vsu.noidle_server.model.domain.AchievementEntity;
 import ru.vsu.noidle_server.model.domain.NotificationEntity;
 import ru.vsu.noidle_server.model.domain.RequirementEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
@@ -19,6 +20,7 @@ import ru.vsu.noidle_server.service.UserService;
 
 import java.time.OffsetDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +34,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final DataMapper dataMapper;
     private static final int MIN_LEVEL = 1;
 
-    //@Transactional
+    @Transactional
     @Override
     public void setNotifications(UUID userId) throws ServiceException {
         Set<NotificationEntity> notifications = new HashSet<>();
@@ -42,20 +44,32 @@ public class NotificationServiceImpl implements NotificationService {
         addIfNotNull(doSetOwnNotification(user, getNextLevelNumber(user)), notifications);
 
         //not level
-        achievementRepository.getAllByLevelNumberNull().forEach(achievement ->
-                addIfNotNull(doSetOwnNotification(user, achievement.getId()), notifications)
-        );
+        final Set<AchievementEntity> extraAchievements = user.getExtraAchievements();
+        achievementRepository.getAllByLevelNumberNull()
+                .stream()
+                .filter(achievementEntity -> !extraAchievements.contains(achievementEntity))
+                .forEach(achievement ->
+                        addIfNotNull(doSetOwnNotification(user, achievement.getId()), notifications)
+                );
 
         notifications.forEach(notificationRepository::save);
-        log.info("Set user notifications {}", user.getOwnNotifications());
+        log.info("Set user {} notifications {}", user, user.getAllNotifications());
 
         //colleagues
+        Set<NotificationEntity> colleaguesNotifications = notifications.stream()
+                .map(NotificationEntity::new)
+                .collect(Collectors.toSet());
 
         user.getColleagues().forEach(colleague -> {
-            notifications.forEach(notification -> notification.setToWhomUser(colleague));
-            colleague.setOwnNotifications(notifications);
-            notifications.forEach(notificationRepository::save);
+            colleaguesNotifications.forEach(notification -> {
+                notification.setToWhomUser(colleague);
+                colleague.addNotification(notification);
+            });
+            colleaguesNotifications.forEach(notificationRepository::save);
+            log.info("Set colleague {} notifications {}", user, user.getAllNotifications());
         });
+
+        log.info("Set user {} notifications {}", user, notifications);
     }
 
     @Transactional
@@ -66,7 +80,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     private List<NotificationDto> formNotifications(UserEntity user) {
 
-        List<NotificationEntity> notificationEntities = new ArrayList<>(user.getOwnNotifications());
+        List<NotificationEntity> notificationEntities = new ArrayList<>(user.getAllNotifications());
 
         if (notificationEntities.isEmpty()) {
             return Collections.emptyList();
@@ -103,10 +117,10 @@ public class NotificationServiceImpl implements NotificationService {
         if (levelAchieved) {
             notification = new NotificationEntity(
                     user,
-                    achievementRepository.getByLevelNumber(getNextLevelNumber(user)),
+                    achievementRepository.findById(achievementId).orElse(null),
                     OffsetDateTime.now()
             );
-            user.addOwnNotification(notification);
+            user.addNotification(notification);
         }
         return notification;
     }

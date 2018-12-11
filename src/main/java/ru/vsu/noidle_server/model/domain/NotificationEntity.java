@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = {"id", "aboutUser", "toWhomUser", "achievement"})
 @ToString
 public class NotificationEntity {
 
@@ -50,6 +50,10 @@ public class NotificationEntity {
     }
 
     public NotificationEntity(UserEntity aboutUser, AchievementEntity achievement, OffsetDateTime date) {
-        this (aboutUser, aboutUser, achievement, date);
+        this(aboutUser, aboutUser, achievement, date);
+    }
+
+    public NotificationEntity(NotificationEntity notificationEntity) {
+        this(notificationEntity.aboutUser, notificationEntity.toWhomUser, notificationEntity.achievement, notificationEntity.date);
     }
 }

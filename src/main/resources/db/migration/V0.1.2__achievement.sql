@@ -11,7 +11,9 @@ values (1, 1, 'Junior'),
        (4, 4, 'Somelevel'),
        (5, 5, 'Somelevel'),
        (6, 6, 'Somelevel'),
-       (7, 7, 'Somelevel');
+       (7, 7, 'Somelevel'),
+       (8, null, 'Extraaa'),
+       (9, null, 'Extraaa100500');
 
 create table notification (
   id              uuid      not null primary key,
@@ -34,7 +36,9 @@ create table requirement (
 );
 
 insert into requirement (id, type, sub_type, achievement_id, name, value)
-values (1, 'time', 'per_life', 1, null, 0);
+values (1, 'time', 'per_life', 1, null, 0),
+       (21, 'time', 'per_day', 8, null, 0),
+       (22, 'time', 'per_day', 9, null, 0);
 --        (2, 'time', 'per_life', 2, null, 100),
 --        (3, 'time', 'per_life', 3, null, 200),
 --        (4, 'symbol', 'per_life', 1, null, 10),

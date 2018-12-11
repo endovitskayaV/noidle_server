@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "levelNumber")
+@EqualsAndHashCode(of = "id")
 @ToString
 public class AchievementEntity implements Comparable<AchievementEntity> {
 
