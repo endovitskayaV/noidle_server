@@ -11,5 +11,5 @@ import java.util.UUID;
 @Repository
 public interface StatisticsRepository extends JpaRepository<StatisticsEntity, UUID> {
 
-    StatisticsEntity getByTypeAndSubTypeAndNameAndUserId(StatisticsType statisticsType, StatisticsSubType statisticsSubType, String name, UUID userId);
+    StatisticsEntity getByTypeAndSubTypeAndExtraValueAndUserId(StatisticsType statisticsType, StatisticsSubType statisticsSubType, String extraValue, UUID userId);
 }

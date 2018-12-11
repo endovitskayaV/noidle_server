@@ -18,6 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
+@ToString
 public class StatisticsEntity {
 
     @Id
@@ -50,18 +51,4 @@ public class StatisticsEntity {
     @ManyToOne
     @JoinColumn(name = "team_id", referencedColumnName = "id")
     private TeamEntity team;
-
-    @Override
-    public String toString() {
-        return "StatisticsEntity{" +
-                "id=" + id +
-                ", type=" + type +
-                ", subType=" + subType +
-                ", extraValue='" + extraValue + '\'' +
-                ", value=" + value +
-                ", date=" + date +
-                ", userId=" + user.getId() +
-                ", teamId=" + team.getId() +
-                '}';
-    }
 }

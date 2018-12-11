@@ -42,7 +42,8 @@ insert into requirement (id, type, sub_type, achievement_id, extra_value, value,
 values (1, 'time', 'per_life', 1, null, 0, null),
        (21, 'time', 'per_day', 8, null, 0, null),
        (22, 'time', 'per_day', 9, null, 0, null),
-       (23, 'commit', 'per_life', 10, 'successful', 1, 0.5);
+       (23, 'time', 'per_life', 10, null, 0, 0.5);
+      -- (24, 'commit', 'per_life', 10, 'unsuccessful', 2, 0.3);
 --        (2, 'time', 'per_life', 2, null, 100),
 --        (3, 'time', 'per_life', 3, null, 200),
 --        (4, 'symbol', 'per_life', 1, null, 10),

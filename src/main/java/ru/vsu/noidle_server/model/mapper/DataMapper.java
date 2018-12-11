@@ -14,7 +14,6 @@ import java.util.List;
 public interface DataMapper {
 
     @Mapping(source = "statisticsDto.id", target = "id")
-    @Mapping(source = "statisticsDto.getExtraValue", target = "setExtraValue")
     @Mapping(source = "userEntity", target = "user")
     StatisticsEntity toEntity(StatisticsDto statisticsDto, UserEntity userEntity, @Context CycleAvoidingMappingContext context);
 

@@ -10,5 +10,5 @@ public interface NotificationService {
 
     List<NotificationDto> getAll(UUID userId) throws ServiceException;
 
-    void setNotifications(UUID userId) throws ServiceException;
+    void setNotifications(UUID userId, UUID teamId) throws ServiceException;
 }

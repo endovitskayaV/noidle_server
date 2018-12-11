@@ -28,15 +28,15 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final DataMapper dataMapper;
 
     @Override
-    public void save(List<StatisticsDto> statistics, UUID userId) throws ServiceException {
+    public void save(List<StatisticsDto> statistics, UUID userId, UUID teamId) throws ServiceException {
 
         UserEntity user = userService.getEntityById(userId);
 
         statistics.forEach(statisticsDto -> {
 
-            StatisticsEntity dbEntity = statisticsRepository.getByTypeAndSubTypeAndNameAndUserId(
-                    statisticsDto.getStatisticsType(),
-                    statisticsDto.getStatisticsSubType(),
+            StatisticsEntity dbEntity = statisticsRepository.getByTypeAndSubTypeAndExtraValueAndUserId(
+                    statisticsDto.getType(),
+                    statisticsDto.getSubType(),
                     statisticsDto.getExtraValue(),
                     userId);
 
@@ -59,6 +59,6 @@ public class StatisticsServiceImpl implements StatisticsService {
             }
         });
 
-        notificationService.setNotifications(userId);
+        notificationService.setNotifications(userId, teamId);
     }
 }
