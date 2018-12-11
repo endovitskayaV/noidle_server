@@ -1,10 +1,10 @@
 package ru.vsu.noidle_server.model.domain;
 
 import lombok.*;
-import ru.vsu.noidle_server.model.SubType;
-import ru.vsu.noidle_server.model.Type;
-import ru.vsu.noidle_server.model.converter.SubTypeConverter;
-import ru.vsu.noidle_server.model.converter.TypeConverter;
+import ru.vsu.noidle_server.model.StatisticsSubType;
+import ru.vsu.noidle_server.model.StatisticsType;
+import ru.vsu.noidle_server.model.converter.StatisticsSubTypeConverter;
+import ru.vsu.noidle_server.model.converter.StatisticsTypeConverter;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -25,39 +25,42 @@ public class RequirementEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Convert(converter = TypeConverter.class)
+    @Convert(converter = StatisticsTypeConverter.class)
     @Column(name = "type", nullable = false)
-    private Type type;
+    private StatisticsType statisticsType;
 
-    @Convert(converter = SubTypeConverter.class)
+    @Convert(converter = StatisticsSubTypeConverter.class)
     @Column(name = "subType", nullable = false)
-    private SubType subType;
+    private StatisticsSubType statisticsSubType;
 
     @ManyToOne
     @JoinColumn(name = "achievement_id", referencedColumnName = "id")
     private AchievementEntity achievement;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "extra_value")
+    private String extraValue;
 
     @Column(name = "value", nullable = false)
     private Long value;
 
-    public boolean anyFits(Collection<StatisticsEntity> achievements) {
-        if (achievements == null || achievements.isEmpty()) {
+    @Column(name = "team_contribution_rate")
+    private Float teamContributionRate;
+
+    public boolean anyFits(Collection<StatisticsEntity> statistics) {
+        if (statistics == null || statistics.isEmpty()) {
             return false;
         }
-        boolean anyFits = achievements.stream().anyMatch(achievement ->
-                type.equals(achievement.getType()) &&
-                        subType.equals(achievement.getSubType()) &&
-                        compareName(achievement.getName()) &&
+        boolean anyFits = statistics.stream().anyMatch(achievement ->
+                statisticsType.equals(achievement.getType()) &&
+                        statisticsSubType.equals(achievement.getSubType()) &&
+                        compareExtraValue(achievement.getExtraValue()) &&
                         value.compareTo(achievement.getValue()) <= 0); //value <=  achievement.getValue()
         return anyFits;
     }
 
-    private boolean compareName(String anotherName) {
-        return (name == null && (anotherName == null || anotherName.isEmpty())) ||
-                (name != null && name.isEmpty() && (anotherName == null || anotherName.isEmpty())) ||
-                Objects.equals(name, anotherName);
+    private boolean compareExtraValue(String anotherName) {
+        return (extraValue == null && (anotherName == null || anotherName.isEmpty())) ||
+                (extraValue != null && extraValue.isEmpty() && (anotherName == null || anotherName.isEmpty())) ||
+                Objects.equals(extraValue, anotherName);
     }
 }

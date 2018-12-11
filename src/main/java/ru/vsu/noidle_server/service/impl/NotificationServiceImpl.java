@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vsu.noidle_server.exception.ServiceException;
+import ru.vsu.noidle_server.model.AchievementType;
 import ru.vsu.noidle_server.model.domain.AchievementEntity;
 import ru.vsu.noidle_server.model.domain.NotificationEntity;
 import ru.vsu.noidle_server.model.domain.RequirementEntity;
@@ -45,7 +46,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         //not level
         final Set<AchievementEntity> extraAchievements = user.getExtraAchievements();
-        achievementRepository.getAllByLevelNumberNull()
+        achievementRepository.getAllByType(AchievementType.EXTRA)
                 .stream()
                 .filter(achievementEntity -> !extraAchievements.contains(achievementEntity))
                 .forEach(achievement ->

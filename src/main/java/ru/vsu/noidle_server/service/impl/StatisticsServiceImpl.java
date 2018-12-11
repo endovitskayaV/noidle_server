@@ -35,9 +35,9 @@ public class StatisticsServiceImpl implements StatisticsService {
         statistics.forEach(statisticsDto -> {
 
             StatisticsEntity dbEntity = statisticsRepository.getByTypeAndSubTypeAndNameAndUserId(
-                    statisticsDto.getType(),
-                    statisticsDto.getSubType(),
-                    statisticsDto.getName(),
+                    statisticsDto.getStatisticsType(),
+                    statisticsDto.getStatisticsSubType(),
+                    statisticsDto.getExtraValue(),
                     userId);
 
             boolean canSave;

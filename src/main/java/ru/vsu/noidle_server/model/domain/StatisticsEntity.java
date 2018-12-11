@@ -2,10 +2,10 @@ package ru.vsu.noidle_server.model.domain;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import ru.vsu.noidle_server.model.SubType;
-import ru.vsu.noidle_server.model.Type;
-import ru.vsu.noidle_server.model.converter.SubTypeConverter;
-import ru.vsu.noidle_server.model.converter.TypeConverter;
+import ru.vsu.noidle_server.model.StatisticsSubType;
+import ru.vsu.noidle_server.model.StatisticsType;
+import ru.vsu.noidle_server.model.converter.StatisticsSubTypeConverter;
+import ru.vsu.noidle_server.model.converter.StatisticsTypeConverter;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -26,16 +26,16 @@ public class StatisticsEntity {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Convert(converter = TypeConverter.class)
+    @Convert(converter = StatisticsTypeConverter.class)
     @Column(name = "type", nullable = false)
-    private Type type;
+    private StatisticsType type;
 
-    @Convert(converter = SubTypeConverter.class)
+    @Convert(converter = StatisticsSubTypeConverter.class)
     @Column(name = "subType", nullable = false)
-    private SubType subType;
+    private StatisticsSubType subType;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "extra_value")
+    private String extraValue;
 
     @Column(name = "value", nullable = false)
     private Long value;
@@ -47,16 +47,21 @@ public class StatisticsEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
+    @ManyToOne
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
+    private TeamEntity team;
+
     @Override
     public String toString() {
         return "StatisticsEntity{" +
                 "id=" + id +
                 ", type=" + type +
                 ", subType=" + subType +
-                ", name='" + name + '\'' +
+                ", extraValue='" + extraValue + '\'' +
                 ", value=" + value +
                 ", date=" + date +
                 ", userId=" + user.getId() +
+                ", teamId=" + team.getId() +
                 '}';
     }
 }

@@ -2,6 +2,8 @@ package ru.vsu.noidle_server.model.domain;
 
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
+import ru.vsu.noidle_server.model.AchievementType;
+import ru.vsu.noidle_server.model.converter.AchievementTypeConverter;
 
 import javax.persistence.*;
 
@@ -20,12 +22,15 @@ public class AchievementEntity implements Comparable<AchievementEntity> {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Convert(converter = AchievementTypeConverter.class)
+    @Column(name = "type", nullable = false)
+    private AchievementType type;
+
     @Column(name = "level_number")
     private Long levelNumber;
 
     @Column(name = "name", nullable = false)
     private String name;
-
 
     public boolean isLevel() {
         return levelNumber != null;

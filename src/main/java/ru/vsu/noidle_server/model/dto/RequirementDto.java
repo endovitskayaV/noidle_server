@@ -1,25 +1,23 @@
 package ru.vsu.noidle_server.model.dto;
 
 import lombok.*;
-import ru.vsu.noidle_server.model.SubType;
-import ru.vsu.noidle_server.model.Type;
-import ru.vsu.noidle_server.model.domain.RequirementEntity;
-
-import java.util.ArrayList;
-import java.util.List;
+import ru.vsu.noidle_server.model.StatisticsSubType;
+import ru.vsu.noidle_server.model.StatisticsType;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"type", "subType", "name", "value"})
+@EqualsAndHashCode(of = {"statisticsType", "statisticsSubType", "name", "extraValue"})
 @ToString
 public class RequirementDto {
-    private Type type;
+    private StatisticsType statisticsType;
 
-    private SubType subType;
+    private StatisticsSubType statisticsSubType;
 
     private String name;
 
-    private Long value;
+    private Long extraValue;
+
+    private Float teamContributionRate;
 }

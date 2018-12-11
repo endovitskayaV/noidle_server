@@ -1,19 +1,21 @@
 create table achievement (
   id           bigint not null primary key,
+  type         text   not null,
   level_number bigint,
   "name"       text   not null
 );
 
-insert into achievement (id, level_number, "name")
-values (1, 1, 'Junior'),
-       (2, 2, 'Somelevel'),
-       (3, 3, 'Somelevel'),
-       (4, 4, 'Somelevel'),
-       (5, 5, 'Somelevel'),
-       (6, 6, 'Somelevel'),
-       (7, 7, 'Somelevel'),
-       (8, null, 'Extraaa'),
-       (9, null, 'Extraaa100500');
+insert into achievement (id, type, level_number, "name")
+values (1, 'level', 1, 'Junior'),
+       (2, 'level', 2, 'Somelevel'),
+       (3, 'level', 3, 'Somelevel'),
+       (4, 'level', 4, 'Somelevel'),
+       (5, 'level', 5, 'Somelevel'),
+       (6, 'level', 6, 'Somelevel'),
+       (7, 'level', 7, 'Somelevel'),
+       (8, 'extra', null, 'Extraaa'),
+       (9, 'extra', null, 'Extraaa100500'),
+       (10, 'team', null, 'Team100500');
 
 create table notification (
   id              uuid      not null primary key,
@@ -26,19 +28,21 @@ create table notification (
 );
 
 create table requirement (
-  id             bigint primary key,
-  type           text   not null,
-  sub_type       text   not null,
-  achievement_id bigint not null references achievement (id),
-  name           text,
-  value          bigint not null,
-  unique (type, sub_type, name)
+  id                     bigint primary key,
+  type                   text   not null,
+  sub_type               text   not null,
+  achievement_id         bigint not null references achievement (id),
+  extra_value            text,
+  value                  bigint not null,
+  team_contribution_rate real,
+  unique (type, sub_type, achievement_id, extra_value, value, team_contribution_rate)
 );
 
-insert into requirement (id, type, sub_type, achievement_id, name, value)
-values (1, 'time', 'per_life', 1, null, 0),
-       (21, 'time', 'per_day', 8, null, 0),
-       (22, 'time', 'per_day', 9, null, 0);
+insert into requirement (id, type, sub_type, achievement_id, extra_value, value, team_contribution_rate)
+values (1, 'time', 'per_life', 1, null, 0, null),
+       (21, 'time', 'per_day', 8, null, 0, null),
+       (22, 'time', 'per_day', 9, null, 0, null),
+       (23, 'commit', 'per_life', 10, 'successful', 1, 0.5);
 --        (2, 'time', 'per_life', 2, null, 100),
 --        (3, 'time', 'per_life', 3, null, 200),
 --        (4, 'symbol', 'per_life', 1, null, 10),

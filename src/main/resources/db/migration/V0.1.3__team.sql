@@ -1,10 +1,10 @@
 create table team (
-  id uuid not null primary key,
-  name text unique not null,
+  id    uuid        not null primary key,
+  name  text unique not null,
   photo text
 );
 
- create table user_data_team(
+create table user_data_team (
   user_id uuid references user_data (id),
   team_id uuid references team (id),
   constraint user_data_team_pk primary key (user_id, team_id)
@@ -12,9 +12,13 @@ create table team (
 
 --test data
 
-insert into team values
-   ('123e4567-e89b-12d3-a456-556642440000', 'newteam', null);
+insert into team
+values ('123e4567-e89b-12d3-a456-556642440000', 'newteam', null);
 
-insert into user_data_team values
-  ('123e4567-e89b-12d3-a456-556642440000','123e4567-e89b-12d3-a456-556642440000'),
-  ('123e4567-e89b-12d3-a456-556642440001','123e4567-e89b-12d3-a456-556642440000');
+insert into user_data_team
+values ('123e4567-e89b-12d3-a456-556642440000', '123e4567-e89b-12d3-a456-556642440000'),
+       ('123e4567-e89b-12d3-a456-556642440001', '123e4567-e89b-12d3-a456-556642440000');
+
+alter table statistics
+  add column
+  team_id uuid references team (id);

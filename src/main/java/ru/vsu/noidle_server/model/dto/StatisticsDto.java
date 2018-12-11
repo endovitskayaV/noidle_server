@@ -1,8 +1,8 @@
 package ru.vsu.noidle_server.model.dto;
 
 import lombok.*;
-import ru.vsu.noidle_server.model.SubType;
-import ru.vsu.noidle_server.model.Type;
+import ru.vsu.noidle_server.model.StatisticsSubType;
+import ru.vsu.noidle_server.model.StatisticsType;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -17,11 +17,11 @@ public class StatisticsDto {
 
     private UUID id;
 
-    private Type type;
+    private StatisticsType statisticsType;
 
-    private SubType subType;
+    private StatisticsSubType statisticsSubType;
 
-    private String name;
+    private String extraValue;
 
     private Long value;
 
