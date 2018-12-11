@@ -17,9 +17,9 @@ public class StatisticsDto {
 
     private UUID id;
 
-    private StatisticsType statisticsType;
+    private StatisticsType type;
 
-    private StatisticsSubType statisticsSubType;
+    private StatisticsSubType subType;
 
     private String extraValue;
 

@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface StatisticsService {
 
-    void save(List<StatisticsDto> statistics,  UUID userId) throws ServiceException;
+    void save(List<StatisticsDto> statistics,  UUID userId, UUID teamId) throws ServiceException;
 }

@@ -50,11 +50,11 @@ public class RequirementEntity {
         if (statistics == null || statistics.isEmpty()) {
             return false;
         }
-        boolean anyFits = statistics.stream().anyMatch(achievement ->
-                statisticsType.equals(achievement.getType()) &&
-                        statisticsSubType.equals(achievement.getSubType()) &&
-                        compareExtraValue(achievement.getExtraValue()) &&
-                        value.compareTo(achievement.getValue()) <= 0); //value <=  achievement.getValue()
+        boolean anyFits = statistics.stream().anyMatch(statistic ->
+                statisticsType.equals(statistic.getType()) &&
+                        statisticsSubType.equals(statistic.getSubType()) &&
+                        compareExtraValue(statistic.getExtraValue()) &&
+                        value.compareTo(statistic.getValue()) <= 0);// value <=  achievement.getValue()
         return anyFits;
     }
 

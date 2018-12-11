@@ -8,16 +8,16 @@ import ru.vsu.noidle_server.model.StatisticsType;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"statisticsType", "statisticsSubType", "name", "extraValue"})
+@EqualsAndHashCode(of = {"type", "subType", "value", "extraValue"})
 @ToString
 public class RequirementDto {
     private StatisticsType statisticsType;
 
     private StatisticsSubType statisticsSubType;
 
-    private String name;
+    private String extraValue;
 
-    private Long extraValue;
+    private Long value;
 
     private Float teamContributionRate;
 }

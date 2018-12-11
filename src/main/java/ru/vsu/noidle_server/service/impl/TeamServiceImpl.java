@@ -3,6 +3,7 @@ package ru.vsu.noidle_server.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.domain.TeamEntity;
 import ru.vsu.noidle_server.model.dto.TeamDto;
 import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
@@ -25,6 +26,16 @@ public class TeamServiceImpl implements TeamService {
         TeamEntity teamEntity = teamRepository.save(dataMapper.toEntity(teamDto, new CycleAvoidingMappingContext()));
         log.info("Saved new team {}", teamEntity);
         return dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext());
+    }
+
+    @Override
+    public TeamEntity getEntityById(UUID id) throws ServiceException {
+        TeamEntity team = teamRepository.findById(id).orElse(null);
+        if (team == null) {
+            log.info("Unable to find team with id " + id);
+            throw new ServiceException("Unable to find team with id " + id);
+        }
+        return team;
     }
 
     @Override

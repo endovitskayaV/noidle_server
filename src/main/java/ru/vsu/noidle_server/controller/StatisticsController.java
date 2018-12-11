@@ -20,9 +20,9 @@ public class StatisticsController {
     private final StatisticsService statisticsService;
 
     @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity save(@RequestBody List<StatisticsDto> statistics, @RequestParam("userId") UUID userId) {
+    public HttpEntity save(@RequestBody List<StatisticsDto> statistics, @RequestParam("userId") UUID userId, @RequestParam("teamId") UUID teamId) {
         try {
-            statisticsService.save(statistics, userId);
+            statisticsService.save(statistics, userId, teamId);
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }

@@ -85,7 +85,7 @@ public class UserEntity {
                 .orElse(null);
     }
 
-    public Set<AchievementEntity> getExtraAchievements() {
+    public Set<AchievementEntity> getNonLevelAchievements() {
         return Stream.concat(
                 Stream.of(getLevel()),
                 personalNotifications.stream()
