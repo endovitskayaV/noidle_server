@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.vsu.noidle_server.Constants;
 import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.AchievementType;
 import ru.vsu.noidle_server.model.domain.*;
@@ -72,7 +73,9 @@ public class NotificationServiceImpl implements NotificationService {
         log.info("Set user {} notifications {}", user, notifications);
 
         //team
-        doSetTeamNotifications(teamService.getEntityById(teamId));
+        if (!teamId.equals(Constants.NO_PROJECT_UUID)) { // statistics for teams
+            doSetTeamNotifications(teamService.getEntityById(teamId));
+        }
     }
 
     @Transactional
