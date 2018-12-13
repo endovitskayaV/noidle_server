@@ -8,7 +8,7 @@ import ru.vsu.noidle_server.model.StatisticsType;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"type", "subType", "value", "extraValue"})
+@EqualsAndHashCode
 @ToString
 public class RequirementDto {
     private StatisticsType statisticsType;

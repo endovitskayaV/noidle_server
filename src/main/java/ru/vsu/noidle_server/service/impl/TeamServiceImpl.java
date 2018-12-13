@@ -3,6 +3,7 @@ package ru.vsu.noidle_server.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.vsu.noidle_server.Constants;
 import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.domain.TeamEntity;
 import ru.vsu.noidle_server.model.dto.TeamDto;
@@ -47,6 +48,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamDtoShort getShortByName(String name) throws ServiceException {
+        name = name.replace(Constants.SPACE_REPLACEMENT, Constants.SPACE);
         TeamDtoShort teamDtoShort = dataMapper.toDtoShort(teamRepository.getByName(name));
         if (teamDtoShort == null) {
             log.info("Unable to find team with name " + name);
