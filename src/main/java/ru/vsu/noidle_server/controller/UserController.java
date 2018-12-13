@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.vsu.noidle_server.model.domain.TeamEntity;
+import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.dto.UserDto;
 import ru.vsu.noidle_server.service.UserService;
 
@@ -25,15 +25,24 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public UserDto user(@PathVariable UUID id) {
-        return userService.getById(id);
+    public ResponseEntity<UserDto> user(@PathVariable UUID id) {
+        UserDto user;
+        try {
+            user = userService.getById(id);
+        } catch (ServiceException e) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/users/{userId}/teams/add/{teamNameOrId}")
-    public ResponseEntity addTeam(@PathVariable UUID userId, @PathVariable String teamNameOrId) {
-        TeamEntity teamEntity = userService.addTeam(userId, teamNameOrId);
-        return teamEntity == null ?
-                ResponseEntity.notFound().build() :
-                ResponseEntity.ok(teamEntity.getName());
+    @PostMapping("/users/{userId}/teams/add/{teamId}")
+    public ResponseEntity addTeam(@PathVariable UUID userId, @PathVariable UUID teamId) {
+        try {
+            userService.addTeam(userId, teamId);
+        } catch (ServiceException e) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
+
     }
 }

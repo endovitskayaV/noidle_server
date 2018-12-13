@@ -14,11 +14,11 @@ public interface UserService {
 
     void save(UserEntity userEntity);
 
-    UserDto getById(UUID id);
+    UserDto getById(UUID id) throws ServiceException;
 
     UserDto save(OAuth2Authentication user);
 
     UserDto getDto(OAuth2Authentication user);
 
-    TeamEntity addTeam(UUID userId, String teamNameOrId);
+    void addTeam(UUID userId, UUID teamId) throws ServiceException;
 }

@@ -1,7 +1,6 @@
 package ru.vsu.noidle_server.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ public class StatisticsController {
     private final StatisticsService statisticsService;
 
     @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity save(@RequestBody List<StatisticsDto> statistics, @RequestParam("userId") UUID userId, @RequestParam("teamId") UUID teamId) {
+    public ResponseEntity save(@RequestBody List<StatisticsDto> statistics, @RequestParam("userId") UUID userId, @RequestParam("teamId") UUID teamId) {
         try {
             statisticsService.save(statistics, userId, teamId);
         } catch (ServiceException e) {

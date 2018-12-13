@@ -40,29 +40,18 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public TeamDto getById(UUID id) {
-        return dataMapper.toDto(
-                teamRepository.findById(id).orElse(null),
-                new CycleAvoidingMappingContext()
+    public TeamDto getById(UUID id) throws ServiceException {
+        return dataMapper.toDto(getEntityById(id), new CycleAvoidingMappingContext()
         );
     }
 
     @Override
-    public TeamDtoShort getByIdOrName(String idOrName) {
-        return dataMapper.toDtoShort(
-                getEntityByIdOrName(idOrName)
-        );
-    }
-
-    @Override
-    public TeamEntity getEntityByIdOrName(String idOrName) {
-        TeamEntity teamEntity;
-        try {
-            UUID id = UUID.fromString(idOrName);
-            teamEntity = teamRepository.findById(id).orElse(null);
-        } catch (IllegalArgumentException e) {
-            teamEntity = teamRepository.getByName(idOrName);
+    public TeamDtoShort getShortByName(String name) throws ServiceException {
+        TeamDtoShort teamDtoShort = dataMapper.toDtoShort(teamRepository.getByName(name));
+        if (teamDtoShort == null) {
+            log.info("Unable to find team with name " + name);
+            throw new ServiceException("Unable to find team with name " + name);
         }
-        return teamEntity;
+        return teamDtoShort;
     }
 }

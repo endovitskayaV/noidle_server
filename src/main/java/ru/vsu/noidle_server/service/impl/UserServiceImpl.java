@@ -10,7 +10,6 @@ import ru.vsu.noidle_server.model.domain.UserEntity;
 import ru.vsu.noidle_server.model.dto.UserDto;
 import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
 import ru.vsu.noidle_server.model.mapper.DataMapper;
-import ru.vsu.noidle_server.model.repository.TeamRepository;
 import ru.vsu.noidle_server.model.repository.UserRepository;
 import ru.vsu.noidle_server.service.TeamService;
 import ru.vsu.noidle_server.service.UserService;
@@ -23,7 +22,6 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final TeamRepository teamRepository;
     private final DataMapper dataMapper;
     private final TeamService teamService;
 
@@ -44,8 +42,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getById(UUID id) {
-        return dataMapper.toDto(userRepository.findById(id).orElse(null), new CycleAvoidingMappingContext());
+    public UserDto getById(UUID id) throws ServiceException {
+        return dataMapper.toDto(getEntityById(id), new CycleAvoidingMappingContext());
     }
 
     public UserDto save(OAuth2Authentication user) {
@@ -66,19 +64,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public TeamEntity addTeam(UUID userId, String teamNameOrId) {
-        TeamEntity teamEntity = teamService.getEntityByIdOrName(teamNameOrId);
-        if (teamEntity == null) {
-            return null;
-        } else {
-            UserEntity userEntity = userRepository.findById(userId).orElse(null);
-            if (userEntity == null) {
-                return null;
-            } else {
-                userEntity.addTeam(teamEntity);
-                userRepository.save(userEntity);
-                return teamEntity;
-            }
-        }
+    public void addTeam(UUID userId, UUID teamId) throws ServiceException {
+        TeamEntity teamEntity = teamService.getEntityById(teamId);
+        UserEntity userEntity = getEntityById(userId);
+
+        userEntity.addTeam(teamEntity);
+        userRepository.save(userEntity);
     }
 }

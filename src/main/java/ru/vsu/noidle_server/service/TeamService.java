@@ -10,11 +10,9 @@ import java.util.UUID;
 public interface TeamService {
     TeamDto save(TeamDto teamDto);
 
-    TeamDto getById(UUID id);
+    TeamDto getById(UUID id) throws ServiceException;
 
     TeamEntity getEntityById(UUID id) throws ServiceException;
 
-    TeamDtoShort getByIdOrName(String idOrName);
-
-    TeamEntity getEntityByIdOrName(String idOrName);
+    TeamDtoShort getShortByName(String name) throws ServiceException;
 }
