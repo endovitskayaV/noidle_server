@@ -19,7 +19,7 @@ public class AuthController {
 
     @GetMapping("/oauth")
     public RedirectView user(OAuth2Authentication user) {
-        userService.saveUser(user);
+        userService.save(user);
         return new RedirectView("/");
     }
 

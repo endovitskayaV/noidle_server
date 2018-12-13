@@ -1,15 +1,11 @@
 package ru.vsu.noidle_server.model.domain;
 
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-import ru.vsu.noidle_server.model.SubType;
-import ru.vsu.noidle_server.model.Type;
-import ru.vsu.noidle_server.model.converter.SubTypeConverter;
-import ru.vsu.noidle_server.model.converter.TypeConverter;
+import org.jetbrains.annotations.NotNull;
+import ru.vsu.noidle_server.model.AchievementType;
+import ru.vsu.noidle_server.model.converter.AchievementTypeConverter;
 
 import javax.persistence.*;
-import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "achievement")
@@ -18,45 +14,33 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class AchievementEntity {
+@ToString
+public class AchievementEntity implements Comparable<AchievementEntity> {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private UUID id;
+    private Long id;
 
-    @Convert(converter = TypeConverter.class)
+    @Convert(converter = AchievementTypeConverter.class)
     @Column(name = "type", nullable = false)
-    private Type type;
+    private AchievementType type;
 
-    @Convert(converter = SubTypeConverter.class)
-    @Column(name = "subType", nullable = false)
-    private SubType subType;
+    @Column(name = "level_number")
+    private Long levelNumber;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "value", nullable = false)
-    private Long value;
-
-    @Column(name = "date", nullable = false)
-    private Long date;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserEntity user;
+    public boolean isLevel() {
+        return levelNumber != null;
+    }
 
     @Override
-    public String toString() {
-        return "AchievementEntity{" +
-                "id=" + id +
-                ", type=" + type +
-                ", subType=" + subType +
-                ", name='" + name + '\'' +
-                ", value=" + value +
-                ", date=" + date +
-                ", userId=" + user.getId() +
-                '}';
+    public int compareTo(@NotNull AchievementEntity o) {
+        if (o.levelNumber == null && levelNumber == null) return 0;
+        if (o.levelNumber == null) return -1;
+        if (levelNumber == null) return 1;
+        return levelNumber.compareTo(o.levelNumber);
     }
 }

@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface RequirementRepository extends JpaRepository<RequirementEntity, Long> {
 
-    List<RequirementEntity> getAllByLevelOrder(Long levelOrder);
+    List<RequirementEntity> getAllByAchievementId(Long achievementId);
 }

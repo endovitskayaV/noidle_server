@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @Getter
 @ToString(of = "shortcut")
-public enum Type {
+public enum StatisticsType {
     TIME("time"),
     SYMBOL("symbol"),
     COMMIT("commit"),
@@ -15,17 +15,16 @@ public enum Type {
 
     private String shortcut;
 
-    Type(String shortcut) {
+    StatisticsType(String shortcut) {
         this.shortcut = shortcut;
     }
 
-    public static Type byShortcut(String name) {
-        for (Type type : Type.values()) {
-            if (type.shortcut.equals(name)) {
-                return type;
+    public static StatisticsType byShortcut(String name) {
+        for (StatisticsType statisticsType : StatisticsType.values()) {
+            if (statisticsType.shortcut.equals(name)) {
+                return statisticsType;
             }
         }
         return null;
     }
-
 }

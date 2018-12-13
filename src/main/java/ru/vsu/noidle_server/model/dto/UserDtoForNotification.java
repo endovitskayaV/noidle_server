@@ -6,11 +6,10 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "order")
+@EqualsAndHashCode(of = "email")
 @ToString
-public class LevelDto {
-
-    private Long order;
+public class UserDtoForNotification {
+    private String email;
 
     private String name;
 }

@@ -13,6 +13,7 @@ import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.dto.NotificationDto;
 import ru.vsu.noidle_server.service.NotificationService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,16 +26,16 @@ public class NotificationController {
 
     //will be shown to the user
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NotificationDto> getNotifications(@RequestParam("userId") UUID userId) {
-        NotificationDto notification;
+    public ResponseEntity<List<NotificationDto>> getNotifications(@RequestParam("userId") UUID userId) {
+        List<NotificationDto> notifications;
         try {
-            notification = notificationService.get(userId);
+            notifications = notificationService.getAll(userId);
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }
-        if (notification == null) {
+        if (notifications.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return new ResponseEntity<>(notification, HttpStatus.OK);
+        return new ResponseEntity<>(notifications, HttpStatus.OK);
     }
 }

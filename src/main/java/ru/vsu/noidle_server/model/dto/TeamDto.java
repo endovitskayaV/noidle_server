@@ -9,17 +9,15 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "email")
-//@ToString(exclude = "statistics")
-public class UserDto {
+@EqualsAndHashCode(of = "id")
+@ToString(exclude = "users")
+public class TeamDto {
 
     private UUID id;
-
-    private String email;
 
     private String name;
 
     private String photo;
 
-    //private Collection<StatisticsDto> statistics;
+    private Collection<UserDto> users;
 }

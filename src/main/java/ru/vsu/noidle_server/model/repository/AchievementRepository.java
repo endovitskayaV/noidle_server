@@ -1,15 +1,17 @@
 package ru.vsu.noidle_server.model.repository;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.vsu.noidle_server.model.SubType;
-import ru.vsu.noidle_server.model.Type;
+import ru.vsu.noidle_server.model.AchievementType;
 import ru.vsu.noidle_server.model.domain.AchievementEntity;
 
-import java.util.UUID;
+import java.util.List;
 
 @Repository
-public interface AchievementRepository extends JpaRepository<AchievementEntity, UUID> {
+public interface AchievementRepository extends JpaRepository<AchievementEntity, Long> {
 
-    AchievementEntity getByTypeAndSubTypeAndNameAndUserId(Type type, SubType subType, String name, UUID userId);
+    AchievementEntity getByLevelNumber(@NotNull Long order);
+
+    List<AchievementEntity> getAllByType(AchievementType achievementType);
 }
