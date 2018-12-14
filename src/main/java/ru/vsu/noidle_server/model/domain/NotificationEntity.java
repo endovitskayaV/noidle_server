@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"id", "aboutUser", "toWhomUser", "achievement"})
+@EqualsAndHashCode(of = "id")
 @ToString
 public class NotificationEntity {
 
@@ -35,6 +35,10 @@ public class NotificationEntity {
     @JoinColumn(name = "achievement_id", referencedColumnName = "id")
     private AchievementEntity achievement;
 
+    @ManyToOne
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
+    private TeamEntity team;
+
     @Column(name = "is_sent", nullable = false)
     private boolean isSent;
 
@@ -49,11 +53,24 @@ public class NotificationEntity {
         isSent = false;
     }
 
+    public NotificationEntity(UserEntity aboutUser, AchievementEntity achievement, TeamEntity team, OffsetDateTime date) {
+        this(aboutUser, aboutUser, achievement, date);
+        this.team = team;
+    }
+
     public NotificationEntity(UserEntity aboutUser, AchievementEntity achievement, OffsetDateTime date) {
         this(aboutUser, aboutUser, achievement, date);
     }
 
     public NotificationEntity(NotificationEntity notificationEntity) {
-        this(notificationEntity.aboutUser, notificationEntity.toWhomUser, notificationEntity.achievement, notificationEntity.date);
+        this(
+                notificationEntity.id,
+                notificationEntity.aboutUser,
+                notificationEntity.toWhomUser,
+                notificationEntity.achievement,
+                notificationEntity.team,
+                notificationEntity.isSent,
+                notificationEntity.date
+        );
     }
 }

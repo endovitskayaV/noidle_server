@@ -100,7 +100,8 @@ public class NotificationServiceImpl implements NotificationService {
                             dataMapper.toDto(notification.getAchievement()),
                             dataMapper.toDtoForNotification(notification.getAboutUser()),
                             dataMapper.toDto(requirementRepository.getAllByAchievementId(notification.getAchievement().getId())),
-                            notification.getDate().toInstant().toEpochMilli()
+                            notification.getDate().toInstant().toEpochMilli(),
+                            dataMapper.toDtoShort(notification.getTeam())
                     ));
                     notification.setSent(true);
                     notificationRepository.save(notification);
@@ -156,6 +157,7 @@ public class NotificationServiceImpl implements NotificationService {
                                 NotificationEntity notification = new NotificationEntity(
                                         teamMember,
                                         achievementRepository.findById(achievement.getId()).orElse(null),
+                                        team,
                                         OffsetDateTime.now()
                                 );
                                 teamMember.addNotification(notification);
