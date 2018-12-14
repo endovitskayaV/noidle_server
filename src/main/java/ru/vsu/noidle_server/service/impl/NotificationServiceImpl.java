@@ -170,6 +170,7 @@ public class NotificationServiceImpl implements NotificationService {
                                             teamMember,
                                             colleague,
                                             achievementRepository.findById(achievement.getId()).orElse(null),
+                                            team,
                                             OffsetDateTime.now());
 
                                     notificationRepository.save(notification1);

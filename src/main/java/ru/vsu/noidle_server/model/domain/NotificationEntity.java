@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = {"id", "achievement", "aboutUser", "toWhomUser"}) //not just id for new instances (id=null) correct comparison
 @ToString
 public class NotificationEntity {
 
@@ -45,31 +45,29 @@ public class NotificationEntity {
     @Column(name = "date", nullable = false)
     private OffsetDateTime date;
 
-    public NotificationEntity(UserEntity aboutUser, UserEntity toWhomUser, AchievementEntity achievement, OffsetDateTime date) {
-        this.aboutUser = aboutUser;
-        this.achievement = achievement;
-        this.date = date;
-        this.toWhomUser = toWhomUser;
-        isSent = false;
+    public NotificationEntity(UserEntity aboutUser, UserEntity toWhomUser, AchievementEntity achievement, TeamEntity team, OffsetDateTime date) {
+        setAboutUser(aboutUser);
+        setAchievement(achievement);
+        setTeam(team);
+        setDate(date);
+        setToWhomUser(toWhomUser);
+        setSent(false);
     }
 
     public NotificationEntity(UserEntity aboutUser, AchievementEntity achievement, TeamEntity team, OffsetDateTime date) {
-        this(aboutUser, aboutUser, achievement, date);
-        this.team = team;
+        this(aboutUser, aboutUser, achievement, team, date);
     }
 
     public NotificationEntity(UserEntity aboutUser, AchievementEntity achievement, OffsetDateTime date) {
-        this(aboutUser, aboutUser, achievement, date);
+        this(aboutUser, aboutUser, achievement, null, date);
     }
 
     public NotificationEntity(NotificationEntity notificationEntity) {
         this(
-                notificationEntity.id,
                 notificationEntity.aboutUser,
                 notificationEntity.toWhomUser,
                 notificationEntity.achievement,
                 notificationEntity.team,
-                notificationEntity.isSent,
                 notificationEntity.date
         );
     }
