@@ -20,6 +20,4 @@ public class UserDto {
     private String name;
 
     private String photo;
-
-    //private Collection<StatisticsDto> statistics;
 }

@@ -13,7 +13,10 @@ import ru.vsu.noidle_server.model.mapper.DataMapper;
 import ru.vsu.noidle_server.model.repository.TeamRepository;
 import ru.vsu.noidle_server.service.TeamService;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,5 +58,10 @@ public class TeamServiceImpl implements TeamService {
             throw new ServiceException("Unable to find team with name " + name);
         }
         return teamDtoShort;
+    }
+
+    @Override
+    public List<TeamDto> getAll() {
+        return teamRepository.findAll().stream().map(teamEntity -> dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext())).collect(Collectors.toList());
     }
 }
