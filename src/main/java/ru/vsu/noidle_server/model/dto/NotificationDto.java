@@ -20,4 +20,6 @@ public class NotificationDto {
     private List<RequirementDto> requirements;
 
     private Long date;
+
+    private TeamDtoShort team;
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.vsu.noidle_server.exception.ServiceException;
+import ru.vsu.noidle_server.model.AchievementType;
 import ru.vsu.noidle_server.model.dto.NotificationDto;
 import ru.vsu.noidle_server.service.NotificationService;
 
@@ -26,10 +27,11 @@ public class NotificationController {
 
     //will be shown to the user
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<NotificationDto>> getNotifications(@RequestParam("userId") UUID userId) {
+    public ResponseEntity<List<NotificationDto>> getNotifications(
+            @RequestParam("userId") UUID userId, @RequestParam(value = "types", required = false) List<AchievementType> types) {
         List<NotificationDto> notifications;
         try {
-            notifications = notificationService.getAll(userId);
+            notifications = notificationService.getAll(userId, types);
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }

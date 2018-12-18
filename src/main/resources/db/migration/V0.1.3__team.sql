@@ -22,3 +22,7 @@ values ('123e4567-e89b-12d3-a456-556642440000', '123e4567-e89b-12d3-a456-5566424
 alter table statistics
   add column
   team_id uuid references team (id);
+
+alter table notification
+  add column
+  team_id uuid references team (id);

@@ -80,11 +80,15 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Transactional
     @Override
-    public List<NotificationDto> getAll(UUID userId) throws ServiceException {
-        return formNotifications(userService.getEntityById(userId));
+    public List<NotificationDto> getAll(UUID userId, List<AchievementType> types) throws ServiceException {
+        return formNotifications(userService.getEntityById(userId), types);
     }
 
-    private List<NotificationDto> formNotifications(UserEntity user) {
+    private boolean filterTypes(List<AchievementType> types, NotificationEntity notification) {
+        return types == null || types.isEmpty() || types.contains(notification.getAchievement().getType());
+    }
+
+    private List<NotificationDto> formNotifications(UserEntity user, List<AchievementType> types) {
         List<NotificationEntity> notificationEntities = new ArrayList<>(user.getAllNotifications());
 
         if (notificationEntities.isEmpty()) {
@@ -94,13 +98,14 @@ public class NotificationServiceImpl implements NotificationService {
         List<NotificationDto> notifications = new ArrayList<>();
 
         notificationEntities.stream()
-                .filter(notification -> !notification.isSent())
+                .filter(notification -> !notification.isSent() && filterTypes(types, notification))
                 .forEach(notification -> {
                     notifications.add(new NotificationDto(
                             dataMapper.toDto(notification.getAchievement()),
                             dataMapper.toDtoForNotification(notification.getAboutUser()),
                             dataMapper.toDto(requirementRepository.getAllByAchievementId(notification.getAchievement().getId())),
-                            notification.getDate().toInstant().toEpochMilli()
+                            notification.getDate().toInstant().toEpochMilli(),
+                            dataMapper.toDtoShort(notification.getTeam())
                     ));
                     notification.setSent(true);
                     notificationRepository.save(notification);
@@ -156,6 +161,7 @@ public class NotificationServiceImpl implements NotificationService {
                                 NotificationEntity notification = new NotificationEntity(
                                         teamMember,
                                         achievementRepository.findById(achievement.getId()).orElse(null),
+                                        team,
                                         OffsetDateTime.now()
                                 );
                                 teamMember.addNotification(notification);
@@ -168,6 +174,7 @@ public class NotificationServiceImpl implements NotificationService {
                                             teamMember,
                                             colleague,
                                             achievementRepository.findById(achievement.getId()).orElse(null),
+                                            team,
                                             OffsetDateTime.now());
 
                                     notificationRepository.save(notification1);

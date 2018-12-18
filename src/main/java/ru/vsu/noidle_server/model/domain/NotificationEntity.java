@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"id", "aboutUser", "toWhomUser", "achievement"})
+@EqualsAndHashCode(of = {"id", "achievement", "aboutUser", "toWhomUser"}) //not just id for new instances (id=null) correct comparison
 @ToString
 public class NotificationEntity {
 
@@ -35,25 +35,40 @@ public class NotificationEntity {
     @JoinColumn(name = "achievement_id", referencedColumnName = "id")
     private AchievementEntity achievement;
 
+    @ManyToOne
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
+    private TeamEntity team;
+
     @Column(name = "is_sent", nullable = false)
     private boolean isSent;
 
     @Column(name = "date", nullable = false)
     private OffsetDateTime date;
 
-    public NotificationEntity(UserEntity aboutUser, UserEntity toWhomUser, AchievementEntity achievement, OffsetDateTime date) {
-        this.aboutUser = aboutUser;
-        this.achievement = achievement;
-        this.date = date;
-        this.toWhomUser = toWhomUser;
-        isSent = false;
+    public NotificationEntity(UserEntity aboutUser, UserEntity toWhomUser, AchievementEntity achievement, TeamEntity team, OffsetDateTime date) {
+        setAboutUser(aboutUser);
+        setAchievement(achievement);
+        setTeam(team);
+        setDate(date);
+        setToWhomUser(toWhomUser);
+        setSent(false);
+    }
+
+    public NotificationEntity(UserEntity aboutUser, AchievementEntity achievement, TeamEntity team, OffsetDateTime date) {
+        this(aboutUser, aboutUser, achievement, team, date);
     }
 
     public NotificationEntity(UserEntity aboutUser, AchievementEntity achievement, OffsetDateTime date) {
-        this(aboutUser, aboutUser, achievement, date);
+        this(aboutUser, aboutUser, achievement, null, date);
     }
 
     public NotificationEntity(NotificationEntity notificationEntity) {
-        this(notificationEntity.aboutUser, notificationEntity.toWhomUser, notificationEntity.achievement, notificationEntity.date);
+        this(
+                notificationEntity.aboutUser,
+                notificationEntity.toWhomUser,
+                notificationEntity.achievement,
+                notificationEntity.team,
+                notificationEntity.date
+        );
     }
 }
