@@ -58,9 +58,9 @@ public class RequirementEntity {
         return anyFits;
     }
 
-    private boolean compareExtraValue(String anotherName) {
-        return (extraValue == null && (anotherName == null || anotherName.isEmpty())) ||
-                (extraValue != null && extraValue.isEmpty() && (anotherName == null || anotherName.isEmpty())) ||
-                Objects.equals(extraValue, anotherName);
+    private boolean compareExtraValue(String anotherValue) {
+        return (extraValue == null && (anotherValue == null || anotherValue.isEmpty())) ||
+                (extraValue != null && extraValue.isEmpty() && (anotherValue == null || anotherValue.isEmpty())) ||
+                Objects.equals(extraValue, anotherValue);
     }
 }
