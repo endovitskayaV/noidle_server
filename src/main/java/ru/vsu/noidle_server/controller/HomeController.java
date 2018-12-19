@@ -8,6 +8,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String getIndexPage() {
-        return "index";
+        return AuthUtils.getUser() == null ? "index" : "dashboard";
     }
 }
