@@ -17,6 +17,8 @@ public interface DataMapper {
     @Mapping(source = "userEntity", target = "user")
     StatisticsEntity toEntity(StatisticsDto statisticsDto, UserEntity userEntity, @Context CycleAvoidingMappingContext context);
 
+    StatisticsDto toDto(StatisticsEntity statisticsEntity);
+
     @SuppressWarnings(value = "unchecked") //aboutUser.getUserAuthentication().getDetails()) - Object
     default UserEntity toEntity(OAuth2Authentication user) {
         LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());

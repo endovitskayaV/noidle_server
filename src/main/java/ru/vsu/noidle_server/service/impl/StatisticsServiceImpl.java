@@ -16,6 +16,7 @@ import ru.vsu.noidle_server.service.UserService;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -60,5 +61,10 @@ public class StatisticsServiceImpl implements StatisticsService {
         });
 
         notificationService.setNotifications(userId, teamId);
+    }
+
+    @Override
+    public List<StatisticsDto> getAll() {
+        return statisticsRepository.findAll().stream().map(dataMapper::toDto).collect(Collectors.toList());
     }
 }
