@@ -50,7 +50,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/users/{id}/profile")
+    @GetMapping("/profile")
     public String getProfile(ModelMap modelMap, @PathVariable UUID id) {
         UserDto user;
         try {
