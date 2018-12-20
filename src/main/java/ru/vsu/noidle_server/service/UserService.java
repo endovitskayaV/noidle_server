@@ -1,5 +1,6 @@
 package ru.vsu.noidle_server.service;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.domain.TeamEntity;
@@ -15,6 +16,8 @@ public interface UserService {
     void save(UserEntity userEntity);
 
     UserDto getById(UUID id) throws ServiceException;
+
+    UserDto getByAuth(Authentication user) throws ServiceException;
 
     UserDto save(OAuth2Authentication user);
 

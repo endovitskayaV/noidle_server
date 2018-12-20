@@ -51,10 +51,10 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String getProfile(ModelMap modelMap, @PathVariable UUID id) {
+    public String getProfile(ModelMap modelMap) {
         UserDto user;
         try {
-            user = userService.getById(id);
+            user = userService.getByAuth(AuthUtils.getUser());
             modelMap.addAttribute("user", user);
             return "profile";
         } catch (ServiceException e) {

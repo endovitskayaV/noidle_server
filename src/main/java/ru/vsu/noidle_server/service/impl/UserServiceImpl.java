@@ -2,6 +2,7 @@ package ru.vsu.noidle_server.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import ru.vsu.noidle_server.exception.ServiceException;
@@ -14,6 +15,7 @@ import ru.vsu.noidle_server.model.repository.UserRepository;
 import ru.vsu.noidle_server.service.TeamService;
 import ru.vsu.noidle_server.service.UserService;
 
+import java.util.LinkedHashMap;
 import java.util.UUID;
 
 @Service
@@ -46,6 +48,12 @@ public class UserServiceImpl implements UserService {
         return dataMapper.toDto(getEntityById(id), new CycleAvoidingMappingContext());
     }
 
+    @Override
+    public UserDto getByAuth(Authentication user) throws ServiceException {
+        String email = dataMapper.getEmail((LinkedHashMap<String, String>) ((OAuth2Authentication) user).getUserAuthentication().getDetails());
+        return email == null ? null : dataMapper.toDto(userRepository.findByEmail(email), new CycleAvoidingMappingContext());
+    }
+
     public UserDto save(OAuth2Authentication user) {
         UserEntity userEntity = dataMapper.toEntity(user);
         UserEntity existingUser = userRepository.findByEmail(userEntity.getEmail());
@@ -59,7 +67,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getDto(OAuth2Authentication user) {
         return dataMapper.toDto(
-                userRepository.findByEmail(DataMapper.getEmail(user)),
+                userRepository.findByEmail(dataMapper.getEmail(user)),
                 new CycleAvoidingMappingContext());
     }
 

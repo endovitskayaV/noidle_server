@@ -21,6 +21,9 @@ public interface DataMapper {
 
     @SuppressWarnings(value = "unchecked") //aboutUser.getUserAuthentication().getDetails()) - Object
     default UserEntity toEntity(OAuth2Authentication user) {
+        if (user == null) {
+            return null;
+        }
         LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
         String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
 
@@ -37,8 +40,18 @@ public interface DataMapper {
 //    }
 
     @SuppressWarnings(value = "unchecked") //aboutUser.getUserAuthentication().getDetails()) - Object
-    static String getEmail(OAuth2Authentication user) {
+    default String getEmail(OAuth2Authentication user) {
+        if (user == null) {
+            return null;
+        }
         LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
+        return details.get("email").toLowerCase();
+    }
+
+    default String getEmail(LinkedHashMap<String, String> details) {
+        if (details == null || details.isEmpty()) {
+            return null;
+        }
         return details.get("email").toLowerCase();
     }
 
