@@ -12,7 +12,7 @@
             <div class="col l3 s12 center-align">
                 <h5 class="white-text">Teams</h5>
                 <ul>
-                    <li><a class="white-text" href="/teams/add">View all</a></li>
+                    <li><a class="white-text" href="/teams">View all</a></li>
                     <li><a class="white-text" href="/teams/add">Create</a></li>
                 </ul>
             </div>
