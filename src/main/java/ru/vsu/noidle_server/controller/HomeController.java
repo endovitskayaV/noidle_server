@@ -10,4 +10,9 @@ public class HomeController {
     public String getIndexPage() {
         return AuthUtils.getUser() == null ? "index" : "dashboard";
     }
+
+    @GetMapping("/about")
+    public String getAboutPage() {
+        return "about";
+    }
 }

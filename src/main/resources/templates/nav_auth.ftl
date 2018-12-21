@@ -3,12 +3,14 @@
         <ul class="right hide-on-med-and-down">
             <li><a href="/profile"><i class="material-icons">account_circle</i></a></li>
             <li><a href="http://plugins.jetbrains.com/plugin/7697-unvired-sdk-installer">Download plugin</a></li>
+            <li><a href="/about">About</a></li>
             <li><a href="/logout">Log out</a></li>
         </ul>
 
         <ul id="nav-mobile" class="sidenav">
             <li><a href="/profile"><i class="material-icons">account_circle</i></a></li>
             <li><a href="http://plugins.jetbrains.com/plugin/7697-unvired-sdk-installer">Download plugin</a></li>
+            <li><a href="/about">About</a></li>
             <li><a href="/logout">Log out</a></li>
         </ul>
         <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
