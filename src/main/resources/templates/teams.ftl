@@ -25,7 +25,7 @@
 
         <h2 class="header center orange-text">Teams</h2>
 
-         <#if teams?size==2>
+         <#if teams?size==0>
 
         <a href="/teams/add">
             <div class="center light-blue-text">
