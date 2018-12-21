@@ -43,63 +43,38 @@
                  <#else>
                      <div class="center orange-text"><i class="material-icons">supervised_user_circle</i></div>
                  </#if>
-                            <#assign i=i+1>
+
                             ${team.name}</div>
                         <div class="collapsible-body">
-                            <div class="chips">
-                                <input class="custom-class">
+                            <div class="chips" id="chips${i}">
                             </div>
                         </div>
 
                         <script>
-                            var arr = [
-                                // {tag:'test_user'}, {tag:'test_user2'},];
-                            <#list team.users as user>
-                            {tag:'${user.name}'},
-                            </#list>
-                        ];
-                            $('.chips').chips({
-                               placeholder: 'Enter user name',
-                               secondaryPlaceholder: '+Member',
-                                // data: arr
+                            <#--var arr = [-->
+                                <#--// {tag:'test_user'}, {tag:'test_user2'},];-->
                             <#--<#list team.users as user>-->
-                            <#--{tag: '${user.name}',},-->
+                            <#--{tag: '${user.name}'},-->
                             <#--</#list>-->
-                                //     {
-                                //     tag: 'test_user',
-                                // },
-                                //     {
-                                //         tag: 'test_user2',
-                                //     },
-                                // ,
-
-                            <#--data: [-->
-                            <#--<#list team.users as user>{tag: '${user.name}',},</#list>-->
-                            <#--],-->
-                                onChipAdd: function (e, data) {
-                                     alert(data.childNodes[0].data);
-                                }
-                            //     ,
-                            //     onChipSelect: function (e, data) {
-                            //         // alert(data.childNodes[0].data);
-                            //     }
-                            //     ,
+                            <#--];-->
+                            $('#chips${i}').chips({
+                                placeholder: 'Enter user name',
+                                secondaryPlaceholder: '+Member',
+                                data: [
+                                <#list team.users as user>
+                                {tag: '${user.name}'},
+                                </#list>
+                                ]
                             });
-
-                            <#--<#list team.users as user>-->
-                            <#--var chip = {tag: '${user.name}', image: ''};-->
-
-                            <#--$('.chips').chips('addChip(chip);');-->
-                            <#--</#list>-->
-
-                            $.each(arr, function () {
-                                        M.Chips.getInstance(document.querySelector('.chips')).addChip(this);
-                                    }
-                            );
+                            <#--$.each(arr, function () {-->
+                                        <#--M.Chips.getInstance(document.querySelector('#chips${i}')).addChip(this);-->
+                                    <#--}-->
+                            <#--);-->
                         </script>
                     </li>
                 </ul>
             </div>
+                 <#assign i=i+1>
              </#list>
         </div>
     </div>
