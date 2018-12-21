@@ -37,18 +37,6 @@ public class TeamController {
 
     }
 
-    @GetMapping("/{id}")
-    public String getById(ModelMap modelMap, @PathVariable UUID id) {
-        TeamDto teamDto;
-        try {
-            teamDto = teamService.getById(id);
-            modelMap.addAttribute("team", teamDto);
-            return "team";
-        } catch (ServiceException e) {
-            return errorResponse(modelMap);
-        }
-    }
-
     @GetMapping("/add")
     public String add(ModelMap modelMap) {
         modelMap.addAttribute("team", TeamDto.newInstance());
