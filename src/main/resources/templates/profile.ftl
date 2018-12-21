@@ -9,43 +9,39 @@
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="css/custom.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
 
  <#include "nav_auth.ftl">
-
-<div class="row">
-    <div class="col s12">
+<main>
+    <div class="container">
         <h2 class="header center orange-text">Profile</h2>
         <div class="container">
-            <div class="col s8 offset-s2">
-                <div class="card horizontal">
-                    <div class="card-image">
-                        <img src="${user.photo}" style="margin:5%">
+            <div class="card horizontal">
+                <div class="card-image">
+                    <img src="${user.photo}" style="margin:5%">
+                </div>
+                <div class="card-stacked">
+                    <div class="card-content left-align">
+                        <p><i class="material-icons">vpn_key</i>&ensp;<a href="#" id="key">Click to see</a>
+                            <span id="my_user_real_key"></span></p>
+                        <p><i class="material-icons">email</i>&ensp;<span>${user.email}</span></p>
                     </div>
-                    <div class="card-stacked">
-                        <div class="card-content left-align">
-                            <p><i class="material-icons">vpn_key</i>&ensp;<a href="#" id="key">Click to see</a>
-                                <span id="my_user_real_key"></span></p>
-                            <p><i class="material-icons">email</i>&ensp;<span>${user.email}</span></p>
-                        </div>
-                        <div class="card-action left-align">
-                            <a href="/teams">Teams</a>
-                        </div>
+                    <div class="card-action left-align">
+                        <a href="/teams">Teams</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
- <#include "footer_bottom_auth.ftl">
+</main>
+<br><br>
+ <#include "footer_auth.ftl">
 
 <!--  Scripts-->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
-<script type="text/javascript" src="js/init.js"></script>
 <script>
     $('#key').click(function () {
         this.text = "";

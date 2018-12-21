@@ -1,3 +1,4 @@
+<br><br>
 <footer class="page-footer orange">
     <div class="container">
         <div class="row">
@@ -9,10 +10,15 @@
                     day, help team members to know about each other a little bit more.</p>
             </div>
 
-            <div class="col l3 s12">
+            <div class="col l3 s12 center">
+                <h5 class="white-text">Teams</h5>
+                <ul>
+                    <li><a class="white-text" href="/teams">View all</a></li>
+                    <li><a class="white-text" href="/teams/add">Create</a></li>
+                </ul>
             </div>
 
-            <div class="col l3 s12">
+            <div class="col l3 s12 center">
                 <h5 class="white-text">Connect</h5>
                 <ul>
                     <li><a class="white-text" href="https://gitlab.com/endovitskayaV">GitLab</a></li>
