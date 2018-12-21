@@ -24,6 +24,30 @@
     <div class="container">
 
         <h2 class="header center orange-text">Teams</h2>
+
+         <#if teams?size==2>
+
+        <a href="/teams/add">
+            <div class="center light-blue-text">
+                <i class="material-icons" style="font-size: 40px">add</i>
+            </div>
+        </a>
+
+        <div class="container">
+            <div class="container">
+                <div class="container">
+                    <div class="card horizontal">
+                        <div class="card-stacked">
+                            <div class="card-content">
+                                <p class="center-align"><span>No teams yet</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <#else>
         <a href="/teams/add">
             <div class="center light-blue-text">
                 <i class="material-icons" style="font-size: 30px">add</i>
@@ -31,6 +55,7 @@
         </a>
              <#assign i=0>
         <div class="container">
+
              <#list teams as team>
 
                  <ul class="collapsible popout expandable">
@@ -63,6 +88,7 @@
                  <#assign i=i+1>
              </#list>
         </div>
+         </#if>
     </div>
 </main>
 
