@@ -27,7 +27,7 @@ public class UserEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "photo")
@@ -109,5 +109,9 @@ public class UserEntity {
 
     public void addTeam(TeamEntity teamEntity) {
         teams.add(teamEntity);
+    }
+
+    public void removeTeam(TeamEntity teamEntity) {
+        teams.remove(teamEntity);
     }
 }

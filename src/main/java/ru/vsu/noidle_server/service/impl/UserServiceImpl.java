@@ -49,6 +49,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto getByName(String name) throws ServiceException {
+        UserEntity user = userRepository.findByName(name);
+        if (user == null) {
+            log.info("Unable to find user with name " + name);
+            throw new ServiceException("Unable to find user with name " + name);
+        }
+        return dataMapper.toDto(user, new CycleAvoidingMappingContext());
+    }
+
+    @Override
     public UserDto getByAuth(Authentication user) throws ServiceException {
         String email = dataMapper.getEmail((LinkedHashMap<String, String>) ((OAuth2Authentication) user).getUserAuthentication().getDetails());
         return email == null ? null : dataMapper.toDto(userRepository.findByEmail(email), new CycleAvoidingMappingContext());
@@ -72,11 +82,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addTeam(UUID userId, UUID teamId) throws ServiceException {
+    public void addTeamMember(UUID userId, UUID teamId) throws ServiceException {
         TeamEntity teamEntity = teamService.getEntityById(teamId);
         UserEntity userEntity = getEntityById(userId);
 
         userEntity.addTeam(teamEntity);
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public void removeTeamMember(UUID userId, UUID teamId) throws ServiceException {
+        TeamEntity teamEntity = teamService.getEntityById(teamId);
+        UserEntity userEntity = getEntityById(userId);
+
+        userEntity.removeTeam(teamEntity);
         userRepository.save(userEntity);
     }
 }

@@ -17,7 +17,7 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
 <script type="text/javascript" src="js/collapsible.js"></script>
-
+<script type="text/javascript" src="js/editMembers.js"></script>
  <#include "nav_auth.ftl">
 
 <main>
@@ -54,6 +54,7 @@
             </div>
         </a>
              <#assign i=0>
+
         <div class="container">
 
              <#list teams as team>
@@ -66,7 +67,6 @@
                  <#else>
                      <div class="center orange-text"><i class="material-icons">supervised_user_circle</i></div>
                  </#if>
-
                              ${team.name}</div>
                          <div class="collapsible-body">
                              <div class="chips" id="chips${i}">
@@ -74,13 +74,19 @@
                          </div>
                          <script>
                              $('#chips${i}').chips({
-                                 placeholder: 'Enter user name',
+                                 placeholder: 'Enter member name',
                                  secondaryPlaceholder: '+Member',
                                  data: [
                                 <#list team.users as user>
                                 {tag: '${user.name}'},
                                 </#list>
-                                 ]
+                                 ],
+                                 onChipAdd: function (e, data) {
+                                     onChipAddHandler(data,document.querySelector('#chips${i}'), '${team.id}')
+                                 },
+                                 onChipDelete: function (e, data) {
+                                     onChipDeleteHandler(data, '${team.id}')
+                                 }
                              });
                          </script>
                      </li>

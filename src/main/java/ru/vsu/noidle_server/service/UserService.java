@@ -17,11 +17,15 @@ public interface UserService {
 
     UserDto getById(UUID id) throws ServiceException;
 
+    UserDto getByName(String name) throws ServiceException;
+
     UserDto getByAuth(Authentication user) throws ServiceException;
 
     UserDto save(OAuth2Authentication user);
 
     UserDto getDto(OAuth2Authentication user);
 
-    void addTeam(UUID userId, UUID teamId) throws ServiceException;
+    void addTeamMember(UUID userId, UUID teamId) throws ServiceException;
+
+    void removeTeamMember(UUID userId, UUID teamId) throws ServiceException;
 }
