@@ -18,6 +18,8 @@
 <script type="text/javascript" src="js/materialize.js"></script>
 <script type="text/javascript" src="js/collapsible.js"></script>
 <script type="text/javascript" src="js/editMembers.js"></script>
+<script type="text/javascript" src="js/modal.js"></script>
+<script type="text/javascript" src="js/editTeam.js"></script>
  <#include "nav_auth.ftl">
 
 <main>
@@ -62,12 +64,23 @@
                  <ul class="collapsible popout expandable">
                      <li>
                          <div class="collapsible-header">
+
                  <#if  i%2==0>
                  <div class="center light-blue-text"><i class="material-icons">supervised_user_circle</i></div>
                  <#else>
                      <div class="center orange-text"><i class="material-icons">supervised_user_circle</i></div>
                  </#if>
-                             ${team.name}</div>
+                             <span id="team_name${i}"> ${team.name}</span>
+                             <div class="row"></div>
+                             <div>
+                                 <a onclick="openEditTeamModal('${team.id}', 'team_name${i}')">
+                                     <i class="material-icons faded">edit</i>
+                                 </a>
+                             </div>
+                             <div id="delete${i}"><i class="material-icons faded">delete</i></div>
+
+
+                         </div>
                          <div class="collapsible-body">
                              <div class="chips" id="chips${i}">
                              </div>
@@ -82,7 +95,7 @@
                                 </#list>
                                  ],
                                  onChipAdd: function (e, data) {
-                                     onChipAddHandler(data,document.querySelector('#chips${i}'), '${team.id}')
+                                     onChipAddHandler(data, document.querySelector('#chips${i}'), '${team.id}')
                                  },
                                  onChipDelete: function (e, data) {
                                      onChipDeleteHandler(data, '${team.id}')
@@ -96,6 +109,28 @@
         </div>
          </#if>
     </div>
+
+
+    <!-- Modal Structure -->
+    <div class="modal">
+        <form method="post" action="/teams/edit">
+            <div class="modal-content">
+                <input type="text" id="team_key" hidden>
+                <input type="text" id="team_id" name="id" hidden>
+                <div class="input-field col s8">
+                    <input class="input-field" type="text" id="team_name" name="name" required minlength="3"
+                           maxlength="50" pattern="\S+" title="Spaces are not allowed">
+                    <span class="helper-text">Team name</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="waves-effect waves-orange btn-flat" type="submit" onclick="editTeamHandler()">Ok</button>
+                <button class="waves-effect waves-orange btn-flat" type="reset">Reset</button>
+                <button class="modal-close waves-effect waves-orange btn-flat" type="reset">Exit</button>
+            </div>
+        </form>
+    </div>
+
 </main>
 
  <#include "footer_auth.ftl">

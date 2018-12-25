@@ -12,3 +12,12 @@ main {
     border-bottom: 1px solid #03a9f4;
     box-shadow: 0 1px 0 0 #03a9f4;
 }
+
+.input-field:focus {
+    border-bottom: 1px solid #03a9f4 !important;
+    box-shadow: 0 1px 0 0 #03a9f4 !important;
+}
+
+.faded {
+    color: #81d4fa !important;
+}

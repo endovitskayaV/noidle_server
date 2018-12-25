@@ -62,9 +62,9 @@ public class TeamController {
     }
 
     @PostMapping(value = "/edit")
-    public String edit(TeamDto teamDto) {
-        TeamDto newTeam = teamService.save(teamDto);
-        return "/teams/" + newTeam.getId();
+    public ResponseEntity edit(TeamDto teamDto) {
+        teamService.save(teamDto);
+        return ResponseEntity.noContent().build();
     }
 
     private String errorResponse(ModelMap modelMap) {
