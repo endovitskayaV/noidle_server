@@ -34,31 +34,12 @@ public class TeamController {
     public String getAll(ModelMap modelMap) {
         modelMap.addAttribute("teams", teamService.getAll());
         return "teams";
-
-    }
-
-    @GetMapping("/add")
-    public String add(ModelMap modelMap) {
-        modelMap.addAttribute("team", TeamDto.newInstance());
-        return "add_team";
     }
 
     @PostMapping(value = "/add")
-    public String add(TeamDto teamDto) {
-        TeamDto newTeam = teamService.save(teamDto);
-        return "/teams/" + newTeam.getId();
-    }
-
-    @GetMapping("/edit/{id}")
-    public String edit(ModelMap modelMap, @PathVariable UUID id) {
-        TeamDto teamDto;
-        try {
-            teamDto = teamService.getById(id);
-            modelMap.addAttribute("team", teamDto);
-            return "edit_team";
-        } catch (ServiceException e) {
-            return errorResponse(modelMap);
-        }
+    public ResponseEntity add(TeamDto teamDto) {
+        teamService.save(teamDto);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping(value = "/edit")
@@ -67,8 +48,13 @@ public class TeamController {
         return ResponseEntity.noContent().build();
     }
 
-    private String errorResponse(ModelMap modelMap) {
-        modelMap.addAttribute("error", "Team not found");
-        return "error";
+    @PostMapping(value = "/delete/{id}")
+    public ResponseEntity edit(@PathVariable("id") UUID id) {
+        try {
+            teamService.delete(id);
+        } catch (ServiceException e) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
     }
 }

@@ -29,6 +29,7 @@ public class TeamEntity {
     @Column(name = "photo")
     private String photo;
 
-    @ManyToMany(mappedBy = "teams") //refers to UserEntity:  private Collection<TeamEntity> teams
+    @ManyToMany(mappedBy = "teams", cascade = CascadeType.ALL)
+    //refers to UserEntity:  private Collection<TeamEntity> teams
     private Collection<UserEntity> users;
 }

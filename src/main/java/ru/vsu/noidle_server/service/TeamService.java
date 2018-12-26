@@ -6,7 +6,6 @@ import ru.vsu.noidle_server.model.dto.TeamDto;
 import ru.vsu.noidle_server.model.dto.TeamDtoShort;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 public interface TeamService {
@@ -19,4 +18,6 @@ public interface TeamService {
     TeamDtoShort getShortByName(String name) throws ServiceException;
 
     List<TeamDto> getAll();
+
+    void delete(UUID id) throws ServiceException;
 }
