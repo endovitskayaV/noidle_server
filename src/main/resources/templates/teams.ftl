@@ -128,7 +128,7 @@
 
         <!-- Modals-->
         <div class="modal" id="edit-modal">
-            <form method="post" action="/teams/edit">
+            <form>
                 <div class="modal-content">
                     <input type="text" id="team_key" hidden>
                     <input type="text" id="team_id" name="id" hidden>
@@ -140,7 +140,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="waves-effect waves-orange btn-flat" type="submit" onclick="editTeamHandler()">Ok
+                    <button class="waves-effect waves-orange btn-flat" onclick="editTeamHandler()">Ok
                     </button>
                     <button class="waves-effect waves-orange btn-flat" type="reset">Reset</button>
                     <button class="modal-close waves-effect waves-orange btn-flat" type="reset">Exit</button>

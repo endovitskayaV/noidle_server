@@ -49,8 +49,8 @@ public class TeamController {
         return ResponseEntity.ok(new NewTeamDto(newTeamDto, teamService.getAll().size()));
     }
 
-    @PostMapping(value = "/edit")
-    public ResponseEntity edit(TeamDto teamDto) {
+    @PostMapping(value = "/edit", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity edit(@RequestBody TeamDto teamDto) {
         try {
             teamService.save(teamDto);
         } catch (ServiceException e) {

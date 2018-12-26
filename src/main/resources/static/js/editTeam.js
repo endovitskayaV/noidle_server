@@ -7,12 +7,35 @@ function openEditTeamModal(id, key) {
 }
 
 function editTeamHandler() {
-    var teamNameInput = $("#team_name");
-    var valid = teamNameInput[0].validity.valid;
+    var teamNameInput = $("#team_name")[0];
+    var id = $("#team_id")[0].value;
+    var name = teamNameInput.value;
+    var valid = teamNameInput.validity.valid;
     if (valid) {
-        var teamKey = $("#team_key").val();
-        var teamNameSpan = $("#" + teamKey);
-        teamNameSpan[0].innerText = teamNameInput.val();
-        $('#edit-modal').modal('close');
+        $.ajax({
+            url: '/teams/edit/',
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({id: id, name: name}),
+            statusCode: {
+                400: function () {
+                    $('#edit-modal').modal('close');
+
+                    M.toast({
+                        html: 'Team&nbsp;<i><b>' + name + '</b></i>&nbsp;already exists',
+                        classes: 'rounded'
+                    });
+                },
+                200: function () {
+                    //set team name in card
+                    var teamKey = $("#team_key").val();
+                    var teamNameSpan = $("#" + teamKey);
+                    teamNameSpan[0].innerText = teamNameInput.val();
+
+                    $('#edit-modal').modal('close');
+                }
+            }
+        });
+
     }
 }
