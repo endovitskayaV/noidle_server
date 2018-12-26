@@ -66,3 +66,13 @@ function onChipDeleteHandler(data, i, teamId) {
         });
     }
 }
+
+function clearTeams() {
+    $('[id$="-card"]').each(function (index, value) {
+        var len = value.children[0].childNodes[3].firstElementChild.M_Chips.chipsData.length;
+        if (len < 1) {
+            var teamId = value.id.substring(0, value.id.length - 5);
+            $.post(document.location.origin + '/teams/delete/' + teamId)
+        }
+    });
+}

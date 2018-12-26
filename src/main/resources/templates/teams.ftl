@@ -22,6 +22,14 @@
 <script type="text/javascript" src="js/editTeam.js"></script>
 <script type="text/javascript" src="js/deleteTeam.js"></script>
 <script type="text/javascript" src="js/addTeam.js"></script>
+<script>
+    $(window).bind('beforeunload', function () {
+        clearTeams();
+    });
+    $(window).on('load', function () {
+        clearTeams();
+    });
+</script>
 
  <#include "nav_auth.ftl">
 
