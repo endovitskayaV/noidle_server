@@ -86,7 +86,7 @@
                          </div>
                          <script>
                              $('#chips${i}').chips({
-                                 placeholder: 'Enter member name',
+                                 placeholder: 'Members` names',
                                  secondaryPlaceholder: '+Member',
                                  data: [
                                 <#list team.users as user>
@@ -97,7 +97,7 @@
                                      onChipAddHandler(data, document.querySelector('#chips${i}'), '${team.id}')
                                  },
                                  onChipDelete: function (e, data) {
-                                     onChipDeleteHandler(data, '${team.id}')
+                                     onChipDeleteHandler(data, '${i}', '${team.id}')
                                  }
                              });
                          </script>
