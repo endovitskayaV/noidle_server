@@ -38,6 +38,11 @@ public class TeamEntity implements Comparable<TeamEntity> {
     //refers to UserEntity:  private Collection<TeamEntity> teams
     private Collection<UserEntity> users;
 
+    public TeamEntity(String name, OffsetDateTime created) {
+        this.name = name;
+        this.created = created;
+    }
+
     @Override
     public int compareTo(@NotNull TeamEntity o) {
         if (o.getCreated() == null && created == null) {

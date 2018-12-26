@@ -2,14 +2,15 @@ package ru.vsu.noidle_server.model.dto;
 
 import lombok.*;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "teamDto")
+@EqualsAndHashCode
 public class NewTeamDto {
-    TeamDto teamDto;
+    private String name;
 
-    //number of teams
-    Integer overall;
+    private UUID userId;
 }

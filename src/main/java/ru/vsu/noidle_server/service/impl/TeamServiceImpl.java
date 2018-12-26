@@ -7,18 +7,18 @@ import org.springframework.stereotype.Service;
 import ru.vsu.noidle_server.Constants;
 import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.domain.TeamEntity;
+import ru.vsu.noidle_server.model.domain.UserEntity;
+import ru.vsu.noidle_server.model.dto.NewTeamDto;
 import ru.vsu.noidle_server.model.dto.TeamDto;
 import ru.vsu.noidle_server.model.dto.TeamDtoShort;
 import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
 import ru.vsu.noidle_server.model.mapper.DataMapper;
 import ru.vsu.noidle_server.model.repository.TeamRepository;
 import ru.vsu.noidle_server.service.TeamService;
+import ru.vsu.noidle_server.service.UserService;
 
 import java.time.OffsetDateTime;
-import java.util.Comparator;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,10 +26,27 @@ import java.util.stream.Collectors;
 public class TeamServiceImpl implements TeamService {
 
     private final TeamRepository teamRepository;
+    private final UserService userService;
     private final DataMapper dataMapper;
 
     @Override
-    public TeamDto save(TeamDto teamDto) throws ServiceException {
+    public TeamDto add(NewTeamDto teamDto) throws ServiceException {
+        TeamEntity teamEntity;
+        try {
+            UserEntity userEntity=userService.getEntityByAuth();
+            teamEntity = new TeamEntity(teamDto.getName(), OffsetDateTime.now());
+            teamEntity = teamRepository.save(teamEntity);
+            userEntity.addTeam(teamEntity);
+            userService.save(userEntity);
+        } catch (DataIntegrityViolationException e) {
+            throw new ServiceException(teamDto.getName() + " team already exists");
+        }
+        log.info("Saved new team {}", teamEntity);
+        return dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext());
+    }
+
+    @Override
+    public TeamDto edit(TeamDto teamDto) throws ServiceException {
         TeamEntity teamEntity;
         try {
             teamDto.setCreated(OffsetDateTime.now());
@@ -37,7 +54,7 @@ public class TeamServiceImpl implements TeamService {
         } catch (DataIntegrityViolationException e) {
             throw new ServiceException(teamDto.getName() + " team already exists");
         }
-        log.info("Saved new team {}", teamEntity);
+        log.info("Saved team {}", teamEntity);
         return dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext());
     }
 
@@ -66,12 +83,6 @@ public class TeamServiceImpl implements TeamService {
             throw new ServiceException("Unable to find team with name " + name);
         }
         return teamDtoShort;
-    }
-
-    @Override
-    public List<TeamDto> getAll() {
-        return teamRepository.findAll().stream().sorted(Comparator.reverseOrder())
-                .map(teamEntity -> dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext())).collect(Collectors.toList());
     }
 
     @Override

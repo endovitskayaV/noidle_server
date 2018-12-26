@@ -11,7 +11,9 @@ import ru.vsu.noidle_server.model.dto.NewTeamDto;
 import ru.vsu.noidle_server.model.dto.TeamDto;
 import ru.vsu.noidle_server.model.dto.TeamDtoShort;
 import ru.vsu.noidle_server.service.TeamService;
+import ru.vsu.noidle_server.service.UserService;
 
+import java.util.Collections;
 import java.util.UUID;
 
 @Controller
@@ -19,6 +21,7 @@ import java.util.UUID;
 @RequestMapping("/teams")
 public class TeamController {
     private final TeamService teamService;
+    private final UserService userService;
 
     @GetMapping("/short")
     @ResponseBody
@@ -34,25 +37,29 @@ public class TeamController {
 
     @GetMapping
     public String getAll(ModelMap modelMap) {
-        modelMap.addAttribute("teams", teamService.getAll());
+        try {
+            modelMap.addAttribute("teams", userService.getTeams());
+        } catch (ServiceException e) {
+            modelMap.addAttribute("teams", Collections.EMPTY_LIST);
+        }
         return "teams";
     }
 
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NewTeamDto> add(@RequestBody TeamDto teamDto) {
+    public ResponseEntity<TeamDto> add(@RequestBody NewTeamDto teamDto) {
         TeamDto newTeamDto;
         try {
-            newTeamDto = teamService.save(teamDto);
+            newTeamDto = teamService.add(teamDto);
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(new NewTeamDto(newTeamDto, teamService.getAll().size()));
+        return ResponseEntity.ok(newTeamDto);
     }
 
     @PostMapping(value = "/edit", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity edit(@RequestBody TeamDto teamDto) {
         try {
-            teamService.save(teamDto);
+            teamService.edit(teamDto);
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().build();
         }

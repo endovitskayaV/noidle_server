@@ -1,4 +1,4 @@
-package ru.vsu.noidle_server.controller;
+package ru.vsu.noidle_server.utils;
 
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Nullable;

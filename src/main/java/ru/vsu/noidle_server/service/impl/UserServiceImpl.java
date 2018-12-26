@@ -2,21 +2,26 @@ package ru.vsu.noidle_server.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.domain.TeamEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
+import ru.vsu.noidle_server.model.dto.TeamDto;
 import ru.vsu.noidle_server.model.dto.UserDto;
 import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
 import ru.vsu.noidle_server.model.mapper.DataMapper;
 import ru.vsu.noidle_server.model.repository.UserRepository;
 import ru.vsu.noidle_server.service.TeamService;
 import ru.vsu.noidle_server.service.UserService;
+import ru.vsu.noidle_server.utils.AuthUtils;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +30,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final DataMapper dataMapper;
-    private final TeamService teamService;
+    private TeamService teamService;
+
+    @Autowired
+    public void setTeamService(TeamService teamService) {
+        this.teamService = teamService;
+    }
 
     @Override
     public UserEntity getEntityById(UUID id) throws ServiceException {
@@ -59,19 +69,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getByAuth(Authentication user) throws ServiceException {
+    public UserDto getByAuth() throws ServiceException {
+        return dataMapper.toDto(getEntityByAuth(), new CycleAvoidingMappingContext());
+    }
+
+    @Override
+    public UserEntity getEntityByAuth() throws ServiceException {
+        Authentication user = AuthUtils.getUser();
+        if (user == null) {
+            log.info("Unable to find auth user");
+            throw new ServiceException("Unable to find auth user");
+        }
         String email = dataMapper.getEmail((LinkedHashMap<String, String>) ((OAuth2Authentication) user).getUserAuthentication().getDetails());
-        return email == null ? null : dataMapper.toDto(userRepository.findByEmail(email), new CycleAvoidingMappingContext());
+        UserEntity userEntity = userRepository.findByEmail(email);
+        if (userEntity == null) {
+            throw new ServiceException("Unable to find auth user");
+        } else {
+            return userEntity;
+        }
     }
 
     public UserDto save(OAuth2Authentication user) {
         UserEntity userEntity = dataMapper.toEntity(user);
         UserEntity existingUser = userRepository.findByEmail(userEntity.getEmail());
         if (existingUser != null) {
-            userEntity.setId(existingUser.getId());
+            existingUser.setName(userEntity.getName());
+            existingUser.setEmail(userEntity.getEmail());
+            existingUser.setPhoto(userEntity.getPhoto());
+
+            save(existingUser);
+            return dataMapper.toDto(existingUser, new CycleAvoidingMappingContext());
+        } else {
+            save(userEntity);
+            return dataMapper.toDto(userEntity, new CycleAvoidingMappingContext());
         }
-        save(userEntity);
-        return dataMapper.toDto(userEntity, new CycleAvoidingMappingContext());
+
     }
 
     @Override
@@ -97,5 +129,13 @@ public class UserServiceImpl implements UserService {
 
         userEntity.removeTeam(teamEntity);
         userRepository.save(userEntity);
+    }
+
+    @Override
+    public List<TeamDto> getTeams() throws ServiceException {
+        return getEntityByAuth()
+                .getTeams().stream()
+                .map(teamEntity -> dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext()))
+                .collect(Collectors.toList());
     }
 }

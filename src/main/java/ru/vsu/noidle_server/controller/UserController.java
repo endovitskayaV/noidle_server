@@ -75,7 +75,7 @@ public class UserController {
     public String getProfile(ModelMap modelMap) {
         UserDto user;
         try {
-            user = userService.getByAuth(AuthUtils.getUser());
+            user = userService.getByAuth();
             modelMap.addAttribute("user", user);
             return "profile";
         } catch (ServiceException e) {
