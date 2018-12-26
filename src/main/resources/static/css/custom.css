@@ -29,3 +29,8 @@ main {
 .link:hover {
     cursor: pointer;
 }
+
+.chip:hover {
+    background-color: #81d4fa;
+    cursor: pointer;
+}
