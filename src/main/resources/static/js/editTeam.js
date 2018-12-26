@@ -26,16 +26,15 @@ function editTeamHandler() {
                         classes: 'rounded'
                     });
                 },
-                200: function () {
+                204: function () {
                     //set team name in card
                     var teamKey = $("#team_key").val();
                     var teamNameSpan = $("#" + teamKey);
-                    teamNameSpan[0].innerText = teamNameInput.val();
+                    teamNameSpan[0].innerText = teamNameInput.value;
 
                     $('#edit-modal').modal('close');
                 }
             }
         });
-
     }
 }
