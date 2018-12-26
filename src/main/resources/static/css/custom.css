@@ -25,3 +25,7 @@ main {
 .chip:focus {
     background-color: #03a9f4 !important;
 }
+
+.link:hover {
+    cursor: pointer;
+}

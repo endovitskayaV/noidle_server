@@ -2,6 +2,7 @@ package ru.vsu.noidle_server.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ru.vsu.noidle_server.Constants;
 import ru.vsu.noidle_server.exception.ServiceException;
@@ -26,11 +27,11 @@ public class TeamServiceImpl implements TeamService {
     private final DataMapper dataMapper;
 
     @Override
-    public TeamDto save(TeamDto teamDto) throws ServiceException {
+    public TeamDto save(TeamDto teamDto) throws ServiceException{
         TeamEntity teamEntity;
         try {
             teamEntity = teamRepository.save(dataMapper.toEntity(teamDto, new CycleAvoidingMappingContext()));
-        }catch (Exception e){
+        }catch (DataIntegrityViolationException e){
             throw new ServiceException(teamDto.getName()+" team already exists");
         }
         log.info("Saved new team {}", teamEntity);

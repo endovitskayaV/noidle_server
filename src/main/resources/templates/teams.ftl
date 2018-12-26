@@ -34,7 +34,7 @@
 
         <a href="/teams/add">
             <div class="center light-blue-text">
-                <a  href="#!" onclick="openAddTeamModal()">
+                <a onclick="openAddTeamModal()" class="link">
                     <i class="material-icons" style="font-size: 40px">add</i>
                 </a>
             </div>
@@ -57,7 +57,7 @@
          <#else>
         <a href="/teams/add">
             <div class="center light-blue-text">
-                <a  href="#!" onclick="openAddTeamModal()">
+                <a onclick="openAddTeamModal()" class="link">
                     <i class="material-icons" style="font-size: 30px">add</i>
                 </a>
             </div>
@@ -126,45 +126,46 @@
     </div>
 
 
-    <!-- Modals-->
-    <div class="modal" id="edit-modal">
-        <form method="post" action="/teams/edit">
-            <div class="modal-content">
-                <input type="text" id="team_key" hidden>
-                <input type="text" id="team_id" name="id" hidden>
-                <div class="input-field col s8">
-                    <input class="input-field" type="text" id="team_name" name="name" required
-                           minlength="2" maxlength="120" pattern="\S([\s*\w*]|[\w*\s*])*\S"
-                           title="Not allowed: spaces in the beginning and end, blank names">
-                    <span class="helper-text">Team name</span>
+        <!-- Modals-->
+        <div class="modal" id="edit-modal">
+            <form method="post" action="/teams/edit">
+                <div class="modal-content">
+                    <input type="text" id="team_key" hidden>
+                    <input type="text" id="team_id" name="id" hidden>
+                    <div class="input-field col s8">
+                        <input class="input-field" type="text" id="team_name" name="name" required
+                               minlength="2" maxlength="120" pattern="\S([\s*\w*]|[\w*\s*])*\S"
+                               title="Not allowed: spaces in the beginning and end, blank names">
+                        <span class="helper-text">Team name</span>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="waves-effect waves-orange btn-flat" type="submit" onclick="editTeamHandler()">Ok</button>
-                <button class="waves-effect waves-orange btn-flat" type="reset">Reset</button>
-                <button class="modal-close waves-effect waves-orange btn-flat" type="reset">Exit</button>
-            </div>
-        </form>
-    </div>
+                <div class="modal-footer">
+                    <button class="waves-effect waves-orange btn-flat" type="submit" onclick="editTeamHandler()">Ok
+                    </button>
+                    <button class="waves-effect waves-orange btn-flat" type="reset">Reset</button>
+                    <button class="modal-close waves-effect waves-orange btn-flat" type="reset">Exit</button>
+                </div>
+            </form>
+        </div>
 
 
-    <div class="modal" id="add-modal">
-        <form>
-            <div class="modal-content">
-                <div class="input-field col s8">
-                    <input class="input-field" type="text" id="add_team_name"  required
-                           minlength="2" maxlength="120" pattern="\S([\s*\w*]|[\w*\s*])*\S"
-                           title="Not allowed: spaces in the beginning and end, blank names">
-                    <span class="helper-text">Team name</span>
+        <div class="modal" id="add-modal">
+            <form>
+                <div class="modal-content">
+                    <div class="input-field col s8">
+                        <input class="input-field" type="text" id="add_team_name" required
+                               minlength="2" maxlength="120" pattern="\S([\s*\w*]|[\w*\s*])*\S"
+                               title="Not allowed: spaces in the beginning and end, blank names">
+                        <span class="helper-text">Team name</span>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="waves-effect waves-orange btn-flat" onclick="addTeamHandler()">Ok</button>
-                <button class="waves-effect waves-orange btn-flat" type="reset">Reset</button>
-                <button class="modal-close waves-effect waves-orange btn-flat" type="reset">Exit</button>
-            </div>
-        </form>
-    </div>
+                <div class="modal-footer">
+                    <button class="waves-effect waves-orange btn-flat" onclick="addTeamHandler()">Ok</button>
+                    <button class="waves-effect waves-orange btn-flat" type="reset">Reset</button>
+                    <button class="modal-close waves-effect waves-orange btn-flat" type="reset">Exit</button>
+                </div>
+            </form>
+        </div>
 
 </main>
 
