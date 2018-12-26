@@ -133,7 +133,7 @@
                 <input type="text" id="team_id" name="id" hidden>
                 <div class="input-field col s8">
                     <input class="input-field" type="text" id="team_name" name="name" required
-                           minlength="2" maxlength="120" pattern="\S([\s*\w*]|[\w*\s*])*\S"
+                           minlength="2" maxlength="120" pattern="\S.*\S"
                            title="Not allowed: spaces in the beginning and end, blank names">
                     <span class="helper-text">Team name</span>
                 </div>
@@ -151,7 +151,7 @@
             <div class="modal-content">
                 <div class="input-field col s8">
                     <input class="input-field" type="text" id="add_team_name" required
-                           minlength="2" maxlength="120" pattern="\S([\s*\w*]|[\w*\s*])*\S"
+                           minlength="2" maxlength="120" pattern="\S.*\S"
                            title="Not allowed: spaces in the beginning and end, blank names">
                     <span class="helper-text">Team name</span>
                 </div>
