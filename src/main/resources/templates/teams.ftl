@@ -164,7 +164,7 @@
 
 </main>
 
- <#include "footer_auth.ftl">
+ <#include "footer.ftl">
 
 </body>
 </html>
