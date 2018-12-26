@@ -1,7 +1,8 @@
 create table team (
-  id    uuid        not null primary key,
-  name  text unique not null,
-  photo text
+  id      uuid        not null primary key,
+  name    text unique not null,
+  photo   text,
+  created timestamp
 );
 
 create table user_data_team (

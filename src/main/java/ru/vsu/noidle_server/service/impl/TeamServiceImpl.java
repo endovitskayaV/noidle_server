@@ -14,6 +14,8 @@ import ru.vsu.noidle_server.model.mapper.DataMapper;
 import ru.vsu.noidle_server.model.repository.TeamRepository;
 import ru.vsu.noidle_server.service.TeamService;
 
+import java.time.OffsetDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,12 +29,13 @@ public class TeamServiceImpl implements TeamService {
     private final DataMapper dataMapper;
 
     @Override
-    public TeamDto save(TeamDto teamDto) throws ServiceException{
+    public TeamDto save(TeamDto teamDto) throws ServiceException {
         TeamEntity teamEntity;
         try {
+            teamDto.setCreated(OffsetDateTime.now());
             teamEntity = teamRepository.save(dataMapper.toEntity(teamDto, new CycleAvoidingMappingContext()));
-        }catch (DataIntegrityViolationException e){
-            throw new ServiceException(teamDto.getName()+" team already exists");
+        } catch (DataIntegrityViolationException e) {
+            throw new ServiceException(teamDto.getName() + " team already exists");
         }
         log.info("Saved new team {}", teamEntity);
         return dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext());
@@ -67,12 +70,13 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<TeamDto> getAll() {
-        return teamRepository.findAll().stream().map(teamEntity -> dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext())).collect(Collectors.toList());
+        return teamRepository.findAll().stream().sorted(Comparator.reverseOrder())
+                .map(teamEntity -> dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext())).collect(Collectors.toList());
     }
 
     @Override
     public void delete(UUID id) throws ServiceException {
-        TeamEntity team=getEntityById(id);
+        TeamEntity team = getEntityById(id);
         teamRepository.delete(team);
     }
 }

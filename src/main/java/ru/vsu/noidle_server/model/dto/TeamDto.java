@@ -1,8 +1,8 @@
 package ru.vsu.noidle_server.model.dto;
 
 import lombok.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -20,9 +20,7 @@ public class TeamDto {
 
     private String photo;
 
-    private Collection<UserDto> users;
+    private OffsetDateTime created;
 
-    public static TeamDto newInstance() {
-        return new TeamDto(null, "", "", null);
-    }
+    private Collection<UserDto> users;
 }

@@ -2,8 +2,10 @@ package ru.vsu.noidle_server.model.domain;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -15,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = "users")
-public class TeamEntity {
+public class TeamEntity implements Comparable<TeamEntity> {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -29,7 +31,25 @@ public class TeamEntity {
     @Column(name = "photo")
     private String photo;
 
+    @Column(name = "created")
+    private OffsetDateTime created;
+
     @ManyToMany(mappedBy = "teams")
     //refers to UserEntity:  private Collection<TeamEntity> teams
     private Collection<UserEntity> users;
+
+    @Override
+    public int compareTo(@NotNull TeamEntity o) {
+        if (o.getCreated() == null && created == null) {
+            return 0;
+        }
+        if (o.getCreated() == null && created != null) {
+            return 1;
+        }
+        if (o.getCreated() != null && created == null) {
+            return -1;
+        } else {
+            return created.compareTo(o.getCreated());
+        }
+    }
 }
