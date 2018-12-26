@@ -70,7 +70,7 @@
                  <#else>
                      <div class="center orange-text"><i class="material-icons">supervised_user_circle</i></div>
                  </#if>
-                             <span id="team_name${i}"> ${team.name}</span>
+                             <span class="truncate" id="team_name${i}"> ${team.name}</span>
                              <div class="row"></div>
                              <div>
                                  <a onclick="openEditTeamModal('${team.id}', 'team_name${i}')">
@@ -118,8 +118,9 @@
                 <input type="text" id="team_key" hidden>
                 <input type="text" id="team_id" name="id" hidden>
                 <div class="input-field col s8">
-                    <input class="input-field" type="text" id="team_name" name="name" required minlength="2"
-                           maxlength="50" pattern="\S([\s*\w*]|[\w*\s*])*\S" title="Spaces are not allowed">
+                    <input class="input-field" type="text" id="team_name" name="name" required
+                           minlength="2" maxlength="120" pattern="\S([\s*\w*]|[\w*\s*])*\S"
+                           title="Not allowed: spaces in the beginning and end, blank names">
                     <span class="helper-text">Team name</span>
                 </div>
             </div>
