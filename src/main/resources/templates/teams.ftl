@@ -118,8 +118,8 @@
                 <input type="text" id="team_key" hidden>
                 <input type="text" id="team_id" name="id" hidden>
                 <div class="input-field col s8">
-                    <input class="input-field" type="text" id="team_name" name="name" required minlength="3"
-                           maxlength="50" pattern="\S+" title="Spaces are not allowed">
+                    <input class="input-field" type="text" id="team_name" name="name" required minlength="2"
+                           maxlength="50" pattern="\S([\s*\w*]|[\w*\s*])*\S" title="Spaces are not allowed">
                     <span class="helper-text">Team name</span>
                 </div>
             </div>
