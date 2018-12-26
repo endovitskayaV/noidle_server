@@ -5,8 +5,8 @@ create table team (
 );
 
 create table user_data_team (
-  user_id uuid references user_data (id),
-  team_id uuid references team (id),
+  user_id uuid references user_data (id) ON DELETE CASCADE,
+  team_id uuid references team (id) ON DELETE CASCADE,
   constraint user_data_team_pk primary key (user_id, team_id)
 );
 

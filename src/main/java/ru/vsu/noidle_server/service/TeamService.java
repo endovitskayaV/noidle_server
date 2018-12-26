@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TeamService {
-    TeamDto save(TeamDto teamDto);
+    TeamDto save(TeamDto teamDto) throws ServiceException;
 
     TeamDto getById(UUID id) throws ServiceException;
 

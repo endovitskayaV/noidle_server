@@ -36,7 +36,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Collection<StatisticsEntity> statistics;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "user_data_team",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),

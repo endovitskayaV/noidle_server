@@ -3,7 +3,7 @@ function openEditTeamModal(id, key) {
     $("#team_name").val(teamNameSpan[0].innerText);
     $("#team_id").val(id);
     $("#team_key").val(key);
-    $('.modal').modal('open');
+    $('#edit-modal').modal('open');
 }
 
 function editTeamHandler() {
@@ -13,6 +13,6 @@ function editTeamHandler() {
         var teamKey = $("#team_key").val();
         var teamNameSpan = $("#" + teamKey);
         teamNameSpan[0].innerText = teamNameInput.val();
-        $('.modal').modal('close');
+        $('#edit-modal').modal('close');
     }
 }

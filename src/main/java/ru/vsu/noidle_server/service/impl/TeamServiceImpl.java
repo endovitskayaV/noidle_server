@@ -26,8 +26,13 @@ public class TeamServiceImpl implements TeamService {
     private final DataMapper dataMapper;
 
     @Override
-    public TeamDto save(TeamDto teamDto) {
-        TeamEntity teamEntity = teamRepository.save(dataMapper.toEntity(teamDto, new CycleAvoidingMappingContext()));
+    public TeamDto save(TeamDto teamDto) throws ServiceException {
+        TeamEntity teamEntity;
+        try {
+            teamEntity = teamRepository.save(dataMapper.toEntity(teamDto, new CycleAvoidingMappingContext()));
+        }catch (Exception e){
+            throw new ServiceException(teamDto.getName()+" team already exists");
+        }
         log.info("Saved new team {}", teamEntity);
         return dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext());
     }

@@ -1,5 +1,9 @@
 $(document).ready(function(){
-    $('.modal').modal({
+    $('#edit-modal').modal({
+        dismissible: false
+    });
+    
+    $('#add-modal').modal({
         dismissible: false
     });
 });

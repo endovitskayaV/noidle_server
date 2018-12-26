@@ -1,11 +1,13 @@
 package ru.vsu.noidle_server.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.noidle_server.exception.ServiceException;
+import ru.vsu.noidle_server.model.dto.NewTeamDto;
 import ru.vsu.noidle_server.model.dto.TeamDto;
 import ru.vsu.noidle_server.model.dto.TeamDtoShort;
 import ru.vsu.noidle_server.service.TeamService;
@@ -36,15 +38,24 @@ public class TeamController {
         return "teams";
     }
 
-    @PostMapping(value = "/add")
-    public ResponseEntity add(TeamDto teamDto) {
-        teamService.save(teamDto);
-        return ResponseEntity.noContent().build();
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<NewTeamDto> add(@RequestBody TeamDto teamDto) {
+        TeamDto newTeamDto;
+        try {
+            newTeamDto = teamService.save(teamDto);
+        } catch (ServiceException e) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(new NewTeamDto(newTeamDto, teamService.getAll().size()));
     }
 
     @PostMapping(value = "/edit")
     public ResponseEntity edit(TeamDto teamDto) {
-        teamService.save(teamDto);
+        try {
+            teamService.save(teamDto);
+        } catch (ServiceException e) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.noContent().build();
     }
 
