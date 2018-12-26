@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-    <title>NoIdle&bull;Add team</title>
+    <title>NoIdle&nbsp;&bull;&nbsp;Teams</title>
 
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -20,6 +20,7 @@
 <script type="text/javascript" src="js/editMembers.js"></script>
 <script type="text/javascript" src="js/modal.js"></script>
 <script type="text/javascript" src="js/editTeam.js"></script>
+<script type="text/javascript" src="js/deleteTeam.js"></script>
  <#include "nav_auth.ftl">
 
 <main>
@@ -57,11 +58,11 @@
         </a>
              <#assign i=0>
 
-        <div class="container">
+        <div class="container" id="teams-container">
 
              <#list teams as team>
 
-                 <ul class="collapsible popout expandable">
+                 <ul class="collapsible popout expandable" id="${team.id}-card">
                      <li>
                          <div class="collapsible-header">
 
@@ -77,7 +78,11 @@
                                      <i class="material-icons faded">edit</i>
                                  </a>
                              </div>
-                             <div id="delete${i}"><i class="material-icons faded">delete</i></div>
+                             <div>
+                                 <a onclick="deleteTeam('${team.id}')">
+                                     <i class="material-icons faded">delete</i>
+                                 </a>
+                             </div>
 
 
                          </div>
