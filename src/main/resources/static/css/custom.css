@@ -21,3 +21,7 @@ main {
 .faded {
     color: #81d4fa !important;
 }
+
+.chip:focus {
+    background-color: #03a9f4 !important;
+}

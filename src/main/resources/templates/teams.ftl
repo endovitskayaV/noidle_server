@@ -82,8 +82,7 @@
 
                          </div>
                          <div class="collapsible-body">
-                             <div class="chips" id="chips${i}">
-                             </div>
+                             <div class="chips" id="chips${i}"></div>
                          </div>
                          <script>
                              $('#chips${i}').chips({
