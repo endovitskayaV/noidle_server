@@ -4,12 +4,13 @@ import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.dto.StatisticsDto;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface StatisticsService {
 
-    void save(List<StatisticsDto> statistics,  UUID userId, UUID teamId) throws ServiceException;
+    void save(List<StatisticsDto> statistics, UUID userId, UUID teamId) throws ServiceException;
 
-    List<StatisticsDto> getAll();
+    Map<String, Long> getAll();
 
 }

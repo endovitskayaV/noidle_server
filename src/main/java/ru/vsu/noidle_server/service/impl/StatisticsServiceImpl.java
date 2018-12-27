@@ -14,9 +14,11 @@ import ru.vsu.noidle_server.service.NotificationService;
 import ru.vsu.noidle_server.service.StatisticsService;
 import ru.vsu.noidle_server.service.UserService;
 
+import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -64,7 +66,14 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List<StatisticsDto> getAll() {
-        return statisticsRepository.findAll().stream().map(dataMapper::toDto).collect(Collectors.toList());
+    public Map<String, Long> getAll() {
+        UserEntity userEntity;
+        try {
+            userEntity = userService.getEntityByAuth();
+        } catch (ServiceException e) {
+            return Collections.emptyMap();
+        }
+        return dataMapper.toDtosDashboard(statisticsRepository
+                .getAllByUserIdAndDate(userEntity.getId(), OffsetDateTime.now()));
     }
 }

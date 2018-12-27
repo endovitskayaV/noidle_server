@@ -6,10 +6,14 @@ import ru.vsu.noidle_server.model.StatisticsSubType;
 import ru.vsu.noidle_server.model.StatisticsType;
 import ru.vsu.noidle_server.model.domain.StatisticsEntity;
 
+import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface StatisticsRepository extends JpaRepository<StatisticsEntity, UUID> {
 
     StatisticsEntity getByTypeAndSubTypeAndExtraValueAndUserId(StatisticsType statisticsType, StatisticsSubType statisticsSubType, String extraValue, UUID userId);
+
+    List<StatisticsEntity> getAllByUserIdAndDate(UUID userId, OffsetDateTime date);
 }
