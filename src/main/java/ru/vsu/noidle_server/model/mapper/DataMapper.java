@@ -186,7 +186,9 @@ public interface DataMapper {
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> v2, LinkedHashMap::new));
         sorted.forEach((lang, timeSymbols) ->
-                result.add(new LanguageStatisticsDto(lang, timeSymbols.symbols.toString(), timeSymbols.time.toString())));
+                result.add(new LanguageStatisticsDto(
+                        lang, timeSymbols.symbols.toString(), TimeUtils.toPretty(timeSymbols.time))
+                ));
         return result;
     }
 
