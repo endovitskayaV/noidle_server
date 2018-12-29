@@ -13,6 +13,7 @@ import ru.vsu.noidle_server.service.StatisticsService;
 public class DashboardController {
     private final StatisticsService statisticsService;
 
+    //TODO: add  getting by date and team (+ no team)
     @GetMapping
     public String getAll(ModelMap modelMap) {
         modelMap.addAttribute("statistics", statisticsService.getAll());
