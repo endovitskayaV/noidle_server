@@ -1,10 +1,12 @@
 package ru.vsu.noidle_server.service;
 
 import ru.vsu.noidle_server.exception.ServiceException;
+import ru.vsu.noidle_server.model.dto.LanguageStatisticsDto;
 import ru.vsu.noidle_server.model.dto.StatisticsDto;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public interface StatisticsService {
@@ -14,5 +16,7 @@ public interface StatisticsService {
     Map<String, String> getAll();
 
     Map<String, String> getKeys();
+
+    Set<LanguageStatisticsDto> getLanguages();
 
 }

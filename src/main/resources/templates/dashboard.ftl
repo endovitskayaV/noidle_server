@@ -30,10 +30,10 @@
                 <ul class="col s6 collapsible popout expandable">
                     <li>
                         <div class="collapsible-header">
-                            <div class="center light-blue-text"><i class="material-icons">access_time</i></div>
+                            <div class="light-blue-text"><i class="material-icons">access_time</i></div>
                             <span>Time</span>
                         </div>
-                        <div class="collapsible-body">
+                        <div class="collapsible-body container">
                             <p><span><i>overall</i>:&emsp;</span><span><b>${statistics["timeper_day"]!"—"}</b></span>
                             </p>
                             <p>
@@ -45,10 +45,10 @@
                 <ul class="col s6 collapsible popout expandable">
                     <li>
                         <div class="collapsible-header">
-                            <div class="center green-text"><i class="material-icons">play_arrow</i></div>
+                            <div class="green-text"><i class="material-icons">play_arrow</i></div>
                             <span>Executions</span>
                         </div>
-                        <div class="collapsible-body">
+                        <div class="collapsible-body container">
                             <p style="display: flex"><i class="green-text material-icons">done</i>
                                 <span><i>successful</i>:&emsp;</span>
                                 <span><b>${statistics["execper_lifesuccessful"]!"—"}</b></span>
@@ -65,10 +65,10 @@
                 <ul class="col s6 collapsible popout expandable">
                     <li>
                         <div class="collapsible-header">
-                            <div class="center orange-text"><i class="material-icons">text_rotation_none</i></div>
+                            <div class="orange-text"><i class="material-icons">text_rotation_none</i></div>
                             <span>Symbols</span>
                         </div>
-                        <div class="collapsible-body">
+                        <div class="collapsible-body container">
                             <p><span><i>today</i>:&emsp;</span><span><b>${statistics["symbolper_day"]!"—"}</b></span>
                             </p>
                             <p>
@@ -80,10 +80,10 @@
                 <ul class="col s6 collapsible popout expandable">
                     <li>
                         <div class="collapsible-header">
-                            <div class="center green-text"><i class="material-icons">check</i></div>
+                            <div class="green-text"><i class="material-icons">check</i></div>
                             <span>Commits</span>
                         </div>
-                        <div class="collapsible-body">
+                        <div class="collapsible-body container">
                             <p style="display: flex"><i class="green-text material-icons">done</i>
                                 <span><i>successful</i>:&emsp;</span>
                                 <span><b>${statistics["commitper_lifesuccessful"]!"—"}</b></span>
@@ -100,16 +100,21 @@
                 <ul class="col s6 collapsible popout expandable">
                     <li>
                         <div class="collapsible-header">
-                            <div class="center light-blue-text"><i class="material-icons">keyboard</i></div>
+                            <div class="light-blue-text"><i class="material-icons">keyboard</i></div>
                             <span>Keys</span>
                         </div>
                         <div class="collapsible-body">
                         <#if keys??>
+                            <table class="highlight centered">
+                                <tbody>
                         <#list keys as name, value>
-                            <p><span><i>${name}</i>:&emsp;</span>
-                                <span><b>${value}</b></span>
-                            </p>
+                        <tr>
+                            <td><i>${name}</i></td>
+                            <td><b>${value}</b></td>
+                        </tr>
                         </#list>
+                                </tbody>
+                            </table>
                         <#else>
                         </#if>
                         </div>
@@ -120,16 +125,39 @@
                 <ul class="col s8 collapsible popout expandable">
                     <li>
                         <div class="collapsible-header">
-                            <div class="center orange-text"><i class="material-icons">language</i></div>
+                            <div class="orange-text"><i class="material-icons">language</i></div>
                             <span>Languages</span>
                         </div>
                         <div class="collapsible-body">
-                            <#if languagues??>
-                        <#list languagues as name, value>
-                            <p><span><i>${name}</i>:&emsp;</span>
-                                <span><b>${value}</b></span>
-                            </p>
-                        </#list>
+                            <#if languages??>
+
+                                <table class="highlight centered">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            <div class="orange-text"><i class="material-icons">language</i></div>
+                                        </th>
+                                        <th>
+                                            <div class="light-blue-text"><i class="material-icons">access_time</i></div>
+                                        </th>
+                                        <th>
+                                            <div class="light-blue-text">
+                                                <i class="material-icons">text_rotation_none</i>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <#list languages as language>
+                                    <tr>
+                                        <td><b>${language.languageName}</b></td>
+                                        <td><i>${language.time}</i></td>
+                                        <td><i>${language.symbols}</i></td>
+                                    </tr>
+                                    </#list>
+                                    </tbody>
+                                </table>
                             <#else>
                             </#if>
                         </div>

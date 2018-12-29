@@ -1,5 +1,7 @@
 package ru.vsu.noidle_server.model.mapper;
 
+import lombok.AllArgsConstructor;
+import lombok.Setter;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -130,8 +132,6 @@ public interface DataMapper {
         HashMap<String, String> result = new HashMap<>(statisticsEntities.size());
         statisticsEntities.forEach(statisticsEntity -> {
             if (statisticsEntity != null && statisticsEntity.getValue() != null &&
-                    StatisticsType.SYMBOL.equals(statisticsEntity.getType()) &&
-                    StatisticsSubType.SINGLE_KEY.equals(statisticsEntity.getSubType()) &&
                     statisticsEntity.getExtraValue() != null &&
                     statisticsEntity.getValue() != null) {
 
@@ -142,5 +142,49 @@ public interface DataMapper {
         });
 
         return result;
+    }
+
+
+    default Set<LanguageStatisticsDto> toDtosLanguages(List<StatisticsEntity> statisticsEntities) {
+        if (statisticsEntities == null || statisticsEntities.isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        HashMap<String, TimeSymbols> langValues = new HashMap<>(statisticsEntities.size() / 2);
+        statisticsEntities.forEach(statisticsEntity -> {
+            if (statisticsEntity != null && statisticsEntity.getValue() != null &&
+                    statisticsEntity.getExtraValue() != null &&
+                    statisticsEntity.getValue() != null) {
+
+                String language = statisticsEntity.getExtraValue();
+                String value = statisticsEntity.getValue().toString();
+                if (langValues.containsKey(language)) {
+                    if (statisticsEntity.getType().equals(StatisticsType.LANG_SYMBOL)) {
+                        langValues.get(language).setSymbols(value);
+                    } else {
+                        langValues.get(language).setTime(TimeUtils.toPretty(Long.parseLong(value)));
+                    }
+                } else {
+                    langValues.put(
+                            language,
+                            statisticsEntity.getType().equals(StatisticsType.LANG_SYMBOL) ?
+                                    new TimeSymbols("", value) :
+                                    new TimeSymbols(TimeUtils.toPretty(Long.parseLong(value)), "")
+                    );
+                }
+            }
+        });
+
+        HashSet<LanguageStatisticsDto> result = new HashSet<>(langValues.size());
+        langValues.forEach((lang, timeSymbols) ->
+                result.add(new LanguageStatisticsDto(lang, timeSymbols.symbols, timeSymbols.time)));
+        return result;
+    }
+
+    @Setter
+    @AllArgsConstructor
+    class TimeSymbols {
+        String time;
+        String symbols;
     }
 }

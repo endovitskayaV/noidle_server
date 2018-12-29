@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.vsu.noidle_server.exception.ServiceException;
+import ru.vsu.noidle_server.model.StatisticsSubType;
+import ru.vsu.noidle_server.model.StatisticsType;
 import ru.vsu.noidle_server.model.domain.StatisticsEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
+import ru.vsu.noidle_server.model.dto.LanguageStatisticsDto;
 import ru.vsu.noidle_server.model.dto.StatisticsDto;
 import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
 import ru.vsu.noidle_server.model.mapper.DataMapper;
@@ -15,10 +18,7 @@ import ru.vsu.noidle_server.service.StatisticsService;
 import ru.vsu.noidle_server.service.UserService;
 
 import java.time.OffsetDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,7 +79,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .getAllByUserIdAndDateGreaterThanEqual(
                         userEntity.getId(),
                         OffsetDateTime.of(
-                                now.getYear(), now.getMonth().getValue(), now.getDayOfMonth()-1,
+                                now.getYear(), now.getMonth().getValue(), now.getDayOfMonth() - 1,
                                 0, 0, 0, 0, now.getOffset()
                         )
                 ));
@@ -95,14 +95,38 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
         OffsetDateTime now = OffsetDateTime.now();
         return dataMapper.toDtosKeys(statisticsRepository
-                .getAllByUserIdAndDateGreaterThanEqual(
+                .getAllByUserIdAndTypeAndSubTypeAndDateGreaterThanEqual(
                         userEntity.getId(),
+                        StatisticsType.SYMBOL,
+                        StatisticsSubType.SINGLE_KEY,
                         OffsetDateTime.of(
-                                now.getYear(), now.getMonth().getValue(), now.getDayOfMonth()-1,
+                                now.getYear(), now.getMonth().getValue(), now.getDayOfMonth() - 1,
                                 0, 0, 0, 0, now.getOffset()
                         )
                 )
                 .stream().sorted(StatisticsEntity::compareTo).collect(Collectors.toList())
+        );
+    }
+
+    @Override
+    public Set<LanguageStatisticsDto> getLanguages() {
+        UserEntity userEntity;
+        try {
+            userEntity = userService.getEntityByAuth();
+        } catch (ServiceException e) {
+            return Collections.emptySet();
+        }
+        OffsetDateTime now = OffsetDateTime.now();
+        return dataMapper.toDtosLanguages(statisticsRepository
+                .getAllByUserIdAndTypeInAndSubTypeAndDateGreaterThanEqual(
+                        userEntity.getId(),
+                        new StatisticsType[]{StatisticsType.LANG_TIME, StatisticsType.LANG_SYMBOL},
+                        StatisticsSubType.PER_DAY,
+                        OffsetDateTime.of(
+                                now.getYear(), now.getMonth().getValue(), now.getDayOfMonth() - 1,
+                                0, 0, 0, 0, now.getOffset()
+                        )
+                )
         );
     }
 }

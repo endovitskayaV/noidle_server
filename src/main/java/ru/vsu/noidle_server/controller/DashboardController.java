@@ -17,6 +17,7 @@ public class DashboardController {
     public String getAll(ModelMap modelMap) {
         modelMap.addAttribute("statistics", statisticsService.getAll());
         modelMap.addAttribute("keys", statisticsService.getKeys());
+        modelMap.addAttribute("languages", statisticsService.getLanguages());
         return "dashboard";
     }
 }

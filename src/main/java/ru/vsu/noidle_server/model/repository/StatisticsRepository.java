@@ -16,4 +16,10 @@ public interface StatisticsRepository extends JpaRepository<StatisticsEntity, UU
     StatisticsEntity getByTypeAndSubTypeAndExtraValueAndUserId(StatisticsType statisticsType, StatisticsSubType statisticsSubType, String extraValue, UUID userId);
 
     List<StatisticsEntity> getAllByUserIdAndDateGreaterThanEqual(UUID userId, OffsetDateTime date);
+
+    List<StatisticsEntity> getAllByUserIdAndTypeAndSubTypeAndDateGreaterThanEqual
+            (UUID userId, StatisticsType statisticsType, StatisticsSubType statisticsSubType, OffsetDateTime date);
+
+    List<StatisticsEntity> getAllByUserIdAndTypeInAndSubTypeAndDateGreaterThanEqual
+            (UUID userId, StatisticsType[] statisticsType, StatisticsSubType statisticsSubType, OffsetDateTime date);
 }

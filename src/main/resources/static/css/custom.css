@@ -34,3 +34,7 @@ main {
     background-color: #81d4fa;
     cursor: pointer;
 }
+
+tr {
+    border-bottom: none;
+}
