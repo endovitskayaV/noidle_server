@@ -29,24 +29,24 @@
             <!--   Icon Section   -->
             <div class="row">
                 <div class="col s12 m4">
-                    <div class="icon-block">
+                    <a href="/callback/github" class="icon-block">
                         <h2 class="center"><img src="img/github.png"></h2>
-                        <h5 class="center"><a href="/callback/github">Github</a></h5>
-                    </div>
+                        <h5 class="center"><span>Github</span></h5>
+                    </a>
                 </div>
 
                 <div class="col s12 m4">
-                    <div class="icon-block">
+                    <a href="/callback/gitlab" class="icon-block">
                         <h2 class="center"><img src="img/gitlab.png"></h2>
-                        <h5 class="center"><a href="/callback/gitlab">Gitlab</a></h5>
-                    </div>
+                        <h5 class="center"><span>Gitlab</span></h5>
+                    </a>
                 </div>
 
                 <div class="col s12 m4">
-                    <div class="icon-block">
+                    <a href="/callback/google" class="icon-block">
                         <h2 class="center"><img src="img/google.png"></h2>
-                        <h5 class="center"><a href="/callback/google">Google</a></h5>
-                    </div>
+                        <h5 class="center"><span>Google</span></h5>
+                    </a>
                 </div>
             </div>
 
