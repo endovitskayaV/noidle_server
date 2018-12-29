@@ -1,7 +1,9 @@
 package ru.vsu.noidle_server.model.mapper;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,6 +15,7 @@ import ru.vsu.noidle_server.model.dto.*;
 import ru.vsu.noidle_server.utils.TimeUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface DataMapper {
@@ -124,24 +127,27 @@ public interface DataMapper {
         return (Map.Entry<String, String>) result.entrySet().toArray()[0];
     }
 
-    default Map<String, String> toDtosKeys(List<StatisticsEntity> statisticsEntities) {
+    default Map<String, Long> toDtosKeys(List<StatisticsEntity> statisticsEntities) {
         if (statisticsEntities == null || statisticsEntities.isEmpty()) {
             return Collections.emptyMap();
         }
 
-        HashMap<String, String> result = new HashMap<>(statisticsEntities.size());
+        HashMap<String, Long> result = new HashMap<>(statisticsEntities.size());
         statisticsEntities.forEach(statisticsEntity -> {
             if (statisticsEntity != null && statisticsEntity.getValue() != null &&
                     statisticsEntity.getExtraValue() != null &&
                     statisticsEntity.getValue() != null) {
 
                 String keyName = statisticsEntity.getExtraValue();
-                String value = statisticsEntity.getValue().toString();
+                Long value = statisticsEntity.getValue();
                 result.put(keyName, value);
             }
         });
+        LinkedHashMap<String, Long> sorted = result.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> v2, LinkedHashMap::new));
 
-        return result;
+        return sorted;
     }
 
 
@@ -157,34 +163,43 @@ public interface DataMapper {
                     statisticsEntity.getValue() != null) {
 
                 String language = statisticsEntity.getExtraValue();
-                String value = statisticsEntity.getValue().toString();
+                Long value = statisticsEntity.getValue();
                 if (langValues.containsKey(language)) {
                     if (statisticsEntity.getType().equals(StatisticsType.LANG_SYMBOL)) {
                         langValues.get(language).setSymbols(value);
                     } else {
-                        langValues.get(language).setTime(TimeUtils.toPretty(Long.parseLong(value)));
+                        langValues.get(language).setTime(value);
                     }
                 } else {
                     langValues.put(
                             language,
                             statisticsEntity.getType().equals(StatisticsType.LANG_SYMBOL) ?
-                                    new TimeSymbols("", value) :
-                                    new TimeSymbols(TimeUtils.toPretty(Long.parseLong(value)), "")
+                                    new TimeSymbols(0L, value) :
+                                    new TimeSymbols(value, 0L)
                     );
                 }
             }
         });
 
         HashSet<LanguageStatisticsDto> result = new HashSet<>(langValues.size());
-        langValues.forEach((lang, timeSymbols) ->
-                result.add(new LanguageStatisticsDto(lang, timeSymbols.symbols, timeSymbols.time)));
+        LinkedHashMap<String, TimeSymbols> sorted = langValues.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> v2, LinkedHashMap::new));
+        sorted.forEach((lang, timeSymbols) ->
+                result.add(new LanguageStatisticsDto(lang, timeSymbols.symbols.toString(), timeSymbols.time.toString())));
         return result;
     }
 
     @Setter
+    @Getter
     @AllArgsConstructor
-    class TimeSymbols {
-        String time;
-        String symbols;
+    class TimeSymbols implements Comparable<TimeSymbols> {
+        Long time;
+        Long symbols;
+
+        @Override
+        public int compareTo(@NotNull DataMapper.TimeSymbols o) {
+            return this.time.compareTo(o.getTime());
+        }
     }
 }

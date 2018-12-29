@@ -15,8 +15,7 @@ public interface StatisticsService {
 
     Map<String, String> getAll();
 
-    Map<String, String> getKeys();
+    Map<String, Long> getKeys();
 
     Set<LanguageStatisticsDto> getLanguages();
-
 }

@@ -19,7 +19,6 @@ import ru.vsu.noidle_server.service.UserService;
 
 import java.time.OffsetDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -86,7 +85,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public Map<String, String> getKeys() {
+    public Map<String, Long> getKeys() {
         UserEntity userEntity;
         try {
             userEntity = userService.getEntityByAuth();
@@ -104,7 +103,6 @@ public class StatisticsServiceImpl implements StatisticsService {
                                 0, 0, 0, 0, now.getOffset()
                         )
                 )
-                .stream().sorted(StatisticsEntity::compareTo).collect(Collectors.toList())
         );
     }
 

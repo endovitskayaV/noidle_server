@@ -21,6 +21,7 @@
         var instances = M.Collapsible.init(elems);
     });
 </script>
+<script type="text/javascript" src="js/dashboardHandler.js"></script>
  <#include "nav_auth.ftl">
 <main>
     <br><br>
@@ -106,15 +107,33 @@
                         <div class="collapsible-body">
                         <#if keys??>
                             <table class="highlight">
-                                <tbody>
+                                <tbody id="keys_table">
+                                <#assign i=1>
                         <#list keys as name, value>
                         <tr>
                             <td class="center-align"><b>${name}</b></td>
                             <td><i>${value}</i></td>
                         </tr>
+                            <#assign i=i+1>
+                            <#if i gt 5>
+                                <#break>
+                            </#if>
                         </#list>
                                 </tbody>
                             </table>
+                            <script>
+                                var showMore=true;
+                                var keys =[];
+                                    <#assign i=1>
+                                    <#list keys as name, value>
+                                        keys.push({
+                                            name: '${name}',
+                                            value: '${value}'
+                                        });
+                                        <#assign i=i+1>
+                                    </#list>
+                            </script>
+                            <br><a id="show" href="#!" class="center" onclick="showKeys(keys)">Show more</a>
                         <#else>
                         </#if>
                         </div>
