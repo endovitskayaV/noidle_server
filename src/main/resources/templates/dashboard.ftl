@@ -25,68 +25,133 @@
 <main>
     <br><br>
     <div class="container">
-        <div class="row">
-            <ul class="col s6 collapsible popout expandable">
-                <li>
-                    <div class="collapsible-header">
-                        <div class="center light-blue-text"><i class="material-icons">access_time</i></div>
-                        <span>Time</span>
-                    </div>
-
-                </li>
-            </ul>
-            <ul class="col s6 collapsible popout expandable">
-                <li>
-                    <div class="collapsible-header">
-                        <div class="center green-text"><i class="material-icons">play_arrow</i></div>
-                        <span>Executions</span>
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-        <div class="row">
-            <ul class="col s6 collapsible popout expandable">
-                <li>
-                    <div class="collapsible-header">
-                        <div class="center orange-text"><i class="material-icons">text_rotation_none</i></div>
-                        <span>Symbols</span>
-                    </div>
-
-                </li>
-            </ul>
-            <ul class="col s6 collapsible popout expandable">
-                <li>
-                    <div class="collapsible-header">
-                        <div class="center green-text"><i class="material-icons">check</i></div>
-                        <span>Commits</span>
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-        <div class="row">
-            <ul class="col s6 collapsible popout expandable">
-                <li>
-                    <div class="collapsible-header">
-                        <div class="center light-blue-text"><i class="material-icons">keyboard</i></div>
-                        <span>Keys</span>
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-        <div class="row">
-            <ul class="col s8 collapsible popout expandable">
-                <li>
-                    <div class="collapsible-header">
-                        <div class="center orange-text"><i class="material-icons">language</i></div>
-                        <span>Languages</span>
-                    </div>
-
-                </li>
-            </ul>
-        </div>
+        <#if statistics??>
+            <div class="row">
+                <ul class="col s6 collapsible popout expandable">
+                    <li>
+                        <div class="collapsible-header">
+                            <div class="center light-blue-text"><i class="material-icons">access_time</i></div>
+                            <span>Time</span>
+                        </div>
+                        <div class="collapsible-body">
+                            <p><span><i>overall</i>:&emsp;</span><span><b>${statistics["timeper_day"]!"—"}</b></span>
+                            </p>
+                            <p>
+                                <span><i>max continuous</i>:&emsp;</span><span><b>${statistics["timecontinuous_per_day"]!"—"}</b></span>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="col s6 collapsible popout expandable">
+                    <li>
+                        <div class="collapsible-header">
+                            <div class="center green-text"><i class="material-icons">play_arrow</i></div>
+                            <span>Executions</span>
+                        </div>
+                        <div class="collapsible-body">
+                            <p style="display: flex"><i class="green-text material-icons">done</i>
+                                <span><i>successful</i>:&emsp;</span>
+                                <span><b>${statistics["execper_lifesuccessful"]!"—"}</b></span>
+                            </p>
+                            <p style="display: flex"><i class="red-text material-icons">close</i>
+                                <span><i>failed</i>:&emsp;</span>
+                                <span><b>${statistics["execper_lifefailed"]!"—"}</b></span>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <ul class="col s6 collapsible popout expandable">
+                    <li>
+                        <div class="collapsible-header">
+                            <div class="center orange-text"><i class="material-icons">text_rotation_none</i></div>
+                            <span>Symbols</span>
+                        </div>
+                        <div class="collapsible-body">
+                            <p><span><i>today</i>:&emsp;</span><span><b>${statistics["symbolper_day"]!"—"}</b></span>
+                            </p>
+                            <p>
+                                <span><i>continuous</i>:&emsp;</span><span><b>${statistics["symbolcontinuous_per_day"]!"—"}</b></span>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="col s6 collapsible popout expandable">
+                    <li>
+                        <div class="collapsible-header">
+                            <div class="center green-text"><i class="material-icons">check</i></div>
+                            <span>Commits</span>
+                        </div>
+                        <div class="collapsible-body">
+                            <p style="display: flex"><i class="green-text material-icons">done</i>
+                                <span><i>successful</i>:&emsp;</span>
+                                <span><b>${statistics["commitper_lifesuccessful"]!"—"}</b></span>
+                            </p>
+                            <p style="display: flex"><i class="red-text material-icons">close</i>
+                                <span><i>failed</i>:&emsp;</span>
+                                <span><b>${statistics["commitper_lifefailed"]!"—"}</b></span>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <ul class="col s6 collapsible popout expandable">
+                    <li>
+                        <div class="collapsible-header">
+                            <div class="center light-blue-text"><i class="material-icons">keyboard</i></div>
+                            <span>Keys</span>
+                        </div>
+                        <div class="collapsible-body">
+                        <#if keys??>
+                        <#list keys as name, value>
+                            <p><span><i>${name}</i>:&emsp;</span>
+                                <span><b>${value}</b></span>
+                            </p>
+                        </#list>
+                        <#else>
+                        </#if>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <ul class="col s8 collapsible popout expandable">
+                    <li>
+                        <div class="collapsible-header">
+                            <div class="center orange-text"><i class="material-icons">language</i></div>
+                            <span>Languages</span>
+                        </div>
+                        <div class="collapsible-body">
+                            <#if languagues??>
+                        <#list languagues as name, value>
+                            <p><span><i>${name}</i>:&emsp;</span>
+                                <span><b>${value}</b></span>
+                            </p>
+                        </#list>
+                            <#else>
+                            </#if>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        <#else>
+        <br><br>
+              <div class="container">
+                  <div class="container">
+                      <div class="container">
+                          <div class="card horizontal">
+                              <div class="card-stacked">
+                                  <div class="card-content">
+                                      <p class="center-align"><span>No statistics available</span></p>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+        </#if>
     </div>
 </main>
  <#include "footer.ftl">

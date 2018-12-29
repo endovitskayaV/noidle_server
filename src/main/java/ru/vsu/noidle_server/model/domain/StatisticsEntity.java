@@ -2,6 +2,7 @@ package ru.vsu.noidle_server.model.domain;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.jetbrains.annotations.NotNull;
 import ru.vsu.noidle_server.model.StatisticsSubType;
 import ru.vsu.noidle_server.model.StatisticsType;
 import ru.vsu.noidle_server.model.converter.StatisticsSubTypeConverter;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
-public class StatisticsEntity {
+public class StatisticsEntity implements Comparable <StatisticsEntity>{
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -51,4 +52,9 @@ public class StatisticsEntity {
     @ManyToOne
     @JoinColumn(name = "team_id", referencedColumnName = "id")
     private TeamEntity team;
+
+    @Override
+    public int compareTo(@NotNull StatisticsEntity o) {
+        return this.getValue().compareTo(o.getValue());
+    }
 }

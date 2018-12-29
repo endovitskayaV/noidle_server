@@ -11,6 +11,8 @@ public interface StatisticsService {
 
     void save(List<StatisticsDto> statistics, UUID userId, UUID teamId) throws ServiceException;
 
-    Map<String, Long> getAll();
+    Map<String, String> getAll();
+
+    Map<String, String> getKeys();
 
 }

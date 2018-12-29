@@ -8,11 +8,9 @@ import ru.vsu.noidle_server.model.StatisticsSubType;
 import ru.vsu.noidle_server.model.StatisticsType;
 import ru.vsu.noidle_server.model.domain.*;
 import ru.vsu.noidle_server.model.dto.*;
+import ru.vsu.noidle_server.utils.TimeUtils;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Mapper(componentModel = "spring")
 public interface DataMapper {
@@ -85,13 +83,13 @@ public interface DataMapper {
 
     TeamDtoShort toDtoShort(TeamEntity teamEntity);
 
-    default Map<String, Long> toDtosDashboard(List<StatisticsEntity> statistics) {
+    default Map<String, String> toDtosDashboard(List<StatisticsEntity> statistics) {
         if (statistics == null || statistics.isEmpty()) {
             return null;
         }
-        Map<String, Long> dashboard = new HashMap<>(statistics.size());
+        Map<String, String> dashboard = new HashMap<>(statistics.size());
         statistics.forEach(statisticsEntity -> {
-            Map.Entry<String, Long> entry = toDtoDashboard(statisticsEntity);
+            Map.Entry<String, String> entry = toDtoDashboard(statisticsEntity);
             if (entry != null) {
                 dashboard.put(entry.getKey(), entry.getValue());
             }
@@ -100,7 +98,7 @@ public interface DataMapper {
         return dashboard;
     }
 
-    default Map.Entry<String, Long> toDtoDashboard(StatisticsEntity statisticsEntity) {
+    default Map.Entry<String, String> toDtoDashboard(StatisticsEntity statisticsEntity) {
         if (statisticsEntity == null || statisticsEntity.getValue() == null) {
             return null;
         }
@@ -114,8 +112,35 @@ public interface DataMapper {
 
         String extraValue = statisticsEntity.getExtraValue();
         resultType.append(extraValue != null ? extraValue : "");
-        HashMap<String, Long> result = new HashMap<>(1);
-        result.put(resultType.toString(), statisticsEntity.getValue());
-        return (Map.Entry<String, Long>) result.entrySet().toArray()[0];
+        String value = statisticsEntity.getValue().toString();
+        HashMap<String, String> result = new HashMap<>(1);
+
+        if (StatisticsType.TIME.equals(type)) {
+            value = TimeUtils.toPretty(statisticsEntity.getValue());
+        }
+        result.put(resultType.toString(), value);
+        return (Map.Entry<String, String>) result.entrySet().toArray()[0];
+    }
+
+    default Map<String, String> toDtosKeys(List<StatisticsEntity> statisticsEntities) {
+        if (statisticsEntities == null || statisticsEntities.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        HashMap<String, String> result = new HashMap<>(statisticsEntities.size());
+        statisticsEntities.forEach(statisticsEntity -> {
+            if (statisticsEntity != null && statisticsEntity.getValue() != null &&
+                    StatisticsType.SYMBOL.equals(statisticsEntity.getType()) &&
+                    StatisticsSubType.SINGLE_KEY.equals(statisticsEntity.getSubType()) &&
+                    statisticsEntity.getExtraValue() != null &&
+                    statisticsEntity.getValue() != null) {
+
+                String keyName = statisticsEntity.getExtraValue();
+                String value = statisticsEntity.getValue().toString();
+                result.put(keyName, value);
+            }
+        });
+
+        return result;
     }
 }

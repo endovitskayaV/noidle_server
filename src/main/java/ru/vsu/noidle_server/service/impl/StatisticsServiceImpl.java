@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -66,14 +67,42 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public Map<String, Long> getAll() {
+    public Map<String, String> getAll() {
         UserEntity userEntity;
         try {
             userEntity = userService.getEntityByAuth();
         } catch (ServiceException e) {
             return Collections.emptyMap();
         }
+        OffsetDateTime now = OffsetDateTime.now();
         return dataMapper.toDtosDashboard(statisticsRepository
-                .getAllByUserIdAndDate(userEntity.getId(), OffsetDateTime.now()));
+                .getAllByUserIdAndDateGreaterThanEqual(
+                        userEntity.getId(),
+                        OffsetDateTime.of(
+                                now.getYear(), now.getMonth().getValue(), now.getDayOfMonth()-1,
+                                0, 0, 0, 0, now.getOffset()
+                        )
+                ));
+    }
+
+    @Override
+    public Map<String, String> getKeys() {
+        UserEntity userEntity;
+        try {
+            userEntity = userService.getEntityByAuth();
+        } catch (ServiceException e) {
+            return Collections.emptyMap();
+        }
+        OffsetDateTime now = OffsetDateTime.now();
+        return dataMapper.toDtosKeys(statisticsRepository
+                .getAllByUserIdAndDateGreaterThanEqual(
+                        userEntity.getId(),
+                        OffsetDateTime.of(
+                                now.getYear(), now.getMonth().getValue(), now.getDayOfMonth()-1,
+                                0, 0, 0, 0, now.getOffset()
+                        )
+                )
+                .stream().sorted(StatisticsEntity::compareTo).collect(Collectors.toList())
+        );
     }
 }

@@ -11,11 +11,12 @@ import ru.vsu.noidle_server.service.StatisticsService;
 @RequiredArgsConstructor
 @RequestMapping("/dashboard")
 public class DashboardController {
-    private StatisticsService statisticsService;
+    private final StatisticsService statisticsService;
 
     @GetMapping
     public String getAll(ModelMap modelMap) {
         modelMap.addAttribute("statistics", statisticsService.getAll());
+        modelMap.addAttribute("keys", statisticsService.getKeys());
         return "dashboard";
     }
 }
