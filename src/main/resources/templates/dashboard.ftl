@@ -33,7 +33,7 @@
                             <div class="light-blue-text"><i class="material-icons">access_time</i></div>
                             <span>Time</span>
                         </div>
-                        <div class="collapsible-body container">
+                        <div class="collapsible-body">
                             <p><span><i>overall</i>:&emsp;</span><span><b>${statistics["timeper_day"]!"—"}</b></span>
                             </p>
                             <p>
@@ -48,7 +48,7 @@
                             <div class="green-text"><i class="material-icons">play_arrow</i></div>
                             <span>Executions</span>
                         </div>
-                        <div class="collapsible-body container">
+                        <div class="collapsible-body">
                             <p style="display: flex"><i class="green-text material-icons">done</i>
                                 <span><i>successful</i>:&emsp;</span>
                                 <span><b>${statistics["execper_lifesuccessful"]!"—"}</b></span>
@@ -68,7 +68,7 @@
                             <div class="orange-text"><i class="material-icons">text_rotation_none</i></div>
                             <span>Symbols</span>
                         </div>
-                        <div class="collapsible-body container">
+                        <div class="collapsible-body">
                             <p><span><i>today</i>:&emsp;</span><span><b>${statistics["symbolper_day"]!"—"}</b></span>
                             </p>
                             <p>
@@ -83,7 +83,7 @@
                             <div class="green-text"><i class="material-icons">check</i></div>
                             <span>Commits</span>
                         </div>
-                        <div class="collapsible-body container">
+                        <div class="collapsible-body">
                             <p style="display: flex"><i class="green-text material-icons">done</i>
                                 <span><i>successful</i>:&emsp;</span>
                                 <span><b>${statistics["commitper_lifesuccessful"]!"—"}</b></span>
@@ -105,12 +105,12 @@
                         </div>
                         <div class="collapsible-body">
                         <#if keys??>
-                            <table class="highlight centered">
+                            <table class="highlight">
                                 <tbody>
                         <#list keys as name, value>
                         <tr>
-                            <td><i>${name}</i></td>
-                            <td><b>${value}</b></td>
+                            <td class="center-align"><b>${name}</b></td>
+                            <td><i>${value}</i></td>
                         </tr>
                         </#list>
                                 </tbody>
