@@ -30,3 +30,7 @@ function show(link, table, data, flag, type) {
     flag.value = !flag.value;
     table.append(text);
 }
+
+function applyStatisticsFilters() {
+  //  $('.sidenav').sidenav('close');
+}

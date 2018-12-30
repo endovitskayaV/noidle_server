@@ -23,6 +23,18 @@
     });
 </script>
 <script>
+    $(document).ready(function () {
+        $('.sidenav').sidenav();
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        var elem = document.querySelector('.datepicker');
+        var instance = M.Datepicker.init(elem);
+        var today = new Date();
+        instance.defaultDate = new Date();
+        instance.setDefaultDate = true;
+    });
+</script>
+<script>
     var tableType = {
         keys: 1,
         langs: 2
@@ -34,6 +46,44 @@
     <br><br>
     <div class="container">
         <#if statistics??>
+            <div class="row">
+                <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons light-blue-text"
+                                                                               style="margin:0 30px;">more_horiz</i></a>
+
+                <ul id="slide-out" class="sidenav">
+                    <li><p></p></li>
+                    <li><p><a class="subheader">Date</a></p>
+                       <div class="col s10 offset-s1"><input type="text" class="datepicker"></div>
+                    </li>
+                    <li>
+                        <p><a class="subheader">Teams</a></p>
+                        <form action="#">
+                            <div class="col s10 offset-s1">
+                            <p>
+                                <label>
+                                    <input type="radio" class="with-gap" checked/>
+                                    <span>out of team</span>
+                                </label>
+                            </p>
+                            </div>
+                            <div class="col s10 offset-s1">
+                            <p>
+                                <label>
+                                    <input type="radio" class="with-gap"/>
+                                    <span>team:</span>
+                                </label>
+                            </p>
+                            </div>
+                        </form>
+                    </li>
+                    <li><br></li>
+                    <li>
+                        <div class="col s3 offset-s8"><a class="waves-effect waves-light btn-small blue"
+                                                         onclick="applyStatisticsFilters()">Apply</a></div>
+                    </li>
+                </ul>
+
+            </div>
             <div class="row">
                 <ul class="col s6 collapsible popout expandable">
                     <li>
@@ -130,8 +180,8 @@
                             </table>
                             <#if i gt 5>
                             <script>
-                                var showMoreKeys={value:true};
-                                var keys =[];
+                                var showMoreKeys = {value: true};
+                                var keys = [];
                                     <#assign i=1>
                                     <#list keys as name, value>
                                         keys.push({
@@ -142,9 +192,10 @@
                                     </#list>
                             </script>
                             <br>
-                                <a id="show_keys" href="#!" class="center" onclick='show($("#show_keys"),$("#keys_table"), keys, showMoreKeys, tableType.keys)'>
-                                Show more</a>
-                        </#if>
+                                <a id="show_keys" href="#!" class="center"
+                                   onclick='show($("#show_keys"),$("#keys_table"), keys, showMoreKeys, tableType.keys)'>
+                                    Show more</a>
+                            </#if>
                         </#if>
                         </div>
                     </li>
@@ -177,7 +228,7 @@
                                     </tr>
                                     </thead>
 
-                                    <tbody id ="langs_table">
+                                    <tbody id="langs_table">
                                      <#assign i=1>
                                     <#list languages as language>
                                     <tr>
@@ -195,7 +246,7 @@
 
                                   <#if i gt 5>
                             <script>
-                                var showMoreLangs = {value:true};
+                                var showMoreLangs = {value: true};
                                 var langs = [];
                                     <#assign i=1>
                                     <#list languages as language>
