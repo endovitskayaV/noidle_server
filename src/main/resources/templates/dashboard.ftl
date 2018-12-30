@@ -15,6 +15,7 @@
 <!--  Scripts-->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var elems = document.querySelectorAll('.collapsible');

@@ -12,6 +12,11 @@
     <link href="css/custom.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
+<!--  Scripts-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/materialize.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+
  <#include "nav_unauth.ftl">
 <main>
     <div class="section no-pad-bot" id="index-banner">
@@ -55,10 +60,6 @@
 </main>
 
  <#include "footer.ftl">
-
-<!--  Scripts-->
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="js/materialize.js"></script>
 
 </body>
 </html>
