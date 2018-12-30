@@ -21,6 +21,12 @@
         var instances = M.Collapsible.init(elems);
     });
 </script>
+<script>
+    var tableType = {
+        keys: 1,
+        langs: 2
+    };
+</script>
 <script type="text/javascript" src="js/dashboardHandler.js"></script>
  <#include "nav_auth.ftl">
 <main>
@@ -121,6 +127,7 @@
                         </#list>
                                 </tbody>
                             </table>
+                            <#if i gt 5>
                             <script>
                                 var showMore=true;
                                 var keys =[];
@@ -167,16 +174,41 @@
                                     </tr>
                                     </thead>
 
-                                    <tbody>
+                                    <tbody id ="langs_table">
+                                     <#assign i=1>
                                     <#list languages as language>
                                     <tr>
                                         <td><b>${language.languageName}</b></td>
                                         <td><i>${language.time}</i></td>
                                         <td><i>${language.symbols}</i></td>
                                     </tr>
+                                        <#assign i=i+1>
+                                        <#if i gt 5>
+                                            <#break>
+                                        </#if>
                                     </#list>
                                     </tbody>
                                 </table>
+
+                                  <#if i gt 5>
+                            <script>
+                                var showMoreLangs = {value:true};
+                                var langs = [];
+                                    <#assign i=1>
+                                    <#list languages as language>
+                                        langs.push({
+                                            languageName: '${language.languageName}',
+                                            time: '${language.time}',
+                                            symbols: '${language.symbols}'
+                                        });
+                                        <#assign i=i+1>
+                                    </#list>
+                            </script>
+                            <br><a id="show_langs" href="#!" class="center"
+                                   onclick='show($("#show_langs"),$("#langs_table"), langs, showMoreLangs, tableType.langs)'>
+                                      Show more</a>
+                                  </#if>
+
                             <#else>
                             </#if>
                         </div>
