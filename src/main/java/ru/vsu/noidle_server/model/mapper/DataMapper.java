@@ -22,9 +22,8 @@ public interface DataMapper {
 
     @Mapping(source = "statisticsDto.id", target = "id")
     @Mapping(source = "userEntity", target = "user")
-    StatisticsEntity toEntity(StatisticsDto statisticsDto, UserEntity userEntity, @Context CycleAvoidingMappingContext context);
-
-    StatisticsDto toDto(StatisticsEntity statisticsEntity);
+    @Mapping(source = "teamEntity", target = "team")
+    StatisticsEntity toEntity(StatisticsDto statisticsDto, UserEntity userEntity, TeamEntity teamEntity, @Context CycleAvoidingMappingContext context);
 
     @SuppressWarnings(value = "unchecked") //aboutUser.getUserAuthentication().getDetails()) - Object
     default UserEntity toEntity(OAuth2Authentication user) {
@@ -37,14 +36,6 @@ public interface DataMapper {
         //TODO: check if assigning null to map annuls relationships
         return new UserEntity(getEmail(user), getName(details), photo);
     }
-
-//    @SuppressWarnings(value = "unchecked") //aboutUser.getUserAuthentication().getDetails()) - Object
-//    default UserDto toDto(OAuth2Authentication aboutUser) {
-//        LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) aboutUser.getUserAuthentication().getDetails());
-//        String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
-//
-//        return new UserDto(details.get("email"), getName(details), photo, null);
-//    }
 
     @SuppressWarnings(value = "unchecked") //aboutUser.getUserAuthentication().getDetails()) - Object
     default String getEmail(OAuth2Authentication user) {

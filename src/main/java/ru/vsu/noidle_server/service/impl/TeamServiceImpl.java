@@ -33,7 +33,7 @@ public class TeamServiceImpl implements TeamService {
     public TeamDto add(NewTeamDto teamDto) throws ServiceException {
         TeamEntity teamEntity;
         try {
-            UserEntity userEntity=userService.getEntityByAuth();
+            UserEntity userEntity = userService.getEntityByAuth();
             teamEntity = new TeamEntity(teamDto.getName(), OffsetDateTime.now());
             teamEntity = teamRepository.save(teamEntity);
             userEntity.addTeam(teamEntity);
@@ -60,7 +60,10 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamEntity getEntityById(UUID id) throws ServiceException {
-        TeamEntity team = teamRepository.findById(id).orElse(null);
+        TeamEntity team=null;
+        if (id != null) {
+            team = teamRepository.findById(id).orElse(null);
+        }
         if (team == null) {
             log.info("Unable to find team with id " + id);
             throw new ServiceException("Unable to find team with id " + id);

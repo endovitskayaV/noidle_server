@@ -28,6 +28,12 @@ alter table statistics
   add column
   team_id uuid references team (id);
 
+alter table statistics
+  drop constraint unique_statistics;
+
+alter table statistics
+  add constraint unique_statistics unique (type, sub_type, extra_value, user_id, team_id);
+
 alter table notification
   add column
   team_id uuid references team (id);

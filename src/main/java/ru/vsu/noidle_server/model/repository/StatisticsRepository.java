@@ -13,7 +13,7 @@ import java.util.UUID;
 @Repository
 public interface StatisticsRepository extends JpaRepository<StatisticsEntity, UUID> {
 
-    StatisticsEntity getByTypeAndSubTypeAndExtraValueAndUserId(StatisticsType statisticsType, StatisticsSubType statisticsSubType, String extraValue, UUID userId);
+    StatisticsEntity getByTypeAndSubTypeAndExtraValueAndUserIdAndTeamId(StatisticsType statisticsType, StatisticsSubType statisticsSubType, String extraValue, UUID userId, UUID teamId);
 
     List<StatisticsEntity> getAllByUserIdAndDateGreaterThanEqual(UUID userId, OffsetDateTime date);
 

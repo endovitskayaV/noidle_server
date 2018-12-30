@@ -73,7 +73,7 @@ public class NotificationServiceImpl implements NotificationService {
         log.info("Set user {} notifications {}", user, notifications);
 
         //team
-        if (!teamId.equals(Constants.NO_PROJECT_UUID)) { // statistics for teams
+        if (teamId!=null) { // statistics for teams
             doSetTeamNotifications(teamService.getEntityById(teamId));
         }
     }
@@ -126,8 +126,8 @@ public class NotificationServiceImpl implements NotificationService {
                     //set values
                     requirements.forEach(requirement -> {
                         team.getUsers().forEach(teamMember -> {
-                            StatisticsEntity statistics = statisticsRepository.getByTypeAndSubTypeAndExtraValueAndUserId(
-                                    requirement.getStatisticsType(), requirement.getStatisticsSubType(), requirement.getExtraValue(), teamMember.getId());
+                            StatisticsEntity statistics = statisticsRepository.getByTypeAndSubTypeAndExtraValueAndUserIdAndTeamId(
+                                    requirement.getStatisticsType(), requirement.getStatisticsSubType(), requirement.getExtraValue(), teamMember.getId(), team.getId());
                             if (statistics != null && statistics.getValue() != null) {
                                 rates.put(teamMember.getId(), new TeamRateModel(requirement.getId(), statistics.getValue()));
                             }

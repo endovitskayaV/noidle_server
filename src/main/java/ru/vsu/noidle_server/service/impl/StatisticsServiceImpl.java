@@ -3,16 +3,19 @@ package ru.vsu.noidle_server.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.vsu.noidle_server.Constants;
 import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.StatisticsSubType;
 import ru.vsu.noidle_server.model.StatisticsType;
 import ru.vsu.noidle_server.model.domain.StatisticsEntity;
+import ru.vsu.noidle_server.model.domain.TeamEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
 import ru.vsu.noidle_server.model.dto.LanguageStatisticsDto;
 import ru.vsu.noidle_server.model.dto.StatisticsDto;
 import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
 import ru.vsu.noidle_server.model.mapper.DataMapper;
 import ru.vsu.noidle_server.model.repository.StatisticsRepository;
+import ru.vsu.noidle_server.model.repository.TeamRepository;
 import ru.vsu.noidle_server.service.NotificationService;
 import ru.vsu.noidle_server.service.StatisticsService;
 import ru.vsu.noidle_server.service.UserService;
@@ -26,6 +29,7 @@ import java.util.*;
 public class StatisticsServiceImpl implements StatisticsService {
 
     private final StatisticsRepository statisticsRepository;
+    private final TeamRepository teamRepository;
     private final NotificationService notificationService;
     private final UserService userService;
     private final DataMapper dataMapper;
@@ -37,11 +41,12 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         statistics.forEach(statisticsDto -> {
 
-            StatisticsEntity dbEntity = statisticsRepository.getByTypeAndSubTypeAndExtraValueAndUserId(
+            StatisticsEntity dbEntity = statisticsRepository.getByTypeAndSubTypeAndExtraValueAndUserIdAndTeamId(
                     statisticsDto.getType(),
                     statisticsDto.getSubType(),
                     statisticsDto.getExtraValue(),
-                    userId);
+                    userId,
+                    teamId);
 
             boolean canSave;
 
@@ -55,8 +60,9 @@ public class StatisticsServiceImpl implements StatisticsService {
             }
 
             if (canSave) {
-                StatisticsEntity statisticsEntity = statisticsRepository.save(
-                        dataMapper.toEntity(statisticsDto, user, new CycleAvoidingMappingContext())
+                TeamEntity teamEntity = teamId == null ? null :  teamRepository.findById(teamId).orElse(null);
+                        StatisticsEntity statisticsEntity = statisticsRepository.save(
+                        dataMapper.toEntity(statisticsDto, user, teamEntity, new CycleAvoidingMappingContext())
                 );
                 log.info("Saved {}", statisticsEntity);
             }
