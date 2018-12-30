@@ -130,7 +130,7 @@
                             </table>
                             <#if i gt 5>
                             <script>
-                                var showMore=true;
+                                var showMoreKeys={value:true};
                                 var keys =[];
                                     <#assign i=1>
                                     <#list keys as name, value>
@@ -141,8 +141,10 @@
                                         <#assign i=i+1>
                                     </#list>
                             </script>
-                            <br><a id="show" href="#!" class="center" onclick="showKeys(keys)">Show more</a>
-                        <#else>
+                            <br>
+                                <a id="show_keys" href="#!" class="center" onclick='show($("#show_keys"),$("#keys_table"), keys, showMoreKeys, tableType.keys)'>
+                                Show more</a>
+                        </#if>
                         </#if>
                         </div>
                     </li>
@@ -206,11 +208,9 @@
                                     </#list>
                             </script>
                             <br><a id="show_langs" href="#!" class="center"
-                                   onclick='show($("#show_langs"),$("#langs_table"), langs, showMoreLangs, tableType.langs)'>
+                                   onclick='show($("#show_langs"), $("#langs_table"), langs, showMoreLangs, tableType.langs)'>
                                       Show more</a>
                                   </#if>
-
-                            <#else>
                             </#if>
                         </div>
                     </li>
