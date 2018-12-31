@@ -74,7 +74,7 @@
     </div>
 </div>
 
- <#include "footer.ftl">
+ <#include "footer_unauth.ftl">
 
 </body>
 </html>

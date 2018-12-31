@@ -40,7 +40,7 @@
     </div>
 </main>
 <br><br>
- <#include "footer.ftl">
+ <#include "footer_auth.ftl">
 
 <script>
     $('#key').click(function () {

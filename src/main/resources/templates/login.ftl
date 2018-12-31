@@ -59,7 +59,7 @@
     </div>
 </main>
 
- <#include "footer.ftl">
+ <#include "footer_unauth.ftl">
 
 </body>
 </html>

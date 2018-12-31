@@ -81,5 +81,9 @@ tr {
     padding-right: 32px !important;
 }
 
-
-
+.small-container{
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-right: auto;
+    margin-left: auto;
+}

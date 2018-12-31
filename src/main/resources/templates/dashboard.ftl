@@ -267,7 +267,7 @@
         </#if>
     </div>
 </main>
- <#include "footer.ftl">
+ <#include "footer_auth.ftl">
 
 
 </body>
