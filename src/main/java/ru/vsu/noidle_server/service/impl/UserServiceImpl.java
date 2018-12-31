@@ -130,12 +130,4 @@ public class UserServiceImpl implements UserService {
         userEntity.removeTeam(teamEntity);
         userRepository.save(userEntity);
     }
-
-    @Override
-    public List<TeamDto> getTeams() throws ServiceException {
-        return getEntityByAuth()
-                .getTeams().stream()
-                .map(teamEntity -> dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext()))
-                .collect(Collectors.toList());
-    }
 }

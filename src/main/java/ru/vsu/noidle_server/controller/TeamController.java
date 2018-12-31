@@ -38,7 +38,7 @@ public class TeamController {
     @GetMapping
     public String getAll(ModelMap modelMap) {
         try {
-            modelMap.addAttribute("teams", userService.getTeams());
+            modelMap.addAttribute("teams", teamService.getAll());
         } catch (ServiceException e) {
             modelMap.addAttribute("teams", Collections.EMPTY_LIST);
         }

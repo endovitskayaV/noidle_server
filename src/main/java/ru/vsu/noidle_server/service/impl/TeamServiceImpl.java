@@ -18,7 +18,9 @@ import ru.vsu.noidle_server.service.TeamService;
 import ru.vsu.noidle_server.service.UserService;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -92,5 +94,13 @@ public class TeamServiceImpl implements TeamService {
     public void delete(UUID id) throws ServiceException {
         TeamEntity team = getEntityById(id);
         teamRepository.delete(team);
+    }
+
+    @Override
+    public List<TeamDto> getAll() throws ServiceException {
+        return userService.getEntityByAuth()
+                .getTeams().stream()
+                .map(teamEntity -> dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext()))
+                .collect(Collectors.toList());
     }
 }

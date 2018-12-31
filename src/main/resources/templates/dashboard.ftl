@@ -16,64 +16,46 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
 <script type="text/javascript" src="js/base.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var elems = document.querySelectorAll('.collapsible');
-        var instances = M.Collapsible.init(elems);
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $('.sidenav').sidenav();
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-        var elem = document.querySelector('.datepicker');
-        var instance = M.Datepicker.init(elem);
-        var today = new Date();
-        instance.defaultDate = new Date();
-        instance.setDefaultDate = true;
-    });
-</script>
-<script>
-    var tableType = {
-        keys: 1,
-        langs: 2
-    };
-</script>
 <script type="text/javascript" src="js/dashboardHandler.js"></script>
  <#include "nav_auth.ftl">
 <main>
     <br><br>
-    <div class="container">
+    <div class="container" id="main-container">
         <#if statistics??>
             <div class="row">
                 <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons light-blue-text"
                                                                                style="margin:0 30px;">more_horiz</i></a>
 
                 <ul id="slide-out" class="sidenav">
-                    <li><p></p></li>
-                    <li><p><a class="subheader">Date</a></p>
-                       <div class="col s10 offset-s1"><input type="text" class="datepicker"></div>
+                    <li>
+                        <a class="subheader">Date</a>
+                        <div class="nav-content"><input id="date-input" type="text" class="datepicker"></div>
                     </li>
                     <li>
-                        <p><a class="subheader">Teams</a></p>
-                        <form action="#">
-                            <div class="col s10 offset-s1">
+                        <a class="subheader" style="padding-top: 32px; padding-bottom: 42px">Team</a>
+                        <form action="#" class="nav-content">
                             <p>
                                 <label>
-                                    <input type="radio" class="with-gap" checked/>
+                                    <input name="groupMain" type="radio" checked onclick="disableTeams()"/>
                                     <span>out of team</span>
                                 </label>
                             </p>
-                            </div>
-                            <div class="col s10 offset-s1">
                             <p>
                                 <label>
-                                    <input type="radio" class="with-gap"/>
-                                    <span>team:</span>
+                                    <input name="groupMain" type="radio" id="teamRadio" onclick="enableTeams()"/>
+                                    <span>teams:</span>
                                 </label>
                             </p>
-                            </div>
+                            <div class="nav-content" style="padding-left: 32px">
+                                <#list teams as team>
+                                <p>
+                                    <label>
+                                        <input name="groupTeam" type="radio" class="with-gap" disabled="disabled"/>
+                                        <span>${team.name}</span>
+                                    </label>
+                                </p>
+                                </#list>
+                            </form>
                         </form>
                     </li>
                     <li><br></li>
