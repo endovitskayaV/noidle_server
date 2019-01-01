@@ -3,7 +3,6 @@ package ru.vsu.noidle_server.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.vsu.noidle_server.Constants;
 import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.StatisticsSubType;
 import ru.vsu.noidle_server.model.StatisticsType;
@@ -72,64 +71,79 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public Map<String, String> getAll() {
+    public Map<String, String> getAll(OffsetDateTime date, UUID teamId) {
         UserEntity userEntity;
         try {
             userEntity = userService.getEntityByAuth();
         } catch (ServiceException e) {
             return Collections.emptyMap();
         }
-        OffsetDateTime now = OffsetDateTime.now();
+
+        if (date == null) {
+            return Collections.emptyMap();
+        }
+
         return dataMapper.toDtosDashboard(statisticsRepository
-                .getAllByUserIdAndDateGreaterThanEqual(
+                .getAllByUserIdAndDateGreaterThanEqualAndTeamId(
                         userEntity.getId(),
                         OffsetDateTime.of(
-                                now.getYear(), now.getMonth().getValue(), now.getDayOfMonth() - 1,
-                                0, 0, 0, 0, now.getOffset()
-                        )
+                                date.getYear(), date.getMonth().getValue(), date.getDayOfMonth(),
+                                0, 0, 0, 0, date.getOffset()
+                        ),
+                        teamId
                 ));
     }
 
     @Override
-    public Map<String, Long> getKeys() {
+    public Map<String, Long> getKeys(OffsetDateTime date, UUID teamId) {
         UserEntity userEntity;
         try {
             userEntity = userService.getEntityByAuth();
         } catch (ServiceException e) {
             return Collections.emptyMap();
         }
-        OffsetDateTime now = OffsetDateTime.now();
+
+        if (date == null) {
+            return Collections.emptyMap();
+        }
+
         return dataMapper.toDtosKeys(statisticsRepository
-                .getAllByUserIdAndTypeAndSubTypeAndDateGreaterThanEqual(
+                .getAllByUserIdAndTypeAndSubTypeAndDateGreaterThanEqualAndTeamId(
                         userEntity.getId(),
                         StatisticsType.SYMBOL,
                         StatisticsSubType.SINGLE_KEY,
                         OffsetDateTime.of(
-                                now.getYear(), now.getMonth().getValue(), now.getDayOfMonth() - 1,
-                                0, 0, 0, 0, now.getOffset()
-                        )
+                                date.getYear(), date.getMonth().getValue(), date.getDayOfMonth(),
+                                0, 0, 0, 0, date.getOffset()
+                        ),
+                        teamId
                 )
         );
     }
 
     @Override
-    public Set<LanguageStatisticsDto> getLanguages() {
+    public Set<LanguageStatisticsDto> getLanguages(OffsetDateTime date, UUID teamId) {
         UserEntity userEntity;
         try {
             userEntity = userService.getEntityByAuth();
         } catch (ServiceException e) {
             return Collections.emptySet();
         }
-        OffsetDateTime now = OffsetDateTime.now();
+
+        if (date == null) {
+            return Collections.emptySet();
+        }
+
         return dataMapper.toDtosLanguages(statisticsRepository
-                .getAllByUserIdAndTypeInAndSubTypeAndDateGreaterThanEqual(
+                .getAllByUserIdAndTypeInAndSubTypeAndDateGreaterThanEqualAndTeamId(
                         userEntity.getId(),
                         new StatisticsType[]{StatisticsType.LANG_TIME, StatisticsType.LANG_SYMBOL},
                         StatisticsSubType.PER_DAY,
                         OffsetDateTime.of(
-                                now.getYear(), now.getMonth().getValue(), now.getDayOfMonth() - 1,
-                                0, 0, 0, 0, now.getOffset()
-                        )
+                                date.getYear(), date.getMonth().getValue(), date.getDayOfMonth(),
+                                0, 0, 0, 0, date.getOffset()
+                        ),
+                        teamId
                 )
         );
     }

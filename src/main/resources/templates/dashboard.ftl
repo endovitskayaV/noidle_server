@@ -16,12 +16,13 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
 <script type="text/javascript" src="js/base.js"></script>
+<script> var selectedDate="${selectedDate}"</script>
 <script type="text/javascript" src="js/dashboardHandler.js"></script>
  <#include "nav_auth.ftl">
 <main>
     <br><br>
     <div class="container" id="main-container">
-        <#if statistics??>
+
             <div class="row">
                 <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons light-blue-text"
                                                                                style="margin:0 30px;">more_horiz</i></a>
@@ -34,28 +35,63 @@
                     <li>
                         <a class="subheader" style="padding-top: 32px; padding-bottom: 42px">Team</a>
                         <form action="#" class="nav-content">
+                            <#if selectedTeamId??>
+                              <p>
+                                  <label>
+                                      <input name="groupMain" type="radio" onclick="disableTeams()"/>
+                                      <span>out of team</span>
+                                  </label>
+                              </p>
                             <p>
                                 <label>
-                                    <input name="groupMain" type="radio" checked onclick="disableTeams()"/>
-                                    <span>out of team</span>
+                                    <input name="groupMain" type="radio" id="teamRadio" checked
+                                           onclick="enableTeams()"/>
+                                    <span>teams:</span>
                                 </label>
                             </p>
+                            <#else>
+                               <p>
+                                   <label>
+                                       <input name="groupMain" type="radio" checked onclick="disableTeams()"/>
+                                       <span>out of team</span>
+                                   </label>
+                               </p>
                             <p>
                                 <label>
                                     <input name="groupMain" type="radio" id="teamRadio" onclick="enableTeams()"/>
                                     <span>teams:</span>
                                 </label>
                             </p>
+                            </#if>
+
                             <div class="nav-content" style="padding-left: 32px">
                                 <#list teams as team>
-                                <p>
-                                    <label>
-                                        <input name="groupTeam" type="radio" class="with-gap" disabled="disabled"/>
-                                        <span>${team.name}</span>
-                                    </label>
-                                </p>
+                                     <#if selectedTeamId??>
+
+                                         <#if team.id==selectedTeamId>
+                                     <p>
+                                         <label>
+                                             <input name="groupTeam" type="radio" class="with-gap" checked id="${team.id}"/>
+                                             <span>${team.name}</span>
+                                         </label>
+                                     </p>
+                                         <#else>
+                                        <p>
+                                            <label>
+                                                <input name="groupTeam" type="radio" class="with-gap" id="${team.id}"/>
+                                                <span>${team.name}</span>
+                                            </label>
+                                        </p>
+                                         </#if>
+                                     <#else>
+                                       <p>
+                                           <label>
+                                               <input name="groupTeam" type="radio" class="with-gap" disabled="disabled" id="${team.id}"/>
+                                               <span>${team.name}</span>
+                                           </label>
+                                       </p>
+                                     </#if>
                                 </#list>
-                            </form>
                         </form>
                     </li>
                     <li><br></li>
@@ -66,6 +102,8 @@
                 </ul>
 
             </div>
+
+         <#if statistics?? && statistics?size gt 0>
             <div class="row">
                 <ul class="col s6 collapsible popout expandable">
                     <li>
@@ -191,7 +229,7 @@
                             <span>Languages</span>
                         </div>
                         <div class="collapsible-body">
-                            <#if languages??>
+                            <#if languages?? && languages?size gt 0>
 
                                 <table class="highlight centered">
                                     <thead>
@@ -250,7 +288,6 @@
                 </ul>
             </div>
         <#else>
-        <br><br>
               <div class="container">
                   <div class="container">
                       <div class="container">

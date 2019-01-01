@@ -76,14 +76,26 @@ tr {
     line-height: 0px !important;
 }
 
-.nav-content{
+.nav-content {
     padding-left: 32px !important;
     padding-right: 32px !important;
 }
 
-.small-container{
+.small-container {
     padding-right: 5px;
     padding-left: 5px;
     margin-right: auto;
     margin-left: auto;
+}
+
+.dropdown-content li > a, .dropdown-content li > span {
+    color: #03a9f4 !important;
+}
+
+.month-prev:active, .month-next:active {
+    background-color: #ff9800 !important;
+}
+
+.datepicker-table td.is-today {
+    color: #ff9800 !important;
 }

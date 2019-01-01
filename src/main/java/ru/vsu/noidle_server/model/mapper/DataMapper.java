@@ -81,7 +81,7 @@ public interface DataMapper {
 
     default Map<String, String> toDtosDashboard(List<StatisticsEntity> statistics) {
         if (statistics == null || statistics.isEmpty()) {
-            return null;
+            return Collections.emptyMap();
         }
         Map<String, String> dashboard = new HashMap<>(statistics.size());
         statistics.forEach(statisticsEntity -> {

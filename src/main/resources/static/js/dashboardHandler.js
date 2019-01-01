@@ -26,11 +26,11 @@ document.addEventListener('DOMContentLoaded', function () {
         format: 'd.m.yyyy'
     });
 
-    var today = new Date();
-    var d = today.getDate();
-    var m = today.getMonth() + 1;
-    var y = today.getFullYear();
-    $('#date-input')[0].value = d + "." + m + "." + y;
+    // var today = new Date();
+    // var d = today.getDate();
+    // var m = today.getMonth() + 1;
+    // var y = today.getFullYear();
+    $('#date-input')[0].value = selectedDate; //d + "." + m + "." + y;
 });
 
 function show(link, table, data, flag, type) {
@@ -67,7 +67,19 @@ function show(link, table, data, flag, type) {
 }
 
 function applyStatisticsFilters() {
-    //  $('.sidenav').sidenav('close');
+    var teamQueryString = "";
+    var teamId = "";
+    var r=$("#teamRadio");
+    if ($("#teamRadio")[0].checked) {
+        var teamRadios = $('input[name="groupTeam"]');
+        $.each(teamRadios, function (index, value) {
+            if (value.checked) {
+                teamQueryString = "&teamId=" + value.id;
+            }
+        });
+    }
+
+    window.location.href = '/dashboard?date=' + $('#date-input')[0].value + teamQueryString;
 }
 
 function enableTeams() {
@@ -79,12 +91,15 @@ function disableTeams() {
 }
 
 function radioHandler(checked) {
-    var myArray = $('input[name="groupTeam"]');
-    $.each(myArray, function (index, value) {
-        var text = "<input name=\"groupTeam\" type=\"radio\" class=\"with-gap\"";
+    var teamRadios = $('input[name="groupTeam"]');
+    $.each(teamRadios, function (index, value) {
+        var text = "<input name=\"groupTeam\" type=\"radio\" class=\"with-gap\" id=\""+value.id+"\"";
         if (!checked) {
-            text += "disabled=\"disabled\"/>";
+            text += " disabled=\"disabled\"/>";
         } else {
+            if (index===0){
+                text += " checked";
+            }
             text += "/>";
         }
         value.outerHTML = text;
