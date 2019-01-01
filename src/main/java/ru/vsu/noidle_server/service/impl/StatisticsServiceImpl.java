@@ -32,6 +32,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final NotificationService notificationService;
     private final UserService userService;
     private final DataMapper dataMapper;
+    private final List<StatisticsSubType> perLifeSubTypes = Arrays.asList(StatisticsSubType.PER_LIFE, StatisticsSubType.CONTINUOUS_PER_LIFE);
 
     @Override
     public void save(List<StatisticsDto> statistics, UUID userId, UUID teamId) throws ServiceException {
@@ -52,15 +53,19 @@ public class StatisticsServiceImpl implements StatisticsService {
             if (dbEntity != null) { //not new statistics
                 statisticsDto.setId(dbEntity.getId());
 
-                canSave = (dbEntity.getDate().isBefore(statisticsDto.getDate())) &&
-                        (dbEntity.getValue() < statisticsDto.getValue());
+                if (perLifeSubTypes.contains(statisticsDto.getSubType())) {
+                    canSave = (dbEntity.getValue() < statisticsDto.getValue());
+                } else {
+                    canSave = (dbEntity.getDate().isBefore(statisticsDto.getDate())) &&
+                            (dbEntity.getValue() < statisticsDto.getValue());
+                }
             } else { //new statistics
                 canSave = true;
             }
 
             if (canSave) {
-                TeamEntity teamEntity = teamId == null ? null :  teamRepository.findById(teamId).orElse(null);
-                        StatisticsEntity statisticsEntity = statisticsRepository.save(
+                TeamEntity teamEntity = teamId == null ? null : teamRepository.findById(teamId).orElse(null);
+                StatisticsEntity statisticsEntity = statisticsRepository.save(
                         dataMapper.toEntity(statisticsDto, user, teamEntity, new CycleAvoidingMappingContext())
                 );
                 log.info("Saved {}", statisticsEntity);
