@@ -79,19 +79,23 @@ public interface DataMapper {
 
     TeamDtoShort toDtoShort(TeamEntity teamEntity);
 
-    default Map<String, String> toDtosDashboard(List<StatisticsEntity> statistics) {
+    default Map<String, String> toDtosDashboard(List<?> statistics) {
         if (statistics == null || statistics.isEmpty()) {
             return Collections.emptyMap();
         }
-        Map<String, String> dashboard = new HashMap<>(statistics.size());
-        statistics.forEach(statisticsEntity -> {
-            Map.Entry<String, String> entry = toDtoDashboard(statisticsEntity);
-            if (entry != null) {
-                dashboard.put(entry.getKey(), entry.getValue());
-            }
-        });
-
-        return dashboard;
+        return Collections.emptyMap();
+//        if (statistics == null || statistics.isEmpty()) {
+//            return Collections.emptyMap();
+//        }
+//        Map<String, String> dashboard = new HashMap<>(statistics.size());
+//        statistics.forEach(statisticsEntity -> {
+//            Map.Entry<String, String> entry = toDtoDashboard(statisticsEntity);
+//            if (entry != null) {
+//                dashboard.put(entry.getKey(), entry.getValue());
+//            }
+//        });
+//
+//        return dashboard;
     }
 
     default Map.Entry<String, String> toDtoDashboard(StatisticsEntity statisticsEntity) {

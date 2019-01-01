@@ -2,6 +2,7 @@ package ru.vsu.noidle_server.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.StatisticsSubType;
@@ -155,5 +156,41 @@ public class StatisticsServiceImpl implements StatisticsService {
                                         teamId
                                 )
         );
+    }
+
+    @Override
+    public Map<String, String> getAll(@NotNull OffsetDateTime startDate, @NotNull OffsetDateTime endDate, UUID teamId) {
+        UserEntity userEntity;
+        try {
+            userEntity = userService.getEntityByAuth();
+        } catch (ServiceException e) {
+            return Collections.emptyMap();
+        }
+
+        return dataMapper.toDtosDashboard(
+                        statisticsRepository.getAllByUserIdAndSubTypeInAndDateBetweenAndTeamId(
+                                userEntity.getId(),
+                                new String[]{StatisticsSubType.PER_DAY.getShortcut(), StatisticsSubType.CONTINUOUS_PER_DAY.getShortcut()},
+                                OffsetDateTime.of(
+                                        startDate.getYear(),startDate.getMonth().getValue(),startDate.getDayOfMonth(),
+                                        0, 0, 0, 0, startDate.getOffset()
+                                ),
+                                OffsetDateTime.of(
+                                        endDate.getYear(), endDate.getMonth().getValue(), endDate.getDayOfMonth(),
+                                        23, 59, 59, 999999999, endDate.getOffset()
+                                ),
+                                teamId
+                        )
+        );
+    }
+
+    @Override
+    public Map<String, Long> getKeys(@NotNull OffsetDateTime startDate, @NotNull OffsetDateTime endDate, UUID teamId) {
+        return null;
+    }
+
+    @Override
+    public Set<LanguageStatisticsDto> getLanguages(@NotNull OffsetDateTime startDate, @NotNull OffsetDateTime endDate, UUID teamId) {
+        return null;
     }
 }
