@@ -26,11 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         format: 'd.m.yyyy'
     });
 
-    // var today = new Date();
-    // var d = today.getDate();
-    // var m = today.getMonth() + 1;
-    // var y = today.getFullYear();
-    $('#date-input')[0].value = selectedDate; //d + "." + m + "." + y;
+    $('#date-input')[0].value = selectedDate;
 });
 
 function show(link, table, data, flag, type) {
@@ -67,19 +63,26 @@ function show(link, table, data, flag, type) {
 }
 
 function applyStatisticsFilters() {
+    var dateQueryString = "";
+    if ($("#date-picker-radio")[0].checked){
+        dateQueryString='?date='+ $('#date-input')[0].value;
+    }
     var teamQueryString = "";
-    var teamId = "";
-    var r=$("#teamRadio");
     if ($("#teamRadio")[0].checked) {
         var teamRadios = $('input[name="groupTeam"]');
         $.each(teamRadios, function (index, value) {
             if (value.checked) {
-                teamQueryString = "&teamId=" + value.id;
+                if (dateQueryString===""){
+                    teamQueryString="?"
+                }else{
+                    teamQueryString="&"
+                }
+                teamQueryString += "teamId=" + value.id;
             }
         });
     }
 
-    window.location.href = '/dashboard?date=' + $('#date-input')[0].value + teamQueryString;
+    window.location.href = '/dashboard'+dateQueryString+ teamQueryString;
 }
 
 function enableTeams() {
@@ -93,15 +96,23 @@ function disableTeams() {
 function radioHandler(checked) {
     var teamRadios = $('input[name="groupTeam"]');
     $.each(teamRadios, function (index, value) {
-        var text = "<input name=\"groupTeam\" type=\"radio\" class=\"with-gap\" id=\""+value.id+"\"";
+        var text = "<input name=\"groupTeam\" type=\"radio\" class=\"with-gap\" id=\"" + value.id + "\"";
         if (!checked) {
             text += " disabled=\"disabled\"/>";
         } else {
-            if (index===0){
+            if (index === 0) {
                 text += " checked";
             }
             text += "/>";
         }
         value.outerHTML = text;
     });
+}
+
+function enableDatePicker() {
+    $("#date-input").removeAttr("disabled");
+}
+
+function disableDatePicker() {
+    $("#date-input").attr("disabled", "disabled");
 }

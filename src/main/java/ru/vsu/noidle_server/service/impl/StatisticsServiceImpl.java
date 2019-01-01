@@ -32,7 +32,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final NotificationService notificationService;
     private final UserService userService;
     private final DataMapper dataMapper;
-    private final List<StatisticsSubType> perLifeSubTypes = Arrays.asList(StatisticsSubType.PER_LIFE, StatisticsSubType.CONTINUOUS_PER_LIFE);
+    private final List<StatisticsSubType> perLifeSubTypes = Arrays.asList(StatisticsSubType.PER_LIFE, StatisticsSubType.CONTINUOUS_PER_LIFE, StatisticsSubType.SINGLE_KEY);
 
     @Override
     public void save(List<StatisticsDto> statistics, UUID userId, UUID teamId) throws ServiceException {
@@ -84,19 +84,23 @@ public class StatisticsServiceImpl implements StatisticsService {
             return Collections.emptyMap();
         }
 
-        if (date == null) {
-            return Collections.emptyMap();
-        }
-
-        return dataMapper.toDtosDashboard(statisticsRepository
-                .getAllByUserIdAndDateGreaterThanEqualAndTeamId(
-                        userEntity.getId(),
-                        OffsetDateTime.of(
-                                date.getYear(), date.getMonth().getValue(), date.getDayOfMonth(),
-                                0, 0, 0, 0, date.getOffset()
-                        ),
-                        teamId
-                ));
+        return dataMapper.toDtosDashboard(
+                date == null ?
+                        statisticsRepository.getAllByUserIdAndSubTypeInAndTeamId(
+                                userEntity.getId(),
+                                new StatisticsSubType[]{StatisticsSubType.PER_LIFE, StatisticsSubType.CONTINUOUS_PER_LIFE, StatisticsSubType.SINGLE_KEY},
+                                teamId
+                        ) :
+                        statisticsRepository.getAllByUserIdAndSubTypeInAndDateGreaterThanEqualAndTeamId(
+                                userEntity.getId(),
+                                new StatisticsSubType[]{StatisticsSubType.PER_DAY, StatisticsSubType.CONTINUOUS_PER_DAY},
+                                OffsetDateTime.of(
+                                        date.getYear(), date.getMonth().getValue(), date.getDayOfMonth(),
+                                        0, 0, 0, 0, date.getOffset()
+                                ),
+                                teamId
+                        )
+        );
     }
 
     @Override
@@ -108,21 +112,16 @@ public class StatisticsServiceImpl implements StatisticsService {
             return Collections.emptyMap();
         }
 
-        if (date == null) {
-            return Collections.emptyMap();
-        }
-
-        return dataMapper.toDtosKeys(statisticsRepository
-                .getAllByUserIdAndTypeAndSubTypeAndDateGreaterThanEqualAndTeamId(
-                        userEntity.getId(),
-                        StatisticsType.SYMBOL,
-                        StatisticsSubType.SINGLE_KEY,
-                        OffsetDateTime.of(
-                                date.getYear(), date.getMonth().getValue(), date.getDayOfMonth(),
-                                0, 0, 0, 0, date.getOffset()
-                        ),
-                        teamId
-                )
+        return dataMapper.toDtosKeys(
+                date == null ?
+                        statisticsRepository
+                                .getAllByUserIdAndTypeAndSubTypeAndTeamId(
+                                        userEntity.getId(),
+                                        StatisticsType.SYMBOL,
+                                        StatisticsSubType.SINGLE_KEY,
+                                        teamId
+                                ) :
+                        null
         );
     }
 
@@ -135,21 +134,26 @@ public class StatisticsServiceImpl implements StatisticsService {
             return Collections.emptySet();
         }
 
-        if (date == null) {
-            return Collections.emptySet();
-        }
 
-        return dataMapper.toDtosLanguages(statisticsRepository
-                .getAllByUserIdAndTypeInAndSubTypeAndDateGreaterThanEqualAndTeamId(
-                        userEntity.getId(),
-                        new StatisticsType[]{StatisticsType.LANG_TIME, StatisticsType.LANG_SYMBOL},
-                        StatisticsSubType.PER_DAY,
-                        OffsetDateTime.of(
-                                date.getYear(), date.getMonth().getValue(), date.getDayOfMonth(),
-                                0, 0, 0, 0, date.getOffset()
-                        ),
-                        teamId
-                )
+        return dataMapper.toDtosLanguages(
+                date == null ?
+                        statisticsRepository.getAllByUserIdAndTypeInAndSubTypeAndTeamId(
+                                userEntity.getId(),
+                                new StatisticsType[]{StatisticsType.LANG_TIME, StatisticsType.LANG_SYMBOL},
+                                StatisticsSubType.PER_LIFE,
+                                teamId
+                        ) :
+                        statisticsRepository
+                                .getAllByUserIdAndTypeInAndSubTypeAndDateGreaterThanEqualAndTeamId(
+                                        userEntity.getId(),
+                                        new StatisticsType[]{StatisticsType.LANG_TIME, StatisticsType.LANG_SYMBOL},
+                                        StatisticsSubType.PER_DAY,
+                                        OffsetDateTime.of(
+                                                date.getYear(), date.getMonth().getValue(), date.getDayOfMonth(),
+                                                0, 0, 0, 0, date.getOffset()
+                                        ),
+                                        teamId
+                                )
         );
     }
 }

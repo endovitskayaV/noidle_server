@@ -29,9 +29,18 @@ public class DashboardController {
                          @RequestParam(name = "teamId", required = false) UUID teamId,
                          ModelMap modelMap) {
         OffsetDateTime realDate = TimeUtils.toOffsetDateTime(date);
+        String outputDate;
+        if (date == null) {
+            modelMap.addAttribute("overallSelected", true);
+            outputDate = TimeUtils.toDMYYYFormat(OffsetDateTime.now());
+        } else if (realDate == null) {
+            outputDate = date;
+        } else {
+            outputDate = TimeUtils.toDMYYYFormat(realDate);
+        }
         setModel(modelMap, statisticsService.getAll(realDate, teamId), statisticsService.getKeys(realDate, teamId),
                 statisticsService.getLanguages(realDate, teamId),
-                teamId, realDate == null ? date : TimeUtils.toDMYYYFormat(realDate));
+                teamId, outputDate);
         return "dashboard";
     }
 

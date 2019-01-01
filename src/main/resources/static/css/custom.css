@@ -99,3 +99,7 @@ tr {
 .datepicker-table td.is-today {
     color: #ff9800 !important;
 }
+
+.datepicker {
+    color: #9e9e9e !important;
+}

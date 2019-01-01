@@ -35,7 +35,7 @@ public class TimeUtils {
 
     public static OffsetDateTime toOffsetDateTime(String date) {
         if (date == null) {
-            return OffsetDateTime.now();
+            return null;
         }
         try {
             int index = date.indexOf('.');

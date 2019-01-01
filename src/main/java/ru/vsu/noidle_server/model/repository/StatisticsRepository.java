@@ -13,13 +13,23 @@ import java.util.UUID;
 @Repository
 public interface StatisticsRepository extends JpaRepository<StatisticsEntity, UUID> {
 
-    StatisticsEntity getByTypeAndSubTypeAndExtraValueAndUserIdAndTeamId(StatisticsType statisticsType, StatisticsSubType statisticsSubType, String extraValue, UUID userId, UUID teamId);
+    StatisticsEntity getByTypeAndSubTypeAndExtraValueAndUserIdAndTeamId
+            (StatisticsType statisticsType, StatisticsSubType statisticsSubType,
+             String extraValue, UUID userId, UUID teamId);
 
-    List<StatisticsEntity> getAllByUserIdAndDateGreaterThanEqualAndTeamId(UUID userId, OffsetDateTime date, UUID teamId);
+    List<StatisticsEntity> getAllByUserIdAndSubTypeInAndDateGreaterThanEqualAndTeamId
+            (UUID userId,StatisticsSubType[] statisticsSubType,OffsetDateTime date, UUID teamId);
 
-    List<StatisticsEntity> getAllByUserIdAndTypeAndSubTypeAndDateGreaterThanEqualAndTeamId
-            (UUID userId, StatisticsType statisticsType, StatisticsSubType statisticsSubType, OffsetDateTime date, UUID teamId);
+    List<StatisticsEntity> getAllByUserIdAndTypeAndSubTypeAndTeamId
+            (UUID userId, StatisticsType statisticsType, StatisticsSubType statisticsSubType, UUID teamId);
 
     List<StatisticsEntity> getAllByUserIdAndTypeInAndSubTypeAndDateGreaterThanEqualAndTeamId
             (UUID userId, StatisticsType[] statisticsType, StatisticsSubType statisticsSubType, OffsetDateTime date, UUID teamId);
+
+    List<StatisticsEntity> getAllByUserIdAndSubTypeInAndTeamId
+            (UUID userId, StatisticsSubType[] statisticsSubType, UUID teamId);
+
+    List<StatisticsEntity> getAllByUserIdAndTypeInAndSubTypeAndTeamId
+            (UUID userId, StatisticsType[] statisticsType, StatisticsSubType statisticsSubType, UUID teamId);
+
 }
