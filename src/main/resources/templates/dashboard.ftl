@@ -194,13 +194,13 @@
        <p><span><i>today</i>:&emsp;</span><span><b>${statistics["symbolper_day"]}</b></span></p>
         </#if>
        <#if statistics["symbolcontinuous_per_day"]??>
-        <p><span><i>continuous</i>:&emsp;</span><span><b>${statistics["symbolcontinuous_per_day"]}</b></span></p>
+        <p><span><i>max continuous</i>:&emsp;</span><span><b>${statistics["symbolcontinuous_per_day"]}</b></span></p>
        </#if>
        <#if statistics["symbolper_life"]??>
        <p><span><i>today</i>:&emsp;</span><span><b>${statistics["symbolper_life"]}</b></span></p>
        </#if>
        <#if statistics["symbolcontinuous_per_life"]??>
-        <p><span><i>continuous</i>:&emsp;</span><span><b>${statistics["symbolcontinuous_per_life"]}</b></span></p>
+        <p><span><i>max continuous</i>:&emsp;</span><span><b>${statistics["symbolcontinuous_per_life"]}</b></span></p>
        </#if>
                 </div>
             </li>
