@@ -20,7 +20,24 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
-public class StatisticsEntity implements Comparable <StatisticsEntity>{
+
+@NamedNativeQuery(
+        name = "findStatistics",
+        query = "SELECT s.extra_value as extravalue , s.type as type, s.sub_type as subtype, sum(s.value) as sum FROM statistics s WHERE s.user_id = :userId and s.sub_type in (:statisticsSubType1, :statisticsSubType2)" +
+                " and s.date >= :startDate  and s.date <= :endDate and s.team_id= :teamId  group by s.type,s.sub_type, s.extra_value,s.user_id, s.team_id"
+        , resultSetMapping = "employee-details"
+)
+@SqlResultSetMapping(name = "employee-details",
+        classes = {
+                @ConstructorResult(targetClass = StatisticsSumEntity.class, columns = {
+                        @ColumnResult(name = "extravalue", type = String.class),
+                        @ColumnResult(name = "type", type = String.class),
+                        @ColumnResult(name = "subtype", type = String.class),
+                        @ColumnResult(name = "sum", type = Long.class)
+                })
+        }
+)
+public class StatisticsEntity implements Comparable<StatisticsEntity> {
 
     @Id
     @GeneratedValue(generator = "uuid2")

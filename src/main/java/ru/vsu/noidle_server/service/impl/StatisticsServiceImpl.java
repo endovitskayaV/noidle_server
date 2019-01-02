@@ -20,6 +20,7 @@ import ru.vsu.noidle_server.service.NotificationService;
 import ru.vsu.noidle_server.service.StatisticsService;
 import ru.vsu.noidle_server.service.UserService;
 
+import javax.persistence.EntityManager;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -33,6 +34,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final NotificationService notificationService;
     private final UserService userService;
     private final DataMapper dataMapper;
+    private final EntityManager entityManager;
     private final List<StatisticsSubType> perLifeSubTypes = Arrays.asList(StatisticsSubType.PER_LIFE, StatisticsSubType.CONTINUOUS_PER_LIFE, StatisticsSubType.SINGLE_KEY);
 
     @Override
@@ -166,11 +168,12 @@ public class StatisticsServiceImpl implements StatisticsService {
         } catch (ServiceException e) {
             return Collections.emptyMap();
         }
-
+        
         return dataMapper.toDtosDashboard(
-                        statisticsRepository.getAllByUserIdAndSubTypeInAndDateBetweenAndTeamId(
+                        statisticsRepository.findStatistics(
                                 userEntity.getId(),
-                                new String[]{StatisticsSubType.PER_DAY.getShortcut(), StatisticsSubType.CONTINUOUS_PER_DAY.getShortcut()},
+                                StatisticsSubType.PER_DAY.getShortcut(),
+                                StatisticsSubType.CONTINUOUS_PER_DAY.getShortcut(),
                                 OffsetDateTime.of(
                                         startDate.getYear(),startDate.getMonth().getValue(),startDate.getDayOfMonth(),
                                         0, 0, 0, 0, startDate.getOffset()

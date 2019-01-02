@@ -1,20 +1,67 @@
 package ru.vsu.noidle_server.model.domain;
 
-import org.springframework.beans.factory.annotation.Value;
 
-import java.util.UUID;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.SqlResultSetMapping;
 
-public interface StatisticsSumEntity {
+public class StatisticsSumEntity {
+    String extravalue;
 
-    @Value("#{target.type}")
-    String getType();
 
-    @Value("#{target.sub_type}")
-    String getSubType();
+    String subtype;
 
-    @Value("#{target.extra_value}")
-   String getExtraValue();
+    String type;
 
-    @Value("#{target.sum}")
-    Long getSum();
+    public Long getSum() {
+        return sum;
+    }
+
+    public StatisticsSumEntity setSum(Long sum) {
+        this.sum = sum;
+        return this;
+    }
+
+    Long sum;
+
+    public StatisticsSumEntity(String extravalue, String subtype, String type,Long sum) {
+        this.extravalue = extravalue;
+        this.subtype = subtype;
+        this.type = type;
+        this.sum=sum;
+    }
+
+    public StatisticsSumEntity() {
+    }
+
+    public String getExtravalue() {
+        return extravalue;
+    }
+
+    public StatisticsSumEntity setExtravalue(String extravalue) {
+        this.extravalue = extravalue;
+        return this;
+    }
+
+    public String getSubtype() {
+        return subtype;
+    }
+
+    public StatisticsSumEntity setSubtype(String subtype) {
+        this.subtype = subtype;
+        return this;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public StatisticsSumEntity setType(String type) {
+        this.type = type;
+        return this;
+    }
+
+
+    // Long getSum();
 }

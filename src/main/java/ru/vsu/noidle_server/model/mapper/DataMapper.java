@@ -79,7 +79,7 @@ public interface DataMapper {
 
     TeamDtoShort toDtoShort(TeamEntity teamEntity);
 
-    default Map<String, String> toDtosDashboard(List<?> statistics) {
+    default Map<String, String> toDtosDashboard(Collection<?> statistics) {
         if (statistics == null || statistics.isEmpty()) {
             return Collections.emptyMap();
         }
