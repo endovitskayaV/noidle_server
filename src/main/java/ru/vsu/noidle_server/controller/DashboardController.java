@@ -30,7 +30,7 @@ public class DashboardController {
                          @RequestParam(name = "startDate", required = false) String startDate,
                          @RequestParam(name = "endDate", required = false) String endDate,
                          ModelMap modelMap) {
-
+        modelMap.addAttribute("overallSelected", true);
         //---------------------------set outputDate---------------------------//
         OffsetDateTime realDate = TimeUtils.toOffsetDateTime(date);
         String outputDate;

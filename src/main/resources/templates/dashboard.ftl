@@ -32,20 +32,34 @@
                     <a class="subheader">Period</a>
                     <form action="#" class="nav-content">
                          <#if overallSelected??>
-                              <p>
-                                  <label>
-                                      <input name="groupMain" type="radio" onclick="disableDatePicker()"/>
-                                      <span>overall</span>
-                                  </label>
-                              </p>
-                        <p>
-                            <label>
-                                <input name="groupMain" type="radio" id="date-picker-radio"
-                                       onclick="enableDatePicker()"/>
-                                <span><input id="date-input" type="text" class="datepicker"></span>
-                            </label>
-                        </p>
-                         </#if>
+                             <p>
+                                 <label>
+                                     <input name="groupMain" type="radio" onclick="disableDatePicker()"/>
+                                     <span>overall</span>
+                                 </label>
+                             </p>
+                             <p>
+                                 <label>
+                                     <input name="groupMain" type="radio" id="date-picker-radio"
+                                            onclick="enableDatePicker()"/>
+                                     <span><input id="date-input" type="text" class="datepicker radio-text"></span>
+                                 </label>
+                             </p>
+                             <p>
+                                 <label>
+                                     <input name="groupMain" type="radio" id="date-picker-radio"
+                                            onclick="enableDatePicker()"/>
+                                     <span>from<input id="date-input1" type="text" class="datepicker radio-text"></span>
+                                 </label>
+                             </p>
+                             <p>
+                                 <label>
+                                     <input type="radio" hidden name="hidden">
+                                     <span class="hidden" style="margin-top: 10px">to
+                                         <input id="date-input2" type="text" class="datepicker radio-text"></span>
+                                 </label>
+                             </p>
+                         <#else>
                         <p>
                             <label>
                                 <input name="groupMain" type="radio" onclick="disableDatePicker()"/>
@@ -56,13 +70,14 @@
                             <label>
                                 <input name="groupMain" type="radio" id="date-picker-radio"
                                        onclick="enableDatePicker()"/>
-                                <span><input id="date-input" type="text" class="datepicker"></span>
+                                <span><input id="date-input" type="text" class="datepicker radio-text"></span>
                             </label>
                         </p>
+                         </#if>
                     </form>
                 </li>
                 <li>
-                    <div class="divider" style="margin-top: 52px;"></div>
+                    <div class="divider" style="margin-top: 40px;"></div>
                 </li>
                 <li>
                     <a class="subheader" style="padding-top: 12px; padding-bottom: 42px">Team</a>
@@ -132,6 +147,7 @@
                 <li><br></li>
                 <li>
                     <div class="col s3 offset-s8"><a class="waves-effect waves-light btn-small blue"
+                                                     style="margin-top: 25px"
                                                      onclick="applyStatisticsFilters()">Apply</a></div>
                 </li>
             </ul>

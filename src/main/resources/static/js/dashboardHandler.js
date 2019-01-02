@@ -13,17 +13,19 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    var elem = document.querySelector('.datepicker');
-    var instance = M.Datepicker.init(elem, {
-        onOpen: function (e, data) {
-            $('#slide-out').width("500px");
-        },
-        onClose: function (e, data) {
-            $('#slide-out').width("300px");
-        },
-        setDefaultDate: true,
-        firstDay: 1,
-        format: 'd.m.yyyy'
+    var dateElems = document.querySelectorAll('.datepicker');
+    $.each(dateElems, function (index, value) {
+        M.Datepicker.init(value, {
+            onOpen: function (e, data) {
+                $('#slide-out').width("500px");
+            },
+            onClose: function (e, data) {
+                $('#slide-out').width("300px");
+            },
+            setDefaultDate: true,
+            firstDay: 1,
+            format: 'd.m.yyyy'
+        });
     });
 
     $('#date-input')[0].value = selectedDate;
@@ -64,25 +66,25 @@ function show(link, table, data, flag, type) {
 
 function applyStatisticsFilters() {
     var dateQueryString = "";
-    if ($("#date-picker-radio")[0].checked){
-        dateQueryString='?date='+ $('#date-input')[0].value;
+    if ($("#date-picker-radio")[0].checked) {
+        dateQueryString = '?date=' + $('#date-input')[0].value;
     }
     var teamQueryString = "";
     if ($("#teamRadio")[0].checked) {
         var teamRadios = $('input[name="groupTeam"]');
         $.each(teamRadios, function (index, value) {
             if (value.checked) {
-                if (dateQueryString===""){
-                    teamQueryString="?"
-                }else{
-                    teamQueryString="&"
+                if (dateQueryString === "") {
+                    teamQueryString = "?"
+                } else {
+                    teamQueryString = "&"
                 }
                 teamQueryString += "teamId=" + value.id;
             }
         });
     }
 
-    window.location.href = '/dashboard'+dateQueryString+ teamQueryString;
+    window.location.href = '/dashboard' + dateQueryString + teamQueryString;
 }
 
 function enableTeams() {

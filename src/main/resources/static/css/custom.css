@@ -103,3 +103,12 @@ tr {
 .datepicker {
     color: #9e9e9e !important;
 }
+
+span.hidden::before, span.hidden::after, [name="hidden"]:checked + span.hidden::before, [name="hidden"]:checked + span.hidden::after   {
+    display: none; !important;
+}
+
+.radio-text{
+    font-size: 1rem !important;
+    height: 1rem !important;
+}
