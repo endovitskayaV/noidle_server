@@ -9,8 +9,8 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 public class StatisticsDashboardEntity {
-    private String extraValue;
     private String type;
     private String subType;
+    private String extraValue;
     private Long value;
 }

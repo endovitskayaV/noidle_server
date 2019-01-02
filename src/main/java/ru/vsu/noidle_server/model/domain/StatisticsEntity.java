@@ -24,7 +24,7 @@ import java.util.UUID;
 @NamedNativeQueries({
         @NamedNativeQuery(
                 name = "findStatisticsByPeriod",
-                query = "SELECT s.extra_value as extravalue, s.type as type, s.sub_type as subtype, sum(s.value) as value" +
+                query = "SELECT s.type as type, s.sub_type as subtype, s.extra_value as extravalue, sum(s.value) as value" +
                         " FROM statistics s WHERE s.user_id = :userId and s.sub_type in :statisticsSubTypes" +
                         " and s.date >= :startDate  and s.date <= :endDate and s.team_id= :teamId" +
                         "  group by s.type,s.sub_type, s.extra_value,s.user_id, s.team_id",
@@ -32,7 +32,7 @@ import java.util.UUID;
         ),
         @NamedNativeQuery(
                 name = "findStatisticsLanguagesByPeriod",
-                query = "SELECT s.extra_value as extravalue, s.type as type, s.sub_type as subtype, sum(s.value) as value" +
+                query = "SELECT s.type as type, s.sub_type as subtype, s.extra_value as extravalue, sum(s.value) as value" +
                         " FROM statistics s WHERE s.user_id = :userId and s.type in :statisticsTypes" +
                         " and s.sub_type = :statisticsSubType and s.date >= :startDate  and s.date <= :endDate" +
                         " and s.team_id= :teamId" +
@@ -44,9 +44,9 @@ import java.util.UUID;
 @SqlResultSetMapping(name = "statisticsDashboardEntityResultSet",
         classes = {
                 @ConstructorResult(targetClass = StatisticsDashboardEntity.class, columns = {
-                        @ColumnResult(name = "extravalue", type = String.class),
                         @ColumnResult(name = "type", type = String.class),
                         @ColumnResult(name = "subtype", type = String.class),
+                        @ColumnResult(name = "extravalue", type = String.class),
                         @ColumnResult(name = "value", type = Long.class)
                 })
         }
