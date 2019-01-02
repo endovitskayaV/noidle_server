@@ -4,11 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import ru.vsu.noidle_server.model.StatisticsSubType;
 import ru.vsu.noidle_server.model.StatisticsType;
 import ru.vsu.noidle_server.model.domain.*;
 import ru.vsu.noidle_server.model.dto.*;
@@ -79,62 +76,71 @@ public interface DataMapper {
 
     TeamDtoShort toDtoShort(TeamEntity teamEntity);
 
-    default Map<String, String> toDtosDashboard(Collection<?> statistics) {
+    List<StatisticsDashboardEntity> toDashboardEntities(List<StatisticsEntity> statisticsEntity);
+
+    @Mapping(source = "statisticsEntity", target = "type", qualifiedByName = "getTypeShortcut")
+    @Mapping(source = "statisticsEntity", target = "subType", qualifiedByName = "getSubTypeShortcut")
+    StatisticsDashboardEntity toDashboardEntity(StatisticsEntity statisticsEntity);
+
+    @Named("getTypeShortcut")
+    default String getTypeShortcut(StatisticsEntity statisticsEntity) {
+        return statisticsEntity.getType().getShortcut();
+    }
+
+    @Named("getSubTypeShortcut")
+    default String getSubTypeShortcut(StatisticsEntity statisticsEntity) {
+        return statisticsEntity.getSubType().getShortcut();
+    }
+
+    default Map<String, String> toDtosDashboard(List<StatisticsDashboardEntity> statistics) {
         if (statistics == null || statistics.isEmpty()) {
             return Collections.emptyMap();
         }
-        return Collections.emptyMap();
-//        if (statistics == null || statistics.isEmpty()) {
-//            return Collections.emptyMap();
-//        }
-//        Map<String, String> dashboard = new HashMap<>(statistics.size());
-//        statistics.forEach(statisticsEntity -> {
-//            Map.Entry<String, String> entry = toDtoDashboard(statisticsEntity);
-//            if (entry != null) {
-//                dashboard.put(entry.getKey(), entry.getValue());
-//            }
-//        });
-//
-//        return dashboard;
+        Map<String, String> dashboard = new HashMap<>(statistics.size());
+        statistics.forEach(statisticsEntity -> {
+            Map.Entry<String, String> entry = toDtoDashboard(statisticsEntity);
+            if (entry != null) {
+                dashboard.put(entry.getKey(), entry.getValue());
+            }
+        });
+
+        return dashboard;
     }
 
-    default Map.Entry<String, String> toDtoDashboard(StatisticsEntity statisticsEntity) {
-        if (statisticsEntity == null || statisticsEntity.getValue() == null) {
+    default Map.Entry<String, String> toDtoDashboard(StatisticsDashboardEntity statisticsDashboardEntity) {
+        if (statisticsDashboardEntity == null || statisticsDashboardEntity.getValue() == null) {
             return null;
         }
         StringBuilder resultType = new StringBuilder();
 
-        StatisticsType type = statisticsEntity.getType();
-        resultType.append(type != null ? type.getShortcut() : "");
+        resultType.append(statisticsDashboardEntity.getType() != null ? statisticsDashboardEntity.getType() : "");
+        resultType.append(statisticsDashboardEntity.getSubType() != null ? statisticsDashboardEntity.getSubType() : "");
 
-        StatisticsSubType subType = statisticsEntity.getSubType();
-        resultType.append(subType != null ? subType.getShortcut() : "");
-
-        String extraValue = statisticsEntity.getExtraValue();
+        String extraValue = statisticsDashboardEntity.getExtraValue();
         resultType.append(extraValue != null ? extraValue : "");
-        String value = statisticsEntity.getValue().toString();
+        String value = statisticsDashboardEntity.getValue().toString();
         HashMap<String, String> result = new HashMap<>(1);
 
-        if (StatisticsType.TIME.equals(type)) {
-            value = TimeUtils.toPretty(statisticsEntity.getValue());
+        if (StatisticsType.TIME.getShortcut().equals(statisticsDashboardEntity.getType())) {
+            value = TimeUtils.toPretty(statisticsDashboardEntity.getValue());
         }
         result.put(resultType.toString(), value);
         return (Map.Entry<String, String>) result.entrySet().toArray()[0];
     }
 
-    default Map<String, Long> toDtosKeys(List<StatisticsEntity> statisticsEntities) {
-        if (statisticsEntities == null || statisticsEntities.isEmpty()) {
+    default Map<String, Long> toDtosKeys(List<StatisticsDashboardEntity> statisticsDashboardEntities) {
+        if (statisticsDashboardEntities == null || statisticsDashboardEntities.isEmpty()) {
             return Collections.emptyMap();
         }
 
-        HashMap<String, Long> result = new HashMap<>(statisticsEntities.size());
-        statisticsEntities.forEach(statisticsEntity -> {
-            if (statisticsEntity != null && statisticsEntity.getValue() != null &&
-                    statisticsEntity.getExtraValue() != null &&
-                    statisticsEntity.getValue() != null) {
+        HashMap<String, Long> result = new HashMap<>(statisticsDashboardEntities.size());
+        statisticsDashboardEntities.forEach(statisticsDashboardEntity -> {
+            if (statisticsDashboardEntity != null && statisticsDashboardEntity.getValue() != null &&
+                    statisticsDashboardEntity.getExtraValue() != null &&
+                    statisticsDashboardEntity.getValue() != null) {
 
-                String keyName = statisticsEntity.getExtraValue();
-                Long value = statisticsEntity.getValue();
+                String keyName = statisticsDashboardEntity.getExtraValue();
+                Long value = statisticsDashboardEntity.getValue();
                 result.put(keyName, value);
             }
         });
@@ -146,21 +152,21 @@ public interface DataMapper {
     }
 
 
-    default Set<LanguageStatisticsDto> toDtosLanguages(List<StatisticsEntity> statisticsEntities) {
-        if (statisticsEntities == null || statisticsEntities.isEmpty()) {
+    default Set<LanguageStatisticsDto> toDtosLanguages(List<StatisticsDashboardEntity> statisticsDashboardEntities) {
+        if (statisticsDashboardEntities == null || statisticsDashboardEntities.isEmpty()) {
             return Collections.emptySet();
         }
 
-        HashMap<String, TimeSymbols> langValues = new HashMap<>(statisticsEntities.size() / 2);
-        statisticsEntities.forEach(statisticsEntity -> {
-            if (statisticsEntity != null && statisticsEntity.getValue() != null &&
-                    statisticsEntity.getExtraValue() != null &&
-                    statisticsEntity.getValue() != null) {
+        HashMap<String, TimeSymbols> langValues = new HashMap<>(statisticsDashboardEntities.size() / 2);
+        statisticsDashboardEntities.forEach(statisticsDashboardEntity -> {
+            if (statisticsDashboardEntity != null && statisticsDashboardEntity.getValue() != null &&
+                    statisticsDashboardEntity.getExtraValue() != null &&
+                    statisticsDashboardEntity.getValue() != null) {
 
-                String language = statisticsEntity.getExtraValue();
-                Long value = statisticsEntity.getValue();
+                String language = statisticsDashboardEntity.getExtraValue();
+                Long value = statisticsDashboardEntity.getValue();
                 if (langValues.containsKey(language)) {
-                    if (statisticsEntity.getType().equals(StatisticsType.LANG_SYMBOL)) {
+                    if (statisticsDashboardEntity.getType().equals(StatisticsType.LANG_SYMBOL.getShortcut())) {
                         langValues.get(language).setSymbols(value);
                     } else {
                         langValues.get(language).setTime(value);
@@ -168,7 +174,7 @@ public interface DataMapper {
                 } else {
                     langValues.put(
                             language,
-                            statisticsEntity.getType().equals(StatisticsType.LANG_SYMBOL) ?
+                            statisticsDashboardEntity.getType().equals(StatisticsType.LANG_SYMBOL.getShortcut()) ?
                                     new TimeSymbols(0L, value) :
                                     new TimeSymbols(value, 0L)
                     );
