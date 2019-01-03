@@ -23,20 +23,37 @@ import java.util.UUID;
 
 @NamedNativeQueries({
         @NamedNativeQuery(
-                name = "findStatisticsByPeriod",
+                name = "findStatisticsByPeriodOutOfTeam",
                 query = "SELECT s.type as type, s.sub_type as subtype, s.extra_value as extravalue, sum(s.value) as value" +
                         " FROM statistics s WHERE s.user_id = :userId and s.sub_type in :statisticsSubTypes" +
-                        " and s.date >= :startDate  and s.date <= :endDate and s.team_id= :teamId" +
-                        "  group by s.type,s.sub_type, s.extra_value,s.user_id, s.team_id",
+                        " and s.date >= :startDate  and s.date <= :endDate and s.team_id is null" +
+                        "  group by s.type,s.sub_type, s.extra_value",
                 resultSetMapping = "statisticsDashboardEntityResultSet"
         ),
         @NamedNativeQuery(
-                name = "findStatisticsLanguagesByPeriod",
+                name = "findStatisticsLanguagesByPeriodOutOfTeam",
+                query = "SELECT s.type as type, s.sub_type as subtype, s.extra_value as extravalue, sum(s.value) as value" +
+                        " FROM statistics s WHERE s.user_id = :userId and s.type in :statisticsTypes" +
+                        " and s.sub_type = :statisticsSubType and s.date >= :startDate  and s.date <= :endDate" +
+                        " and s.team_id is null" +
+                        "  group by s.type,s.sub_type, s.extra_value",
+                resultSetMapping = "statisticsDashboardEntityResultSet"
+        ),
+        @NamedNativeQuery(
+                name = "findStatisticsByPeriodAndTeam",
+                query = "SELECT s.type as type, s.sub_type as subtype, s.extra_value as extravalue, sum(s.value) as value" +
+                        " FROM statistics s WHERE s.user_id = :userId and s.sub_type in :statisticsSubTypes" +
+                        " and s.date >= :startDate  and s.date <= :endDate and s.team_id= :teamId" +
+                        "  group by s.type,s.sub_type, s.extra_value",
+                resultSetMapping = "statisticsDashboardEntityResultSet"
+        ),
+        @NamedNativeQuery(
+                name = "findStatisticsLanguagesByPeriodAndTeam",
                 query = "SELECT s.type as type, s.sub_type as subtype, s.extra_value as extravalue, sum(s.value) as value" +
                         " FROM statistics s WHERE s.user_id = :userId and s.type in :statisticsTypes" +
                         " and s.sub_type = :statisticsSubType and s.date >= :startDate  and s.date <= :endDate" +
                         " and s.team_id= :teamId" +
-                        "  group by s.type,s.sub_type, s.extra_value,s.user_id, s.team_id",
+                        "  group by s.type,s.sub_type, s.extra_value",
                 resultSetMapping = "statisticsDashboardEntityResultSet"
         )}
 )

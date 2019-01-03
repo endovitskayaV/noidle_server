@@ -174,19 +174,32 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
 
         return dataMapper.toDtosDashboard(
-                statisticsRepository.findStatisticsByPeriod(
-                        userEntity.getId(),
-                        Arrays.asList(StatisticsSubType.PER_DAY.getShortcut(), StatisticsSubType.CONTINUOUS_PER_DAY.getShortcut()),
-                        OffsetDateTime.of(
-                                startDate.getYear(), startDate.getMonth().getValue(), startDate.getDayOfMonth(),
-                                0, 0, 0, 0, startDate.getOffset()
-                        ),
-                        OffsetDateTime.of(
-                                endDate.getYear(), endDate.getMonth().getValue(), endDate.getDayOfMonth(),
-                                23, 59, 59, 999999999, endDate.getOffset()
-                        ),
-                        teamId
-                )
+                teamId == null ?
+                        statisticsRepository.findStatisticsByPeriodOutOfTeam(
+                                userEntity.getId(),
+                                Arrays.asList(StatisticsSubType.PER_DAY.getShortcut(), StatisticsSubType.CONTINUOUS_PER_DAY.getShortcut()),
+                                OffsetDateTime.of(
+                                        startDate.getYear(), startDate.getMonth().getValue(), startDate.getDayOfMonth(),
+                                        0, 0, 0, 0, startDate.getOffset()
+                                ),
+                                OffsetDateTime.of(
+                                        endDate.getYear(), endDate.getMonth().getValue(), endDate.getDayOfMonth(),
+                                        23, 59, 59, 999999999, endDate.getOffset()
+                                )
+                        ) :
+                        statisticsRepository.findStatisticsByPeriodAndTeam(
+                                userEntity.getId(),
+                                Arrays.asList(StatisticsSubType.PER_DAY.getShortcut(), StatisticsSubType.CONTINUOUS_PER_DAY.getShortcut()),
+                                OffsetDateTime.of(
+                                        startDate.getYear(), startDate.getMonth().getValue(), startDate.getDayOfMonth(),
+                                        0, 0, 0, 0, startDate.getOffset()
+                                ),
+                                OffsetDateTime.of(
+                                        endDate.getYear(), endDate.getMonth().getValue(), endDate.getDayOfMonth(),
+                                        23, 59, 59, 999999999, endDate.getOffset()
+                                ),
+                                teamId
+                        )
         );
     }
 
@@ -205,20 +218,34 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
 
         return dataMapper.toDtosLanguages(
-                statisticsRepository.findStatisticsLanguagesByPeriod(
-                        userEntity.getId(),
-                        Arrays.asList(StatisticsType.LANG_TIME.getShortcut(), StatisticsType.LANG_SYMBOL.getShortcut()),
-                        StatisticsSubType.PER_DAY.getShortcut(),
-                        OffsetDateTime.of(
-                                startDate.getYear(), startDate.getMonth().getValue(), startDate.getDayOfMonth(),
-                                0, 0, 0, 0, startDate.getOffset()
-                        ),
-                        OffsetDateTime.of(
-                                endDate.getYear(), endDate.getMonth().getValue(), endDate.getDayOfMonth(),
-                                23, 59, 59, 999999999, endDate.getOffset()
-                        ),
-                        teamId
-                )
+                teamId == null ?
+                        statisticsRepository.findStatisticsLanguagesByPeriodOutOfTeam(
+                                userEntity.getId(),
+                                Arrays.asList(StatisticsType.LANG_TIME.getShortcut(), StatisticsType.LANG_SYMBOL.getShortcut()),
+                                StatisticsSubType.PER_DAY.getShortcut(),
+                                OffsetDateTime.of(
+                                        startDate.getYear(), startDate.getMonth().getValue(), startDate.getDayOfMonth(),
+                                        0, 0, 0, 0, startDate.getOffset()
+                                ),
+                                OffsetDateTime.of(
+                                        endDate.getYear(), endDate.getMonth().getValue(), endDate.getDayOfMonth(),
+                                        23, 59, 59, 999999999, endDate.getOffset()
+                                )
+                        ) :
+                        statisticsRepository.findStatisticsLanguagesByPeriodAndTeam(
+                                userEntity.getId(),
+                                Arrays.asList(StatisticsType.LANG_TIME.getShortcut(), StatisticsType.LANG_SYMBOL.getShortcut()),
+                                StatisticsSubType.PER_DAY.getShortcut(),
+                                OffsetDateTime.of(
+                                        startDate.getYear(), startDate.getMonth().getValue(), startDate.getDayOfMonth(),
+                                        0, 0, 0, 0, startDate.getOffset()
+                                ),
+                                OffsetDateTime.of(
+                                        endDate.getYear(), endDate.getMonth().getValue(), endDate.getDayOfMonth(),
+                                        23, 59, 59, 999999999, endDate.getOffset()
+                                ),
+                                teamId
+                        )
         );
     }
 }

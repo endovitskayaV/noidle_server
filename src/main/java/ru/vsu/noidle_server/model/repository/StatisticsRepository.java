@@ -36,17 +36,28 @@ public interface StatisticsRepository extends JpaRepository<StatisticsEntity, UU
     List<StatisticsEntity> getAllByUserIdAndTypeInAndSubTypeAndTeamId
             (UUID userId, StatisticsType[] statisticsType, StatisticsSubType statisticsSubType, UUID teamId);
 
-    @Query(name = "findStatisticsByPeriod", nativeQuery = true)
-    List<StatisticsDashboardEntity> findStatisticsByPeriod
+    @Query(name = "findStatisticsByPeriodAndTeam", nativeQuery = true)
+    List<StatisticsDashboardEntity> findStatisticsByPeriodAndTeam
             (@Param("userId") UUID userId, @Param("statisticsSubTypes") List<String> statisticsSubTypes,
              @Param("startDate") OffsetDateTime startDate, @Param("endDate") OffsetDateTime endDate,
              @Param("teamId") UUID teamId);
 
-    @Query(name = "findStatisticsLanguagesByPeriod", nativeQuery = true)
-    List<StatisticsDashboardEntity> findStatisticsLanguagesByPeriod
+    @Query(name = "findStatisticsByPeriodOutOfTeam", nativeQuery = true)
+    List<StatisticsDashboardEntity> findStatisticsByPeriodOutOfTeam
+            (@Param("userId") UUID userId, @Param("statisticsSubTypes") List<String> statisticsSubTypes,
+             @Param("startDate") OffsetDateTime startDate, @Param("endDate") OffsetDateTime endDate);
+
+    @Query(name = "findStatisticsLanguagesByPeriodAndTeam", nativeQuery = true)
+    List<StatisticsDashboardEntity> findStatisticsLanguagesByPeriodAndTeam
             (@Param("userId") UUID userId, @Param("statisticsTypes") List<String> statisticsTypes,
              @Param("statisticsSubType") String statisticsSubType,
              @Param("startDate") OffsetDateTime startDate, @Param("endDate") OffsetDateTime endDate,
              @Param("teamId") UUID teamId);
+
+    @Query(name = "findStatisticsLanguagesByPeriodOutOfTeam", nativeQuery = true)
+    List<StatisticsDashboardEntity> findStatisticsLanguagesByPeriodOutOfTeam
+            (@Param("userId") UUID userId, @Param("statisticsTypes") List<String> statisticsTypes,
+             @Param("statisticsSubType") String statisticsSubType,
+             @Param("startDate") OffsetDateTime startDate, @Param("endDate") OffsetDateTime endDate);
 
 }
