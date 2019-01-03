@@ -388,15 +388,13 @@
 
         <#else>
         <div class="container">
-            <div class="container">
                 <div class="container">
                     <div class="card horizontal">
                         <div class="card-stacked">
                             <div class="card-content">
-                                <p class="center-align"><span>No statistics available</span></p>
+                                <p class="center-align"><span>No statistics available for chosen parameters</span></p>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
