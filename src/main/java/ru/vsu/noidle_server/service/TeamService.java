@@ -23,4 +23,8 @@ public interface TeamService {
     void delete(UUID id) throws ServiceException;
 
     List<TeamDto> getAll() throws ServiceException;
+
+    void addTeamMember(UUID userId, UUID teamId) throws ServiceException;
+
+    void removeTeamMember(UUID userId, UUID teamId) throws ServiceException;
 }

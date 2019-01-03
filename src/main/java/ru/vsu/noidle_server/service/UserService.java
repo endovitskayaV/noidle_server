@@ -25,9 +25,5 @@ public interface UserService {
 
     UserDto getDto(OAuth2Authentication user);
 
-    void addTeamMember(UUID userId, UUID teamId) throws ServiceException;
-
-    void removeTeamMember(UUID userId, UUID teamId) throws ServiceException;
-
     UserEntity getEntityByAuth() throws ServiceException;
 }

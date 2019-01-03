@@ -103,4 +103,22 @@ public class TeamServiceImpl implements TeamService {
                 .map(teamEntity -> dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void addTeamMember(UUID userId, UUID teamId) throws ServiceException {
+        TeamEntity teamEntity =getEntityById(teamId);
+        UserEntity userEntity = userService.getEntityById(userId);
+
+        userEntity.addTeam(teamEntity);
+        userService.save(userEntity);
+    }
+
+    @Override
+    public void removeTeamMember(UUID userId, UUID teamId) throws ServiceException {
+        TeamEntity teamEntity = getEntityById(teamId);
+        UserEntity userEntity = userService.getEntityById(userId);
+
+        userEntity.removeTeam(teamEntity);
+        userService.save(userEntity);
+    }
 }

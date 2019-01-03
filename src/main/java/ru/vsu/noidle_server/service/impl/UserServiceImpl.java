@@ -30,12 +30,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final DataMapper dataMapper;
-    private TeamService teamService;
-
-    @Autowired
-    public void setTeamService(TeamService teamService) {
-        this.teamService = teamService;
-    }
 
     @Override
     public UserEntity getEntityById(UUID id) throws ServiceException {
@@ -111,23 +105,5 @@ public class UserServiceImpl implements UserService {
         return dataMapper.toDto(
                 userRepository.findByEmail(dataMapper.getEmail(user)),
                 new CycleAvoidingMappingContext());
-    }
-
-    @Override
-    public void addTeamMember(UUID userId, UUID teamId) throws ServiceException {
-        TeamEntity teamEntity = teamService.getEntityById(teamId);
-        UserEntity userEntity = getEntityById(userId);
-
-        userEntity.addTeam(teamEntity);
-        userRepository.save(userEntity);
-    }
-
-    @Override
-    public void removeTeamMember(UUID userId, UUID teamId) throws ServiceException {
-        TeamEntity teamEntity = teamService.getEntityById(teamId);
-        UserEntity userEntity = getEntityById(userId);
-
-        userEntity.removeTeam(teamEntity);
-        userRepository.save(userEntity);
     }
 }

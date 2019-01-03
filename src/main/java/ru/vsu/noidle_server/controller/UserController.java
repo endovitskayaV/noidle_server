@@ -8,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.dto.UserDto;
+import ru.vsu.noidle_server.service.TeamService;
 import ru.vsu.noidle_server.service.UserService;
 
 import java.util.UUID;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+    private final TeamService teamService;
 
     @GetMapping("/user")
     @ResponseBody
@@ -53,7 +55,7 @@ public class UserController {
     @ResponseBody
     public ResponseEntity addTeamMember(@PathVariable UUID userId, @PathVariable UUID teamId) {
         try {
-            userService.addTeamMember(userId, teamId);
+            teamService.addTeamMember(userId, teamId);
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }
@@ -64,7 +66,7 @@ public class UserController {
     @ResponseBody
     public ResponseEntity removeTeamMember(@PathVariable UUID userId, @PathVariable UUID teamId) {
         try {
-            userService.removeTeamMember(userId, teamId);
+            teamService.removeTeamMember(userId, teamId);
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }
