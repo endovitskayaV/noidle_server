@@ -136,39 +136,44 @@
 
 
         <!-- Modals-->
-        <div class="modal" id="edit-modal">
-            <div class="modal-content">
-                <input type="text" id="team_key" hidden>
-                <input type="text" id="team_id" name="id" hidden>
-                <div class="input-field col s8">
-                    <input class="input-field" type="text" id="team_name" name="name" required
-                           minlength="2" maxlength="120" pattern="\S.*\S"
-                           title="Not allowed: spaces in the beginning and end, blank names">
-                    <span class="helper-text">Team name</span>
+        <div class="modal" style="width: 50% !important;" id="edit-modal">
+            <form action="" onsubmit="return false">
+                <div class="modal-content">
+                    <input type="text" id="team_key" hidden>
+                    <input type="text" id="team_id" name="id" hidden>
+                    <div class="input-field col s8">
+                        <input class="input-field" type="text" id="team_name" name="name" required
+                               minlength="2" maxlength="120" pattern="\S.*\S"
+                               title="Not allowed: spaces in the beginning and end, blank names">
+                        <span class="helper-text">Team name</span>
+                    </div>
+
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="waves-effect waves-orange btn-flat"
-                        onclick="editTeamHandler()">Ok
-                </button>
-                <button class="modal-close waves-effect waves-orange btn-flat" type="reset">Exit</button>
-            </div>
+                <div class="modal-footer">
+                    <button class="waves-effect waves-orange btn-flat"
+                            onclick="editTeamHandler()">Ok
+                    </button>
+                    <button class="modal-close waves-effect waves-orange btn-flat" type="reset">Exit</button>
+                </div>
+            </form>
         </div>
 
 
-        <div class="modal" id="add-modal">
-            <div class="modal-content">
-                <div class="input-field col s8">
-                    <input class="input-field" type="text" id="add_team_name" required
-                           minlength="2" maxlength="120" pattern="\S.*\S"
-                           title="Not allowed: spaces in the beginning and end, blank names">
-                    <span class="helper-text">Team name</span>
+        <div class="modal" style="width: 50% !important;" id="add-modal">
+            <form action="" onsubmit="return false">
+                <div class="modal-content">
+                    <div class="input-field col s8">
+                        <input class="input-field" type="text" id="add_team_name" required
+                               minlength="2" maxlength="120" pattern="\S.*\S"
+                               title="Not allowed: spaces in the beginning and end, blank names">
+                        <span class="helper-text">Team name</span>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="waves-effect waves-orange btn-flat" onclick="addTeamHandler()">Ok</button>
-                <button class="modal-close waves-effect waves-orange btn-flat" type="reset">Exit</button>
-            </div>
+                <div class="modal-footer">
+                    <button class="waves-effect waves-orange btn-flat" onclick="addTeamHandler()">Ok</button>
+                    <button class="modal-close waves-effect waves-orange btn-flat" type="reset">Exit</button>
+                </div>
+            </form>
         </div>
 
 </main>
