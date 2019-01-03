@@ -30,6 +30,4 @@ public interface UserService {
     void removeTeamMember(UUID userId, UUID teamId) throws ServiceException;
 
     UserEntity getEntityByAuth() throws ServiceException;
-
-    List<TeamDto> getTeams() throws ServiceException;
 }

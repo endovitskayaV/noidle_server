@@ -12,6 +12,11 @@
     <link href="css/custom.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
+<!--  Scripts-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/materialize.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+
  <#include "nav_unauth.ftl">
 <main>
     <div class="section no-pad-bot" id="index-banner">
@@ -29,24 +34,24 @@
             <!--   Icon Section   -->
             <div class="row">
                 <div class="col s12 m4">
-                    <div class="icon-block">
+                    <a href="/callback/github" class="icon-block">
                         <h2 class="center"><img src="img/github.png"></h2>
-                        <h5 class="center"><a href="/callback/github">Github</a></h5>
-                    </div>
+                        <h5 class="center"><span>Github</span></h5>
+                    </a>
                 </div>
 
                 <div class="col s12 m4">
-                    <div class="icon-block">
+                    <a href="/callback/gitlab" class="icon-block">
                         <h2 class="center"><img src="img/gitlab.png"></h2>
-                        <h5 class="center"><a href="/callback/gitlab">Gitlab</a></h5>
-                    </div>
+                        <h5 class="center"><span>Gitlab</span></h5>
+                    </a>
                 </div>
 
                 <div class="col s12 m4">
-                    <div class="icon-block">
+                    <a href="/callback/google" class="icon-block">
                         <h2 class="center"><img src="img/google.png"></h2>
-                        <h5 class="center"><a href="/callback/google">Google</a></h5>
-                    </div>
+                        <h5 class="center"><span>Google</span></h5>
+                    </a>
                 </div>
             </div>
 
@@ -54,11 +59,7 @@
     </div>
 </main>
 
- <#include "footer.ftl">
-
-<!--  Scripts-->
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="js/materialize.js"></script>
+ <#include "footer_unauth.ftl">
 
 </body>
 </html>

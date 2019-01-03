@@ -12,10 +12,17 @@
     <link href="css/custom.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
+<!--  Scripts-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/materialize.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+
 <nav class="light-blue lighten-1" role="navigation">
     <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo"><i class="material-icons">highlight</i>NoIdle</a>
         <ul class="right hide-on-med-and-down">
-            <li><a href="http://plugins.jetbrains.com/plugin/7697-unvired-sdk-installer">Download plugin</a></li>
+            <li><a href="http://plugins.jetbrains.com/plugin/7697-unvired-sdk-installer">
+                <i class="material-icons left">file_download</i>Download plugin</a>
+            </li>
         </ul>
 
         <ul id="nav-mobile" class="sidenav">
@@ -39,11 +46,7 @@
     </div>
 </div>
 </main>
- <#include "footer.ftl">
-
-<!--  Scripts-->
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="js/materialize.js"></script>
+ <#include "footer_unauth.ftl">
 
 </body>
 </html>

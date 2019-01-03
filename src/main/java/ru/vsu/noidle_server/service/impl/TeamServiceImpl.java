@@ -18,7 +18,9 @@ import ru.vsu.noidle_server.service.TeamService;
 import ru.vsu.noidle_server.service.UserService;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +35,7 @@ public class TeamServiceImpl implements TeamService {
     public TeamDto add(NewTeamDto teamDto) throws ServiceException {
         TeamEntity teamEntity;
         try {
-            UserEntity userEntity=userService.getEntityByAuth();
+            UserEntity userEntity = userService.getEntityByAuth();
             teamEntity = new TeamEntity(teamDto.getName(), OffsetDateTime.now());
             teamEntity = teamRepository.save(teamEntity);
             userEntity.addTeam(teamEntity);
@@ -60,7 +62,10 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamEntity getEntityById(UUID id) throws ServiceException {
-        TeamEntity team = teamRepository.findById(id).orElse(null);
+        TeamEntity team=null;
+        if (id != null) {
+            team = teamRepository.findById(id).orElse(null);
+        }
         if (team == null) {
             log.info("Unable to find team with id " + id);
             throw new ServiceException("Unable to find team with id " + id);
@@ -89,5 +94,13 @@ public class TeamServiceImpl implements TeamService {
     public void delete(UUID id) throws ServiceException {
         TeamEntity team = getEntityById(id);
         teamRepository.delete(team);
+    }
+
+    @Override
+    public List<TeamDto> getAll() throws ServiceException {
+        return userService.getEntityByAuth()
+                .getTeams().stream()
+                .map(teamEntity -> dataMapper.toDto(teamEntity, new CycleAvoidingMappingContext()))
+                .collect(Collectors.toList());
     }
 }
