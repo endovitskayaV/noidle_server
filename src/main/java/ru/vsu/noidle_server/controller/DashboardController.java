@@ -7,6 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.dto.LanguageStatisticsDto;
 import ru.vsu.noidle_server.model.dto.TeamDto;
@@ -25,12 +26,23 @@ public class DashboardController {
     private final TeamService teamService;
 
     @GetMapping
-    public String getAll(@RequestParam(name = "date", required = false) String date,
-                         @RequestParam(name = "teamId", required = false) UUID teamId,
-                         @RequestParam(name = "startDate", required = false) String startDate,
-                         @RequestParam(name = "endDate", required = false) String endDate,
-                         ModelMap modelMap) {
-        modelMap.addAttribute("overallSelected", true);
+    public ModelAndView getAll(@RequestParam(name = "date", required = false) String date,
+                               @RequestParam(name = "teamId", required = false) UUID teamId,
+                               @RequestParam(name = "startDate", required = false) String startDate,
+                               @RequestParam(name = "endDate", required = false) String endDate,
+                               ModelMap modelMap) {
+        //----------------------------set flag for ftl------------------------------//
+        if (date != null && startDate != null && endDate != null) {
+            return new ModelAndView("redirect:/error");
+        } else if (date == null && startDate == null && endDate == null) {
+            modelMap.addAttribute("selectedPeriod", "overall");
+        } else if (date != null) {
+            modelMap.addAttribute("selectedPeriod", "date");
+        } else {
+            modelMap.addAttribute("selectedPeriod", "range");
+        }
+        //----------------------------------------------------------------------------//
+
         //---------------------------set outputDate---------------------------//
         OffsetDateTime realDate = TimeUtils.toOffsetDateTime(date);
         String outputDate;
@@ -61,7 +73,7 @@ public class DashboardController {
                     statisticsService.getLanguages(realDate, teamId),
                     teamId, outputDate, startDate, endDate);
         }
-        return "dashboard";
+        return new ModelAndView("dashboard", modelMap);
     }
 
     private void setModel(@NotNull ModelMap modelMap, Map<String, String> statistics,
@@ -72,7 +84,13 @@ public class DashboardController {
         modelMap.addAttribute("languages", languages);
         modelMap.addAttribute("selectedTeamId", selectedTeamId);
         modelMap.addAttribute("selectedDate", selectedDate);
+        if (selectedStartDate == null) {
+            selectedStartDate = "";
+        }
         modelMap.addAttribute("selectedStartDate", selectedStartDate);
+        if (selectedEndDate == null) {
+            selectedEndDate = "";
+        }
         modelMap.addAttribute("selectedEndDate", selectedEndDate);
         List<TeamDto> teams = new ArrayList<>();
         try {

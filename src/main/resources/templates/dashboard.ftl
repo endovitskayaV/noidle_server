@@ -16,7 +16,11 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
 <script type="text/javascript" src="js/base.js"></script>
-<script> var selectedDate = "${selectedDate}"</script>
+<script>
+    var selectedDate = "${selectedDate}"
+    var selectedStartDate="${selectedStartDate}"
+    var selectedEndDate ="${selectedEndDate}"
+</script>
 <script type="text/javascript" src="js/dashboardHandler.js"></script>
 <#include "nav_auth.ftl">
 <main>
@@ -27,53 +31,73 @@
             <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons light-blue-text"
                                                                            style="margin:0 30px;">more_horiz</i></a>
 
+
             <ul id="slide-out" class="sidenav">
+
                 <li>
                     <a class="subheader">Period</a>
                     <form action="#" class="nav-content">
-                         <#if overallSelected??>
-                             <p>
-                                 <label>
-                                     <input name="groupMain" type="radio" onclick="disableDatePicker()"/>
-                                     <span>overall</span>
-                                 </label>
-                             </p>
-                             <p>
-                                 <label>
-                                     <input name="groupMain" type="radio" id="date-picker-radio"
-                                            onclick="enableDatePicker()"/>
-                                     <span><input id="date-input" type="text" class="datepicker radio-text"></span>
-                                 </label>
-                             </p>
-                             <p>
-                                 <label>
-                                     <input name="groupMain" type="radio" id="date-picker-radio"
-                                            onclick="enableDatePicker()"/>
-                                     <span>from<input id="date-input1" type="text" class="datepicker radio-text"></span>
-                                 </label>
-                             </p>
-                             <p>
-                                 <label>
-                                     <input type="radio" hidden name="hidden">
-                                     <span class="hidden" style="margin-top: 10px">to
-                                         <input id="date-input2" type="text" class="datepicker radio-text"></span>
-                                 </label>
-                             </p>
-                         <#else>
                         <p>
                             <label>
-                                <input name="groupMain" type="radio" onclick="disableDatePicker()"/>
+                                <input id="overall-radio" name="groupMain" type="radio"
+                                       onclick="
+                                    disableElem($('#date-input'));
+                                    disableElem($('#start-date-input'));
+                                    disableElem($('#end-date-input'));"/>
                                 <span>overall</span>
                             </label>
                         </p>
                         <p>
                             <label>
                                 <input name="groupMain" type="radio" id="date-picker-radio"
-                                       onclick="enableDatePicker()"/>
+                                       onclick="
+                                           enableElem($('#date-input'));
+                                           disableElem($('#start-date-input'));
+                                           disableElem($('#end-date-input'));"/>
                                 <span><input id="date-input" type="text" class="datepicker radio-text"></span>
                             </label>
                         </p>
-                         </#if>
+                        <p>
+                            <label>
+                                <input name="groupMain" type="radio" id="start-date-picker-radio"
+                                       onclick="
+                                              enableElem($('#start-date-input'));
+                                                 enableElem($('#end-date-input'));
+                                           disableElem($('#date-input'));"/>
+                                <span>from<input required id="start-date-input" type="text"
+                                                 class="datepicker radio-text"></span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="radio" hidden name="hidden">
+                                <span class="hidden" style="margin-top: 10px">to
+                                         <input required id="end-date-input" type="text" class="datepicker radio-text"></span>
+                            </label>
+                        </p>
+<#switch selectedPeriod>
+    <#case "overall">
+        <script>
+            checkedElem($("#overall-radio"));
+            disableElem($("#date-input"));
+            disableElem($("#start-date-input"));
+            disableElem($("#end-date-input"));
+        </script>
+        <#break>
+    <#case "date">
+        <script>
+            checkedElem($("#date-picker-radio"));
+            disableElem($("#start-date-input"));
+            disableElem($("#end-date-input"));
+        </script>
+        <#break>
+    <#case "range">
+        <script>
+            checkedElem($("#start-date-picker-radio"));
+            disableElem($("#date-input"));
+        </script>
+        <#break>
+</#switch>
                     </form>
                 </li>
                 <li>
@@ -146,15 +170,17 @@
                 </li>
                 <li><br></li>
                 <li>
-                    <div class="col s3 offset-s8"><a class="waves-effect waves-light btn-small blue"
-                                                     style="margin-top: 25px"
-                                                     onclick="applyStatisticsFilters()">Apply</a></div>
+                    <div class="col s3 offset-s8">
+                        <button type="submit" class="waves-effect waves-light btn-small blue"
+                                style="margin-top: 25px"
+                                onclick="applyStatisticsFilters()">Apply
+                        </button>
+                    </div>
                 </li>
             </ul>
-
         </div>
 
-<#if statistics?? && statistics?size gt 0>
+        <#if statistics?? && statistics?size gt 0>
     <div class="row">
         <ul class="col s6 collapsible popout expandable">
             <li>
@@ -240,7 +266,7 @@
             </li>
         </ul>
     </div>
-    <#if keys?? && keys?size gt 0>
+            <#if keys?? && keys?size gt 0>
         <div class="row">
             <ul class="col s6 collapsible popout expandable">
                 <li>
@@ -287,9 +313,9 @@
                 </li>
             </ul>
         </div>
-    </#if>
+            </#if>
 
-    <#if languages?? && languages?size gt 0>
+            <#if languages?? && languages?size gt 0>
         <div class="row">
             <ul class="col s8 collapsible popout expandable">
                 <li>
@@ -298,26 +324,26 @@
                         <span>Languages</span>
                     </div>
                     <div class="collapsible-body">
-        <#if languages?? && languages?size gt 0>
+                <#if languages?? && languages?size gt 0>
 
-            <table class="highlight centered">
-                <thead>
-                <tr>
-                    <th>
-                        <div class="orange-text"><i class="material-icons">language</i></div>
-                    </th>
-                    <th>
-                        <div class="light-blue-text"><i class="material-icons">access_time</i></div>
-                    </th>
-                    <th>
-                        <div class="light-blue-text">
-                            <i class="material-icons">text_rotation_none</i>
-                        </div>
-                    </th>
-                </tr>
-                </thead>
+                    <table class="highlight centered">
+                        <thead>
+                        <tr>
+                            <th>
+                                <div class="orange-text"><i class="material-icons">language</i></div>
+                            </th>
+                            <th>
+                                <div class="light-blue-text"><i class="material-icons">access_time</i></div>
+                            </th>
+                            <th>
+                                <div class="light-blue-text">
+                                    <i class="material-icons">text_rotation_none</i>
+                                </div>
+                            </th>
+                        </tr>
+                        </thead>
 
-                <tbody id="langs_table">
+                        <tbody id="langs_table">
                             <#assign i=1>
                             <#list languages as language>
                             <tr>
@@ -330,8 +356,8 @@
                                     <#break>
                                 </#if>
                             </#list>
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
 
                     <#if i gt 5>
                         <script>
@@ -356,11 +382,11 @@
                 </li>
             </ul>
         </div>
-        </#if>
+                </#if>
 
-    </#if>
+            </#if>
 
-<#else>
+        <#else>
         <div class="container">
             <div class="container">
                 <div class="container">
@@ -374,11 +400,11 @@
                 </div>
             </div>
         </div>
-</#if>
+        </#if>
 
     </div>
 </main>
-<#include "footer_auth.ftl">
+        <#include "footer_auth.ftl">
 
 
 </body>

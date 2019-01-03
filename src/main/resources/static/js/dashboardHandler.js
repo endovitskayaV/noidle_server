@@ -29,6 +29,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     $('#date-input')[0].value = selectedDate;
+    if (selectedStartDate !== 'undefined' && selectedStartDate!=="") {
+        $('#start-date-input')[0].value = selectedStartDate;
+    }
+    if (selectedEndDate !== 'undefined' && selectedEndDate!=="") {
+        $('#end-date-input')[0].value = selectedEndDate;
+    }
 });
 
 function show(link, table, data, flag, type) {
@@ -66,25 +72,45 @@ function show(link, table, data, flag, type) {
 
 function applyStatisticsFilters() {
     var dateQueryString = "";
+    var doApply = true;
+    var startDateInput = $("#start-date-input")[0];
     if ($("#date-picker-radio")[0].checked) {
         dateQueryString = '?date=' + $('#date-input')[0].value;
     }
-    var teamQueryString = "";
-    if ($("#teamRadio")[0].checked) {
-        var teamRadios = $('input[name="groupTeam"]');
-        $.each(teamRadios, function (index, value) {
-            if (value.checked) {
-                if (dateQueryString === "") {
-                    teamQueryString = "?"
-                } else {
-                    teamQueryString = "&"
-                }
-                teamQueryString += "teamId=" + value.id;
-            }
-        });
+    else if ($("#start-date-picker-radio")[0].checked) {
+        if (startDateInput.value === "") {
+            doApply = false;
+            $("#start-date-input").css("border-bottom", "1px solid red");
+        }
+
+        var endDateInput = $("#end-date-input")[0];
+        if (endDateInput.value === "") {
+            doApply = false;
+            $("#end-date-input").css("border-bottom", "1px solid red");
+        }
+
+        dateQueryString = '?startDate=' + startDateInput.value +
+            '&endDate=' + endDateInput.value;
     }
 
-    window.location.href = '/dashboard' + dateQueryString + teamQueryString;
+    if (doApply) {
+        var teamQueryString = "";
+        if ($("#teamRadio")[0].checked) {
+            var teamRadios = $('input[name="groupTeam"]');
+            $.each(teamRadios, function (index, value) {
+                if (value.checked) {
+                    if (dateQueryString === "") {
+                        teamQueryString = "?"
+                    } else {
+                        teamQueryString = "&"
+                    }
+                    teamQueryString += "teamId=" + value.id;
+                }
+            });
+        }
+
+        window.location.href = '/dashboard' + dateQueryString + teamQueryString;
+    }
 }
 
 function enableTeams() {
@@ -111,10 +137,14 @@ function radioHandler(checked) {
     });
 }
 
-function enableDatePicker() {
-    $("#date-input").removeAttr("disabled");
+function enableElem(elem) {
+    elem.removeAttr("disabled");
 }
 
-function disableDatePicker() {
-    $("#date-input").attr("disabled", "disabled");
+function disableElem(elem) {
+    elem.attr("disabled", "disabled");
+}
+
+function checkedElem(elem) {
+    elem.attr("checked", "checked");
 }
