@@ -64,15 +64,15 @@
                                               enableElem($('#start-date-input'));
                                                  enableElem($('#end-date-input'));
                                            disableElem($('#date-input'));"/>
-                                <span>from<input required id="start-date-input" type="text"
-                                                 class="datepicker radio-text"></span>
+                                <span><span>from<input required id="start-date-input" type="text"
+                                                       class="datepicker period radio-text"></span></span>
                             </label>
                         </p>
                         <p>
                             <label>
                                 <input type="radio" hidden name="hidden">
-                                <span class="hidden" style="margin-top: 10px">to
-                                         <input required id="end-date-input" type="text" class="datepicker radio-text"></span>
+                                <span class="hidden" style="margin-top: 10px"><span>to
+                                    <input required id="end-date-input" type="text" class="datepicker period radio-text"></span></span>
                             </label>
                         </p>
 <#switch selectedPeriod>
