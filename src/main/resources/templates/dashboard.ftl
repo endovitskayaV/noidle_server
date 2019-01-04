@@ -28,8 +28,8 @@
     <div class="container" id="main-container">
 
         <div class="row">
-            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons light-blue-text"
-                                                                           style="margin:0 30px;">more_horiz</i></a>
+            <a href="#" data-target="slide-out" class="sidenav-trigger" style="display: flex">
+                <i class="material-icons light-blue-text" style="margin:0px 0px 30px 0px">filter_list</i>Filter</a>
 
 
             <ul id="slide-out" class="sidenav">
