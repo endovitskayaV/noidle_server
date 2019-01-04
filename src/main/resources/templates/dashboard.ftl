@@ -18,8 +18,8 @@
 <script type="text/javascript" src="js/base.js"></script>
 <script>
     var selectedDate = "${selectedDate}"
-    var selectedStartDate="${selectedStartDate}"
-    var selectedEndDate ="${selectedEndDate}"
+    var selectedStartDate = "${selectedStartDate}"
+    var selectedEndDate = "${selectedEndDate}"
 </script>
 <script type="text/javascript" src="js/dashboardHandler.js"></script>
 <#include "nav_auth.ftl">
@@ -72,7 +72,8 @@
                             <label>
                                 <input type="radio" hidden name="hidden">
                                 <span class="hidden" style="margin-top: 10px"><span>to
-                                    <input required id="end-date-input" type="text" class="datepicker period radio-text"></span></span>
+                                    <input required id="end-date-input" type="text"
+                                           class="datepicker period radio-text"></span></span>
                             </label>
                         </p>
 <#switch selectedPeriod>
@@ -120,13 +121,26 @@
                                     <span>teams:</span>
                                 </label>
                             </p>
-                            <#else>
+                            <#elseif !teams?? || teams?size==0>
                                <p>
                                    <label>
                                        <input name="groupMain" type="radio" checked onclick="disableTeams()"/>
                                        <span>out of team</span>
                                    </label>
                                </p>
+                            <p>
+                                <label>
+                                    <input name="groupMain" type="radio" id="teamRadio" disabled/>
+                                    <span>teams:</span>
+                                </label>
+                            </p>
+                            <#else>
+                              <p>
+                                  <label>
+                                      <input name="groupMain" type="radio" checked onclick="disableTeams()"/>
+                                      <span>out of team</span>
+                                  </label>
+                              </p>
                             <p>
                                 <label>
                                     <input name="groupMain" type="radio" id="teamRadio" onclick="enableTeams()"/>
@@ -136,10 +150,17 @@
                             </#if>
 
                         <div class="nav-content" style="padding-left: 32px">
+                            <#if !teams?? || teams?size==0>
+                                <p>
+                                    <label>
+                                        <span style="color: rgba(0, 0, 0, 0.42)">&lt;You have no teams yet&gt;</span>
+                                    </label>
+                                </p>
+                            <#else>
                                 <#list teams as team>
-                                     <#if selectedTeamId??>
+                                    <#if selectedTeamId??>
 
-                                         <#if team.id==selectedTeamId>
+                                        <#if team.id==selectedTeamId>
                                      <p>
                                          <label>
                                              <input name="groupTeam" type="radio" class="with-gap" checked
@@ -147,15 +168,16 @@
                                              <span>${team.name}</span>
                                          </label>
                                      </p>
-                                         <#else>
+                                        <#else>
                                         <p>
                                             <label>
                                                 <input name="groupTeam" type="radio" class="with-gap" id="${team.id}"/>
                                                 <span>${team.name}</span>
                                             </label>
                                         </p>
-                                         </#if>
-                                     <#else>
+                                        </#if>
+
+                                    <#else>
                                        <p>
                                            <label>
                                                <input name="groupTeam" type="radio" class="with-gap" disabled="disabled"
@@ -163,8 +185,9 @@
                                                <span>${team.name}</span>
                                            </label>
                                        </p>
-                                     </#if>
+                                    </#if>
                                 </#list>
+                            </#if>
                         </div>
                     </form>
                 </li>
@@ -388,13 +411,13 @@
 
         <#else>
         <div class="container">
-                <div class="container">
-                    <div class="card horizontal">
-                        <div class="card-stacked">
-                            <div class="card-content">
-                                <p class="center-align"><span>No statistics available for chosen parameters</span></p>
-                            </div>
+            <div class="container">
+                <div class="card horizontal">
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <p class="center-align"><span>No statistics available for chosen parameters</span></p>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
