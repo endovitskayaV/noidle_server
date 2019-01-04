@@ -81,7 +81,7 @@ public class StatisticsEntity implements Comparable<StatisticsEntity> {
     private StatisticsType type;
 
     @Convert(converter = StatisticsSubTypeConverter.class)
-    @Column(name = "subType", nullable = false)
+    @Column(name = "sub_type", nullable = false)
     private StatisticsSubType subType;
 
     @Column(name = "extra_value")
