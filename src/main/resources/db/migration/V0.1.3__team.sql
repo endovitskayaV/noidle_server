@@ -19,7 +19,7 @@ alter table statistics
   drop constraint unique_statistics;
 
 alter table statistics
-  add constraint unique_statistics unique (type, sub_type, extra_value, user_id, team_id);
+  add constraint unique_statistics unique (type, subtype, extravalue, user_id, team_id);
 
 alter table notification
   add column

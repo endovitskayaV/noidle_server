@@ -76,11 +76,11 @@ public interface DataMapper {
 
     TeamDtoShort toDtoShort(TeamEntity teamEntity);
 
-    List<StatisticsDashboardEntity> toDashboardEntities(List<StatisticsEntity> statisticsEntity);
+//    List<StatisticsDashboardEntity> toDashboardEntities(List<StatisticsEntity> statisticsEntity);
 
-    @Mapping(source = "statisticsEntity", target = "type", qualifiedByName = "getTypeShortcut")
-    @Mapping(source = "statisticsEntity", target = "subType", qualifiedByName = "getSubTypeShortcut")
-    StatisticsDashboardEntity toDashboardEntity(StatisticsEntity statisticsEntity);
+//    @Mapping(source = "statisticsEntity", target = "type", qualifiedByName = "getTypeShortcut")
+//    @Mapping(source = "statisticsEntity", target = "subtype", qualifiedByName = "getSubTypeShortcut")
+//    StatisticsDashboardEntity toDashboardEntity(StatisticsEntity statisticsEntity);
 
     @Named("getTypeShortcut")
     default String getTypeShortcut(StatisticsEntity statisticsEntity) {
@@ -89,7 +89,7 @@ public interface DataMapper {
 
     @Named("getSubTypeShortcut")
     default String getSubTypeShortcut(StatisticsEntity statisticsEntity) {
-        return statisticsEntity.getSubType().getShortcut();
+        return statisticsEntity.getSubtype().getShortcut();
     }
 
     default Map<String, String> toDtosDashboard(List<StatisticsDashboardEntity> statistics) {
@@ -114,9 +114,9 @@ public interface DataMapper {
         StringBuilder resultType = new StringBuilder();
 
         resultType.append(statisticsDashboardEntity.getType() != null ? statisticsDashboardEntity.getType() : "");
-        resultType.append(statisticsDashboardEntity.getSubType() != null ? statisticsDashboardEntity.getSubType() : "");
+        resultType.append(statisticsDashboardEntity.getSubtype() != null ? statisticsDashboardEntity.getSubtype() : "");
 
-        String extraValue = statisticsDashboardEntity.getExtraValue();
+        String extraValue = statisticsDashboardEntity.getExtravalue();
         resultType.append(extraValue != null ? extraValue : "");
         String value = statisticsDashboardEntity.getValue().toString();
         HashMap<String, String> result = new HashMap<>(1);
@@ -136,10 +136,10 @@ public interface DataMapper {
         HashMap<String, Long> result = new HashMap<>(statisticsDashboardEntities.size());
         statisticsDashboardEntities.forEach(statisticsDashboardEntity -> {
             if (statisticsDashboardEntity != null && statisticsDashboardEntity.getValue() != null &&
-                    statisticsDashboardEntity.getExtraValue() != null &&
+                    statisticsDashboardEntity.getExtravalue() != null &&
                     statisticsDashboardEntity.getValue() != null) {
 
-                String keyName = statisticsDashboardEntity.getExtraValue();
+                String keyName = statisticsDashboardEntity.getExtravalue();
                 Long value = statisticsDashboardEntity.getValue();
                 result.put(keyName, value);
             }
@@ -160,10 +160,10 @@ public interface DataMapper {
         HashMap<String, TimeSymbols> langValues = new HashMap<>(statisticsDashboardEntities.size() / 2);
         statisticsDashboardEntities.forEach(statisticsDashboardEntity -> {
             if (statisticsDashboardEntity != null && statisticsDashboardEntity.getValue() != null &&
-                    statisticsDashboardEntity.getExtraValue() != null &&
+                    statisticsDashboardEntity.getExtravalue() != null &&
                     statisticsDashboardEntity.getValue() != null) {
 
-                String language = statisticsDashboardEntity.getExtraValue();
+                String language = statisticsDashboardEntity.getExtravalue();
                 Long value = statisticsDashboardEntity.getValue();
                 if (langValues.containsKey(language)) {
                     if (statisticsDashboardEntity.getType().equals(StatisticsType.LANG_SYMBOL.getShortcut())) {

@@ -126,7 +126,7 @@ public class NotificationServiceImpl implements NotificationService {
                     //set values
                     requirements.forEach(requirement -> {
                         team.getUsers().forEach(teamMember -> {
-                            StatisticsEntity statistics = statisticsRepository.getByTypeAndSubTypeAndExtraValueAndUserIdAndTeamId(
+                            StatisticsEntity statistics = statisticsRepository.getByTypeAndSubtypeAndExtravalueAndUserIdAndTeamId(
                                     requirement.getStatisticsType(), requirement.getStatisticsSubType(), requirement.getExtraValue(), teamMember.getId(), team.getId());
                             if (statistics != null && statistics.getValue() != null) {
                                 rates.put(teamMember.getId(), new TeamRateModel(requirement.getId(), statistics.getValue()));

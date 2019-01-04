@@ -20,54 +20,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
-
-@NamedNativeQueries({
-        @NamedNativeQuery(
-                name = "findStatisticsByPeriodOutOfTeam",
-                query = "SELECT s.type as type, s.sub_type as subtype, s.extra_value as extravalue, sum(s.value) as value" +
-                        " FROM statistics s WHERE s.user_id = :userId and s.sub_type in :statisticsSubTypes" +
-                        " and s.date >= :startDate  and s.date <= :endDate and s.team_id is null" +
-                        "  group by s.type,s.sub_type, s.extra_value",
-                resultSetMapping = "statisticsDashboardEntityResultSet"
-        ),
-        @NamedNativeQuery(
-                name = "findStatisticsLanguagesByPeriodOutOfTeam",
-                query = "SELECT s.type as type, s.sub_type as subtype, s.extra_value as extravalue, sum(s.value) as value" +
-                        " FROM statistics s WHERE s.user_id = :userId and s.type in :statisticsTypes" +
-                        " and s.sub_type = :statisticsSubType and s.date >= :startDate  and s.date <= :endDate" +
-                        " and s.team_id is null" +
-                        "  group by s.type,s.sub_type, s.extra_value",
-                resultSetMapping = "statisticsDashboardEntityResultSet"
-        ),
-        @NamedNativeQuery(
-                name = "findStatisticsByPeriodAndTeam",
-                query = "SELECT s.type as type, s.sub_type as subtype, s.extra_value as extravalue, sum(s.value) as value" +
-                        " FROM statistics s WHERE s.user_id = :userId and s.sub_type in :statisticsSubTypes" +
-                        " and s.date >= :startDate  and s.date <= :endDate and s.team_id= :teamId" +
-                        "  group by s.type,s.sub_type, s.extra_value",
-                resultSetMapping = "statisticsDashboardEntityResultSet"
-        ),
-        @NamedNativeQuery(
-                name = "findStatisticsLanguagesByPeriodAndTeam",
-                query = "SELECT s.type as type, s.sub_type as subtype, s.extra_value as extravalue, sum(s.value) as value" +
-                        " FROM statistics s WHERE s.user_id = :userId and s.type in :statisticsTypes" +
-                        " and s.sub_type = :statisticsSubType and s.date >= :startDate  and s.date <= :endDate" +
-                        " and s.team_id= :teamId" +
-                        "  group by s.type,s.sub_type, s.extra_value",
-                resultSetMapping = "statisticsDashboardEntityResultSet"
-        )}
-)
-
-@SqlResultSetMapping(name = "statisticsDashboardEntityResultSet",
-        classes = {
-                @ConstructorResult(targetClass = StatisticsDashboardEntity.class, columns = {
-                        @ColumnResult(name = "type", type = String.class),
-                        @ColumnResult(name = "subtype", type = String.class),
-                        @ColumnResult(name = "extravalue", type = String.class),
-                        @ColumnResult(name = "value", type = Long.class)
-                })
-        }
-)
 public class StatisticsEntity implements Comparable<StatisticsEntity> {
 
     @Id
@@ -81,11 +33,11 @@ public class StatisticsEntity implements Comparable<StatisticsEntity> {
     private StatisticsType type;
 
     @Convert(converter = StatisticsSubTypeConverter.class)
-    @Column(name = "subType", nullable = false)
-    private StatisticsSubType subType;
+    @Column(name = "subtype", nullable = false)
+    private StatisticsSubType subtype;
 
-    @Column(name = "extra_value")
-    private String extraValue;
+    @Column(name = "extravalue")
+    private String extravalue;
 
     @Column(name = "value", nullable = false)
     private Long value;

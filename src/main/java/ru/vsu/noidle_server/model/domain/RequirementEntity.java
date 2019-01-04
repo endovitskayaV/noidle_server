@@ -30,7 +30,7 @@ public class RequirementEntity {
     private StatisticsType statisticsType;
 
     @Convert(converter = StatisticsSubTypeConverter.class)
-    @Column(name = "subType", nullable = false)
+    @Column(name = "sub_type", nullable = false)
     private StatisticsSubType statisticsSubType;
 
     @ManyToOne
@@ -52,8 +52,8 @@ public class RequirementEntity {
         }
         boolean anyFits = statistics.stream().anyMatch(statistic ->
                 statisticsType.equals(statistic.getType()) &&
-                        statisticsSubType.equals(statistic.getSubType()) &&
-                        compareExtraValue(statistic.getExtraValue()) &&
+                        statisticsSubType.equals(statistic.getSubtype()) &&
+                        compareExtraValue(statistic.getExtravalue()) &&
                         value.compareTo(statistic.getValue()) <= 0);// value <=  achievement.getValue()
         return anyFits;
     }

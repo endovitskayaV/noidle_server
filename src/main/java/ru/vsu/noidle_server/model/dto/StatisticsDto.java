@@ -19,9 +19,9 @@ public class StatisticsDto {
 
     private StatisticsType type;
 
-    private StatisticsSubType subType;
+    private StatisticsSubType subtype;
 
-    private String extraValue;
+    private String extravalue;
 
     private Long value;
 

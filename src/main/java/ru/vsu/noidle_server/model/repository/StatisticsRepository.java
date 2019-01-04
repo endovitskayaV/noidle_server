@@ -16,48 +16,33 @@ import java.util.UUID;
 @Repository
 public interface StatisticsRepository extends JpaRepository<StatisticsEntity, UUID> {
 
-    StatisticsEntity getByTypeAndSubTypeAndExtraValueAndUserIdAndTeamId
+    StatisticsEntity getByTypeAndSubtypeAndExtravalueAndUserIdAndTeamId
             (StatisticsType statisticsType, StatisticsSubType statisticsSubType,
              String extraValue, UUID userId, UUID teamId);
 
-    List<StatisticsEntity> getAllByUserIdAndSubTypeInAndDateGreaterThanEqualAndTeamId
+    List<StatisticsEntity> getAllByUserIdAndSubtypeInAndDateGreaterThanEqualAndTeamId
             (UUID userId, StatisticsSubType[] statisticsSubType, OffsetDateTime date, UUID teamId);
 
-    List<StatisticsEntity> getAllByUserIdAndTypeAndSubTypeAndTeamId
+    List<StatisticsEntity> getAllByUserIdAndTypeAndSubtypeAndTeamId
             (UUID userId, StatisticsType statisticsType, StatisticsSubType statisticsSubType, UUID teamId);
 
-    List<StatisticsEntity> getAllByUserIdAndTypeInAndSubTypeAndDateGreaterThanEqualAndTeamId
-            (UUID userId, StatisticsType[] statisticsType, StatisticsSubType statisticsSubType, OffsetDateTime date,
+    List<StatisticsEntity> getAllByUserIdAndTypeInAndSubtypeAndDateGreaterThanEqualAndTeamId
+            (UUID userId, StatisticsType[] statisticsType, StatisticsSubType statisticsSubtype, OffsetDateTime date,
              UUID teamId);
 
-    List<StatisticsEntity> getAllByUserIdAndSubTypeInAndTeamId
+    List<StatisticsEntity> getAllByUserIdAndSubtypeInAndTeamId
             (UUID userId, StatisticsSubType[] statisticsSubType, UUID teamId);
 
-    List<StatisticsEntity> getAllByUserIdAndTypeInAndSubTypeAndTeamId
+    List<StatisticsEntity> getAllByUserIdAndTypeInAndSubtypeAndTeamId
             (UUID userId, StatisticsType[] statisticsType, StatisticsSubType statisticsSubType, UUID teamId);
 
-    @Query(name = "findStatisticsByPeriodAndTeam", nativeQuery = true)
+    @Query(value = "SELECT s.type as type, s.subtype as subtype, s.extravalue as extravalue, sum(s.value) as value" +
+            " FROM statistics s WHERE s.user_id = :userId and s.subtype in :statisticsSubTypes" +
+            " and s.date >= :startDate  and s.date <= :endDate and s.team_id = :teamId" +
+            "  group by s.type,s.subtype, s.extravalue",
+            nativeQuery = true)
     List<StatisticsDashboardEntity> findStatisticsByPeriodAndTeam
             (@Param("userId") UUID userId, @Param("statisticsSubTypes") List<String> statisticsSubTypes,
              @Param("startDate") OffsetDateTime startDate, @Param("endDate") OffsetDateTime endDate,
              @Param("teamId") UUID teamId);
-
-    @Query(name = "findStatisticsByPeriodOutOfTeam", nativeQuery = true)
-    List<StatisticsDashboardEntity> findStatisticsByPeriodOutOfTeam
-            (@Param("userId") UUID userId, @Param("statisticsSubTypes") List<String> statisticsSubTypes,
-             @Param("startDate") OffsetDateTime startDate, @Param("endDate") OffsetDateTime endDate);
-
-    @Query(name = "findStatisticsLanguagesByPeriodAndTeam", nativeQuery = true)
-    List<StatisticsDashboardEntity> findStatisticsLanguagesByPeriodAndTeam
-            (@Param("userId") UUID userId, @Param("statisticsTypes") List<String> statisticsTypes,
-             @Param("statisticsSubType") String statisticsSubType,
-             @Param("startDate") OffsetDateTime startDate, @Param("endDate") OffsetDateTime endDate,
-             @Param("teamId") UUID teamId);
-
-    @Query(name = "findStatisticsLanguagesByPeriodOutOfTeam", nativeQuery = true)
-    List<StatisticsDashboardEntity> findStatisticsLanguagesByPeriodOutOfTeam
-            (@Param("userId") UUID userId, @Param("statisticsTypes") List<String> statisticsTypes,
-             @Param("statisticsSubType") String statisticsSubType,
-             @Param("startDate") OffsetDateTime startDate, @Param("endDate") OffsetDateTime endDate);
-
 }

@@ -1,16 +1,21 @@
 package ru.vsu.noidle_server.model.domain;
 
-import lombok.*;
+import org.apache.logging.log4j.message.StringFormattedMessage;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
-@ToString
-public class StatisticsDashboardEntity {
-    private String type;
-    private String subType;
-    private String extraValue;
-    private Long value;
+public interface StatisticsDashboardEntity {
+    String getType();
+
+    String getSubtype();
+
+    String getExtravalue();
+
+    Long getValue();
+
+    void setType(String type);
+
+    void setSubtype(String subType);
+
+    void setExtravalue(String extraValue);
+
+    void setValue(Long value);
 }
