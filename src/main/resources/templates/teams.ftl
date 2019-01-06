@@ -23,14 +23,6 @@
 <script type="text/javascript" src="js/editTeam.js"></script>
 <script type="text/javascript" src="js/deleteTeam.js"></script>
 <script type="text/javascript" src="js/addTeam.js"></script>
-<script>
-    $(window).bind('beforeunload', function () {
-        clearTeams();
-    });
-    $(window).on('load', function () {
-        clearTeams();
-    });
-</script>
 
  <#include "nav_auth.ftl">
 
@@ -100,7 +92,7 @@
                                  </a>
                              </div>
                              <div>
-                                 <a onclick="deleteTeam('${team.id}', '${team.name}')">
+                                 <a onclick="deleteTeam('${team.id}', '${team.name}', false)">
                                      <i class="material-icons faded">delete</i>
                                  </a>
                              </div>
@@ -123,7 +115,7 @@
                                      onChipAddHandler(data, document.querySelector('#chips${i}'), '${team.id}')
                                  },
                                  onChipDelete: function (e, data) {
-                                     onChipDeleteHandler(data, '${i}', '${team.id}')
+                                     onChipDeleteHandler(data, document.querySelector('#chips${i}'), '${i}', '${team.id}', '${team.name}')
                                  }
                              });
                          </script>

@@ -1,15 +1,22 @@
-function deleteTeam(teamId, teamName) {
+function deleteTeam(teamId, teamName, afterEditMember, memberName) {
     $.post(document.location.origin + '/teams/delete/' + teamId).always(
         function () {
             var card = $("#" + teamId + "-card");
             card.remove();
 
-            var toastHTML = 'Team&nbsp;<i><b>' + teamName + '</b></i>&nbsp;removed' +
-                '<button class="btn-flat toast-action" onclick="doAddTeam(\'' + teamName + '\');">Undo</button>';
+            var toastHTML;
+            if (afterEditMember) {
+                toastHTML = '<span>Last member excluded, team removed</span>' +
+                    '<button class="btn-flat toast-action" onclick="doAddTeam(\'' + teamName + '\');">Undo</button>';
+            } else {
 
+                toastHTML = 'Team&nbsp;<i><b>' + teamName + '</b></i>&nbsp;removed' +
+                    '<button class="btn-flat toast-action" onclick="doAddTeam(\'' + teamName + '\');">Undo</button>';
+            }
             M.toast({
                 html: toastHTML,
-                classes: 'rounded'
+                classes: 'rounded',
+                displayLength: 8000
             });
 
             if ($('#teams-container')[0].innerText.length === 0) {
