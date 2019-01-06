@@ -38,7 +38,7 @@
     <div class="container">
 
         <h2 class="header center orange-text">Teams</h2>
-
+        <div id="no-team">
          <#if teams?size==0>
 
         <a href="/teams/add">
@@ -64,17 +64,18 @@
         </div>
 
          <#else>
-        <a href="/teams/add">
-            <div class="center light-blue-text">
-                <a onclick="openAddTeamModal()" class="link">
-                    <i class="material-icons" style="font-size: 30px">add</i>
-                </a>
-            </div>
-        </a>
+<div id="teams-not-empty-layout">
+
+
+          <a href="/teams/add">
+              <div class="center light-blue-text">
+                  <a onclick="openAddTeamModal()" class="link">
+                      <i class="material-icons" style="font-size: 30px">add</i>
+                  </a>
+              </div>
+          </a>
              <#assign i=0>
-
-        <div class="container" id="teams-container">
-
+ <div class="container" id="teams-container">
              <#list teams as team>
 
 
@@ -99,7 +100,7 @@
                                  </a>
                              </div>
                              <div>
-                                 <a onclick="deleteTeam('${team.id}')">
+                                 <a onclick="deleteTeam('${team.id}', '${team.name}')">
                                      <i class="material-icons faded">delete</i>
                                  </a>
                              </div>
@@ -132,9 +133,9 @@
              </#list>
         </div>
          </#if>
-    </div>
+        </div></div>
 
-
+        </div>
         <!-- Modals-->
         <div class="modal" style="width: 50% !important;" id="edit-modal">
             <form action="" onsubmit="return false">

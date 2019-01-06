@@ -46,7 +46,7 @@ function doDelete(teamId, memberName) {
     });
 }
 
-function undoDelete(i, memberName) {
+function undoDeleteMember(i, memberName) {
     M.Chips.getInstance($('#chips' + i)).addChip({tag: memberName});
 }
 
@@ -58,7 +58,7 @@ function onChipDeleteHandler(data, i, teamId) {
         afterAdd = false;
     } else {
         var toastHTML = '<span>Member&nbsp;<i><b>' + memberName + '</b></i>&nbsp;excluded</span>' +
-            '<button class="btn-flat toast-action" onclick="undoDelete(' + i + ',\'' + memberName + '\');">Undo</button>';
+            '<button class="btn-flat toast-action" onclick="undoDeleteMember(' + i + ',\'' + memberName + '\');">Undo</button>';
 
         M.toast({
             html: toastHTML,
