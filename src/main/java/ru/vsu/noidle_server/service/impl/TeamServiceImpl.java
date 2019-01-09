@@ -91,6 +91,11 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public TeamDtoShort getShortById(UUID id) throws ServiceException {
+        return dataMapper.toDtoShort(getEntityById(id));
+    }
+
+    @Override
     public void delete(UUID id) throws ServiceException {
         TeamEntity team = getEntityById(id);
         teamRepository.delete(team);

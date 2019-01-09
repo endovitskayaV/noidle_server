@@ -23,6 +23,18 @@ public class TeamController {
     private final TeamService teamService;
     private final UserService userService;
 
+    @GetMapping("/short/{id}")
+    @ResponseBody
+    public ResponseEntity<TeamDtoShort> getShortByName(@PathVariable("id") UUID id) {
+        TeamDtoShort teamDtoShort;
+        try {
+            teamDtoShort = teamService.getShortById(id);
+        } catch (ServiceException e) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(teamDtoShort);
+    }
+
     @GetMapping("/short")
     @ResponseBody
     public ResponseEntity<TeamDtoShort> getShortByName(@RequestParam("name") String name) {

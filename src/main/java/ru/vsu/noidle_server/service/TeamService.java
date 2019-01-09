@@ -20,6 +20,8 @@ public interface TeamService {
 
     TeamDtoShort getShortByName(String name) throws ServiceException;
 
+    TeamDtoShort getShortById(UUID id) throws ServiceException;
+
     void delete(UUID id) throws ServiceException;
 
     List<TeamDto> getAll() throws ServiceException;
