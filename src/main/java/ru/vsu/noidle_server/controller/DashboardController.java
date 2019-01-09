@@ -77,7 +77,7 @@ public class DashboardController {
     }
 
     private void setModel(@NotNull ModelMap modelMap, Map<String, String> statistics,
-                          Map<String, Long> keys, Set<LanguageStatisticsDto> languages,
+                          Map<String, Long> keys, SortedSet<LanguageStatisticsDto> languages,
                           UUID selectedTeamId, String selectedDate, String selectedStartDate, String selectedEndDate) {
         modelMap.addAttribute("statistics", statistics);
         modelMap.addAttribute("keys", keys);

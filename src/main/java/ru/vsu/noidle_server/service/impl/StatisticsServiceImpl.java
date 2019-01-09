@@ -141,12 +141,12 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public Set<LanguageStatisticsDto> getLanguages(OffsetDateTime date, UUID teamId) {
+    public SortedSet<LanguageStatisticsDto> getLanguages(OffsetDateTime date, UUID teamId) {
         UserEntity userEntity;
         try {
             userEntity = userService.getEntityByAuth();
         } catch (ServiceException e) {
-            return Collections.emptySet();
+            return Collections.emptySortedSet();
         }
 
 
@@ -255,12 +255,12 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public Set<LanguageStatisticsDto> getLanguages(@NotNull OffsetDateTime startDate, @NotNull OffsetDateTime endDate, UUID teamId) {
+    public SortedSet<LanguageStatisticsDto> getLanguages(@NotNull OffsetDateTime startDate, @NotNull OffsetDateTime endDate, UUID teamId) {
         UserEntity userEntity;
         try {
             userEntity = userService.getEntityByAuth();
         } catch (ServiceException e) {
-            return Collections.emptySet();
+            return Collections.emptySortedSet();
         }
 
         return dataMapper.toDtosLanguages(

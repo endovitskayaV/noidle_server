@@ -152,9 +152,9 @@ public interface DataMapper {
     }
 
 
-    default Set<LanguageStatisticsDto> toDtosLanguages(List<StatisticsDashboardEntity> statisticsDashboardEntities) {
+    default SortedSet<LanguageStatisticsDto> toDtosLanguages(List<StatisticsDashboardEntity> statisticsDashboardEntities) {
         if (statisticsDashboardEntities == null || statisticsDashboardEntities.isEmpty()) {
-            return Collections.emptySet();
+            return Collections.emptySortedSet();
         }
 
         HashMap<String, TimeSymbols> langValues = new HashMap<>(statisticsDashboardEntities.size() / 2);
@@ -182,7 +182,7 @@ public interface DataMapper {
             }
         });
 
-        HashSet<LanguageStatisticsDto> result = new HashSet<>(langValues.size());
+        TreeSet<LanguageStatisticsDto> result = new TreeSet<>();
         LinkedHashMap<String, TimeSymbols> sorted = langValues.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> v2, LinkedHashMap::new));
