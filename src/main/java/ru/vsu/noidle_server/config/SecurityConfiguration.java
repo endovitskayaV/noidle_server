@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/","/login", "/isauth","/teams/short**",
+                .antMatchers("/","/login", "/isauth","/teams/short**", "/teams/short/**",
                         "/img/**", "/login**", "/webjars/**", "/error**", "/callback**", "/statistics/**",
                         "/users/**", "/notifications**",
                         "/js/**", "/css/**")

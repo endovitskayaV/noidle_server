@@ -6,8 +6,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.vsu.noidle_server.model.StatisticsSubType;
 import ru.vsu.noidle_server.model.StatisticsType;
-import ru.vsu.noidle_server.model.domain.StatisticsEntity;
 import ru.vsu.noidle_server.model.domain.StatisticsDashboardEntity;
+import ru.vsu.noidle_server.model.domain.StatisticsEntity;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -29,6 +29,9 @@ public interface StatisticsRepository extends JpaRepository<StatisticsEntity, UU
     List<StatisticsEntity> getAllByUserIdAndTypeInAndSubTypeAndDateGreaterThanEqualAndTeamId
             (UUID userId, StatisticsType[] statisticsType, StatisticsSubType statisticsSubType, OffsetDateTime date,
              UUID teamId);
+
+    List<StatisticsEntity> getAllByUserIdAndTypeAndSubTypeAndDateGreaterThanEqualAndTeamId
+            (UUID userId, StatisticsType statisticsType, StatisticsSubType statisticsSubType, OffsetDateTime date, UUID teamId);
 
     List<StatisticsEntity> getAllByUserIdAndSubTypeInAndTeamId
             (UUID userId, StatisticsSubType[] statisticsSubType, UUID teamId);
@@ -57,6 +60,19 @@ public interface StatisticsRepository extends JpaRepository<StatisticsEntity, UU
     @Query(name = "findStatisticsLanguagesByPeriodOutOfTeam", nativeQuery = true)
     List<StatisticsDashboardEntity> findStatisticsLanguagesByPeriodOutOfTeam
             (@Param("userId") UUID userId, @Param("statisticsTypes") List<String> statisticsTypes,
+             @Param("statisticsSubType") String statisticsSubType,
+             @Param("startDate") OffsetDateTime startDate, @Param("endDate") OffsetDateTime endDate);
+
+    @Query(name = "findStatisticsKeysByPeriodAndTeam", nativeQuery = true)
+    List<StatisticsDashboardEntity> findStatisticsKeysByPeriodAndTeam
+            (@Param("userId") UUID userId, @Param("statisticsType") String statisticsType,
+             @Param("statisticsSubType") String statisticsSubType,
+             @Param("startDate") OffsetDateTime startDate, @Param("endDate") OffsetDateTime endDate,
+             @Param("teamId") UUID teamId);
+
+    @Query(name = "findStatisticsKeysByPeriodOutOfTeam", nativeQuery = true)
+    List<StatisticsDashboardEntity> findStatisticsKeysByPeriodOutOfTeam
+            (@Param("userId") UUID userId, @Param("statisticsType") String statisticsType,
              @Param("statisticsSubType") String statisticsSubType,
              @Param("startDate") OffsetDateTime startDate, @Param("endDate") OffsetDateTime endDate);
 

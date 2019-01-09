@@ -33,7 +33,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final NotificationService notificationService;
     private final UserService userService;
     private final DataMapper dataMapper;
-    private final List<StatisticsSubType> perLifeSubTypes = Arrays.asList(StatisticsSubType.PER_LIFE, StatisticsSubType.CONTINUOUS_PER_LIFE, StatisticsSubType.SINGLE_KEY);
+    private final List<StatisticsSubType> perLifeSubTypes = Arrays.asList(StatisticsSubType.PER_LIFE, StatisticsSubType.CONTINUOUS_PER_LIFE);
 
     @Override
     public void save(List<StatisticsDto> statistics, UUID userId, UUID teamId) throws ServiceException {
@@ -90,7 +90,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                         date == null ?
                                 statisticsRepository.getAllByUserIdAndSubTypeInAndTeamId(
                                         userEntity.getId(),
-                                        new StatisticsSubType[]{StatisticsSubType.PER_LIFE, StatisticsSubType.CONTINUOUS_PER_LIFE, StatisticsSubType.SINGLE_KEY},
+                                        new StatisticsSubType[]{StatisticsSubType.PER_LIFE, StatisticsSubType.CONTINUOUS_PER_LIFE},
                                         teamId
                                 ) :
                                 statisticsRepository.getAllByUserIdAndSubTypeInAndDateGreaterThanEqualAndTeamId(
@@ -121,11 +121,21 @@ public class StatisticsServiceImpl implements StatisticsService {
                                 statisticsRepository
                                         .getAllByUserIdAndTypeAndSubTypeAndTeamId(
                                                 userEntity.getId(),
-                                                StatisticsType.SYMBOL,
-                                                StatisticsSubType.SINGLE_KEY,
+                                                StatisticsType.SINGLE_KEY,
+                                                StatisticsSubType.PER_LIFE,
                                                 teamId
                                         ) :
-                                null
+                                statisticsRepository
+                                        .getAllByUserIdAndTypeAndSubTypeAndDateGreaterThanEqualAndTeamId(
+                                                userEntity.getId(),
+                                                StatisticsType.SINGLE_KEY,
+                                                StatisticsSubType.PER_DAY,
+                                                OffsetDateTime.of(
+                                                        date.getYear(), date.getMonth().getValue(), date.getDayOfMonth(),
+                                                        0, 0, 0, 0, date.getOffset()
+                                                ),
+                                                teamId
+                                        )
                 )
         );
     }
@@ -205,7 +215,43 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public Map<String, Long> getKeys(@NotNull OffsetDateTime startDate, @NotNull OffsetDateTime endDate, UUID teamId) {
-        return null;
+        UserEntity userEntity;
+        try {
+            userEntity = userService.getEntityByAuth();
+        } catch (ServiceException e) {
+            return Collections.emptyMap();
+        }
+
+        return dataMapper.toDtosKeys(
+                teamId == null ?
+                        statisticsRepository.findStatisticsKeysByPeriodOutOfTeam(
+                                userEntity.getId(),
+                                StatisticsType.SINGLE_KEY.getShortcut(),
+                                StatisticsSubType.PER_DAY.getShortcut(),
+                                OffsetDateTime.of(
+                                        startDate.getYear(), startDate.getMonth().getValue(), startDate.getDayOfMonth(),
+                                        0, 0, 0, 0, startDate.getOffset()
+                                ),
+                                OffsetDateTime.of(
+                                        endDate.getYear(), endDate.getMonth().getValue(), endDate.getDayOfMonth(),
+                                        23, 59, 59, 999999999, endDate.getOffset()
+                                )
+                        ) :
+                        statisticsRepository.findStatisticsKeysByPeriodAndTeam(
+                                userEntity.getId(),
+                                StatisticsType.SINGLE_KEY.getShortcut(),
+                                StatisticsSubType.PER_DAY.getShortcut(),
+                                OffsetDateTime.of(
+                                        startDate.getYear(), startDate.getMonth().getValue(), startDate.getDayOfMonth(),
+                                        0, 0, 0, 0, startDate.getOffset()
+                                ),
+                                OffsetDateTime.of(
+                                        endDate.getYear(), endDate.getMonth().getValue(), endDate.getDayOfMonth(),
+                                        23, 59, 59, 999999999, endDate.getOffset()
+                                ),
+                                teamId
+                        )
+        );
     }
 
     @Override

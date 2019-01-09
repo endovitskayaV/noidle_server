@@ -55,7 +55,25 @@ import java.util.UUID;
                         " and s.team_id= :teamId" +
                         "  group by s.type,s.sub_type, s.extra_value",
                 resultSetMapping = "statisticsDashboardEntityResultSet"
-        )}
+        ),
+        @NamedNativeQuery(
+                name = "findStatisticsKeysByPeriodOutOfTeam",
+                query = "SELECT s.type as type, s.sub_type as subtype, s.extra_value as extravalue, sum(s.value) as value" +
+                        " FROM statistics s WHERE s.user_id = :userId and s.type = :statisticsType" +
+                        " and s.sub_type = :statisticsSubType" +
+                        " and s.date >= :startDate  and s.date <= :endDate and s.team_id is null" +
+                        "  group by s.type,s.sub_type, s.extra_value",
+                resultSetMapping = "statisticsDashboardEntityResultSet"
+        ),
+        @NamedNativeQuery(
+                name = "findStatisticsKeysByPeriodAndTeam",
+                query = "SELECT s.type as type, s.sub_type as subtype, s.extra_value as extravalue, sum(s.value) as value" +
+                        " FROM statistics s WHERE s.user_id = :userId and s.type = :statisticsType" +
+                        " and s.sub_type = :statisticsSubType and s.date >= :startDate  and s.date <= :endDate" +
+                        " and s.team_id= :teamId" +
+                        "  group by s.type,s.sub_type, s.extra_value",
+                resultSetMapping = "statisticsDashboardEntityResultSet"
+        ),}
 )
 
 @SqlResultSetMapping(name = "statisticsDashboardEntityResultSet",

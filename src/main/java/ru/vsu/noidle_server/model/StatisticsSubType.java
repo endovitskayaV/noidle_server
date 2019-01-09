@@ -9,8 +9,7 @@ public enum StatisticsSubType {
     PER_LIFE("per_life"),
     PER_DAY("per_day"),
     CONTINUOUS_PER_LIFE("continuous_per_life"),
-    CONTINUOUS_PER_DAY("continuous_per_day"),
-    SINGLE_KEY("single_key");
+    CONTINUOUS_PER_DAY("continuous_per_day");
 
     private String shortcut;
 

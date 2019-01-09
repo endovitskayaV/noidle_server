@@ -10,8 +10,9 @@ public enum StatisticsType {
     SYMBOL("symbol"),
     COMMIT("commit"),
     EXEC("exec"),
-    LANG_TIME ("lang_time"),
-    LANG_SYMBOL ("lang_symbol");
+    LANG_TIME("lang_time"),
+    LANG_SYMBOL("lang_symbol"),
+    SINGLE_KEY("single_key");
 
     private String shortcut;
 

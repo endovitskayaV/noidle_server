@@ -235,14 +235,34 @@
                     <span>Executions</span>
                 </div>
                 <div class="collapsible-body">
-                    <p style="display: flex"><i class="green-text material-icons">done</i>
-                        <span><i>successful</i>:&emsp;</span>
-                        <span><b>${statistics["execper_lifesuccessful"]!"—"}</b></span>
-                    </p>
+                    <#if statistics["execper_lifesuccessful"]?? || statistics["execper_lifefailed"]??>
+                        <p style="display: flex"><i class="green-text material-icons">done</i>
+                            <span><i>successful</i>:&emsp;</span>
+                            <span><b>${statistics["execper_lifesuccessful"]!"—"}</b></span>
+                        </p>
+                        <p style="display: flex"><i class="red-text material-icons">close</i>
+                            <span><i>failed</i>:&emsp;</span>
+                            <span><b>${statistics["execper_lifefailed"]!"—"}</b></span>
+                        </p>
+                    <#elseif statistics["execper_daysuccessful"]?? || statistics["execper_dayfailed"]??>
+                         <p style="display: flex"><i class="green-text material-icons">done</i>
+                             <span><i>successful</i>:&emsp;</span>
+                             <span><b>${statistics["execper_daysuccessful"]!"—"}</b></span>
+                         </p>
                     <p style="display: flex"><i class="red-text material-icons">close</i>
                         <span><i>failed</i>:&emsp;</span>
-                        <span><b>${statistics["execper_lifefailed"]!"—"}</b></span>
+                        <span><b>${statistics["execper_dayfailed"]!"—"}</b></span>
                     </p>
+                    <#else>
+                         <p style="display: flex"><i class="green-text material-icons">done</i>
+                             <span><i>successful</i>:&emsp;</span>
+                             <span><b>—</b></span>
+                         </p>
+                    <p style="display: flex"><i class="red-text material-icons">close</i>
+                        <span><i>failed</i>:&emsp;</span>
+                        <span><b>—</b></span>
+                    </p>
+                    </#if>
                 </div>
             </li>
         </ul>
@@ -278,14 +298,34 @@
                     <span>Commits</span>
                 </div>
                 <div class="collapsible-body">
-                    <p style="display: flex"><i class="green-text material-icons">done</i>
-                        <span><i>successful</i>:&emsp;</span>
-                        <span><b>${statistics["commitper_lifesuccessful"]!"—"}</b></span>
-                    </p>
+                     <#if statistics["commitper_lifesuccessful"]?? || statistics["commitper_lifefailed"]??>
+                        <p style="display: flex"><i class="green-text material-icons">done</i>
+                            <span><i>successful</i>:&emsp;</span>
+                            <span><b>${statistics["commitper_lifesuccessful"]!"—"}</b></span>
+                        </p>
                     <p style="display: flex"><i class="red-text material-icons">close</i>
                         <span><i>failed</i>:&emsp;</span>
                         <span><b>${statistics["commitper_lifefailed"]!"—"}</b></span>
                     </p>
+                     <#elseif statistics["execper_daysuccessful"]?? || statistics["execper_dayfailed"]??>
+                         <p style="display: flex"><i class="green-text material-icons">done</i>
+                             <span><i>successful</i>:&emsp;</span>
+                             <span><b>${statistics["commitper_daysuccessful"]!"—"}</b></span>
+                         </p>
+                    <p style="display: flex"><i class="red-text material-icons">close</i>
+                        <span><i>failed</i>:&emsp;</span>
+                        <span><b>${statistics["commitper_dayfailed"]!"—"}</b></span>
+                    </p>
+                     <#else>
+                         <p style="display: flex"><i class="green-text material-icons">done</i>
+                             <span><i>successful</i>:&emsp;</span>
+                             <span><b>—</b></span>
+                         </p>
+                    <p style="display: flex"><i class="red-text material-icons">close</i>
+                        <span><i>failed</i>:&emsp;</span>
+                        <span><b>—</b></span>
+                    </p>
+                     </#if>
                 </div>
             </li>
         </ul>
