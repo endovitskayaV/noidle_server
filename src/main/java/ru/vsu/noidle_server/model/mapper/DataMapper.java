@@ -202,7 +202,7 @@ public interface DataMapper {
 
         @Override
         public int compareTo(@NotNull DataMapper.TimeSymbols o) {
-            return this.time.compareTo(o.getTime());
+            return this.symbols.compareTo(o.getSymbols());
         }
     }
 }
