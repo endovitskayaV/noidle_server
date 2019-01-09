@@ -22,6 +22,7 @@ import ru.vsu.noidle_server.service.UserService;
 
 import java.time.OffsetDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -104,6 +105,18 @@ public class StatisticsServiceImpl implements StatisticsService {
                                 )
                 )
         );
+    }
+
+    @Override
+    public List<StatisticsDto> getAll(UUID userId, OffsetDateTime date) {
+        return statisticsRepository.getAllByUserIdAndDateGreaterThanEqualAndTeamId(
+                userId,
+                OffsetDateTime.of(date.getYear(), date.getMonth().getValue(), date.getDayOfMonth(),
+                        0, 0, 0, 0, date.getOffset()
+                ),
+                null
+        )
+                .stream().map(dataMapper::toDto).collect(Collectors.toList());
     }
 
     @Override

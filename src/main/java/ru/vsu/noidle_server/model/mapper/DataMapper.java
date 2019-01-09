@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
-import org.mapstruct.*;
+import org.mapstruct.Context;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import ru.vsu.noidle_server.model.StatisticsType;
 import ru.vsu.noidle_server.model.domain.*;
@@ -63,6 +66,8 @@ public interface DataMapper {
     }
 
     UserDto toDto(UserEntity userEntity, @Context CycleAvoidingMappingContext context);
+
+    StatisticsDto toDto(StatisticsEntity statisticsEntity);
 
     UserDtoForNotification toDtoForNotification(UserEntity userEntity);
 

@@ -23,6 +23,9 @@ public interface StatisticsRepository extends JpaRepository<StatisticsEntity, UU
     List<StatisticsEntity> getAllByUserIdAndSubTypeInAndDateGreaterThanEqualAndTeamId
             (UUID userId, StatisticsSubType[] statisticsSubType, OffsetDateTime date, UUID teamId);
 
+    List<StatisticsEntity> getAllByUserIdAndDateGreaterThanEqualAndTeamId
+            (UUID userId,  OffsetDateTime date, UUID teamId);
+
     List<StatisticsEntity> getAllByUserIdAndTypeAndSubTypeAndTeamId
             (UUID userId, StatisticsType statisticsType, StatisticsSubType statisticsSubType, UUID teamId);
 

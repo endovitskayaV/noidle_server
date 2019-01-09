@@ -6,13 +6,18 @@ import ru.vsu.noidle_server.model.dto.LanguageStatisticsDto;
 import ru.vsu.noidle_server.model.dto.StatisticsDto;
 
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.UUID;
 
 public interface StatisticsService {
 
     void save(List<StatisticsDto> statistics, UUID userId, UUID teamId) throws ServiceException;
 
     Map<String, String> getAll(OffsetDateTime date, UUID teamId);
+
+    List<StatisticsDto> getAll(UUID userId, OffsetDateTime date);
 
     Map<String, Long> getKeys(OffsetDateTime date, UUID teamId);
 
