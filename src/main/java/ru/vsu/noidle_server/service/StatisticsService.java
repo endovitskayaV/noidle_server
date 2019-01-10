@@ -17,7 +17,7 @@ public interface StatisticsService {
 
     Map<String, String> getAll(OffsetDateTime date, UUID teamId);
 
-    List<StatisticsDto> getAll(UUID userId, OffsetDateTime date);
+    List<StatisticsDto> getAll(UUID userId, UUID teamId, OffsetDateTime date);
 
     Map<String, Long> getKeys(OffsetDateTime date, UUID teamId);
 

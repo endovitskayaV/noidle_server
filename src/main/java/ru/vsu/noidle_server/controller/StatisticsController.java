@@ -37,13 +37,14 @@ public class StatisticsController {
 
     @GetMapping
     public ResponseEntity getAll(@RequestParam(name = "userId") UUID userId,
+                                 @RequestParam(name = "teamId") UUID teamId,
                                  @RequestParam(value = "date", required = false) OffsetDateTime date) {
         if (date == null) {
             date = OffsetDateTime.now();
         }
 
         //for debug
-        List<StatisticsDto> statisticsDtos = statisticsService.getAll(userId, date);
+        List<StatisticsDto> statisticsDtos = statisticsService.getAll(userId, teamId, date);
         return ResponseEntity.ok(statisticsDtos);
     }
 }

@@ -23,6 +23,7 @@ import ru.vsu.noidle_server.service.UserService;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -108,15 +109,23 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List<StatisticsDto> getAll(UUID userId, OffsetDateTime date) {
-        return statisticsRepository.getAllByUserIdAndDateGreaterThanEqualAndTeamId(
-                userId,
-                OffsetDateTime.of(date.getYear(), date.getMonth().getValue(), date.getDayOfMonth(),
-                        0, 0, 0, 0, date.getOffset()
+    public List<StatisticsDto> getAll(UUID userId, UUID teamId, OffsetDateTime date) {
+        return Stream.of(
+                statisticsRepository.getAllByUserIdAndDateGreaterThanEqualAndTeamId(
+                        userId,
+                        OffsetDateTime.of(date.getYear(), date.getMonth().getValue(), date.getDayOfMonth(),
+                                0, 0, 0, 0, date.getOffset()
+                        ),
+                        teamId
                 ),
-                null
+                statisticsRepository.getAllByUserIdAndSubTypeAndTeamId(
+                        userId,
+                        StatisticsSubType.PER_LIFE,
+                        teamId
+                )
         )
-                .stream().map(dataMapper::toDto).collect(Collectors.toList());
+                .flatMap(Collection::stream)
+                .map(dataMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
