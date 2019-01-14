@@ -16,7 +16,8 @@ import ru.vsu.noidle_server.service.TeamService;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -40,6 +41,10 @@ public class TeamControllerIntegrationTest {
                         get("/teams/short/{id}", id)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(status().isOk());
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id.toString())) //dto short id is string
+                .andExpect(jsonPath("$.name").value(""))
+                .andExpect(content().contentType("application/json;charset=UTF-8"));
     }
 }
