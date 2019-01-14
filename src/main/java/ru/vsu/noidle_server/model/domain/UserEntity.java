@@ -30,6 +30,9 @@ public class UserEntity {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @Column(name = "photo")
     private String photo;
 

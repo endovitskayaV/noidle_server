@@ -21,9 +21,5 @@ public interface UserService {
 
     UserDto getByAuth() throws ServiceException;
 
-    UserDto save(OAuth2Authentication user);
-
-    UserDto getDto(OAuth2Authentication user);
-
     UserEntity getEntityByAuth() throws ServiceException;
 }

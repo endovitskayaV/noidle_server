@@ -1,36 +1,37 @@
 package ru.vsu.noidle_server.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.view.RedirectView;
-import ru.vsu.noidle_server.model.dto.UserDto;
-import ru.vsu.noidle_server.service.UserService;
-import ru.vsu.noidle_server.utils.AuthUtils;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.ModelAndView;
+import ru.vsu.noidle_server.model.dto.LoginDto;
+import ru.vsu.noidle_server.service.AuthenticationService;
 
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
-    private final UserService userService;
+    private final AuthenticationService authenticationService;
 
     @GetMapping("/login")
     public String login() {
         return "login";
     }
 
-    @GetMapping("/oauth")
-    public RedirectView user(OAuth2Authentication user) {
-        userService.save(user);
-        return new RedirectView("/dashboard");
+    @PostMapping(value = "/login")
+    public ModelAndView login(LoginDto loginDto, ModelMap modelMap) {
+        String encoded = new BCryptPasswordEncoder().encode(loginDto.getPassword());
+        System.out.println(encoded);
+        if (authenticationService.login(loginDto)) {
+            return new ModelAndView("redirect:/dashboard");
+        } else {
+            modelMap.addAttribute("errorMessage", "Incorrect login or password");
+            modelMap.addAttribute("login", loginDto.getName());
+            return new ModelAndView("login", modelMap);
+        }
     }
-
-    @RequestMapping(value = "/isauth", method = RequestMethod.GET)
-    public ResponseEntity<UserDto> currentUserName() {
-        return AuthUtils.getUser() == null ? ResponseEntity.notFound().build() : ResponseEntity.noContent().build();
-    }
-
 }

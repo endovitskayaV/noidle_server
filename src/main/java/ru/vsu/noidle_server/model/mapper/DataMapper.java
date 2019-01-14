@@ -25,26 +25,6 @@ public interface DataMapper {
     @Mapping(source = "teamEntity", target = "team")
     StatisticsEntity toEntity(StatisticsDto statisticsDto, UserEntity userEntity, TeamEntity teamEntity, @Context CycleAvoidingMappingContext context);
 
-    @SuppressWarnings(value = "unchecked") //aboutUser.getUserAuthentication().getDetails()) - Object
-    default UserEntity toEntity(OAuth2Authentication user) {
-        if (user == null) {
-            return null;
-        }
-        LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
-        String photo = details.containsKey("avatar_url") ? details.get("avatar_url") : details.get("picture");
-
-        //TODO: check if assigning null to map annuls relationships
-        return new UserEntity(getEmail(user), getName(details), photo);
-    }
-
-    @SuppressWarnings(value = "unchecked") //aboutUser.getUserAuthentication().getDetails()) - Object
-    default String getEmail(OAuth2Authentication user) {
-        if (user == null) {
-            return null;
-        }
-        LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
-        return details.get("email").toLowerCase();
-    }
 
     default String getEmail(LinkedHashMap<String, String> details) {
         if (details == null || details.isEmpty()) {

@@ -7,4 +7,6 @@ public class Constants {
     public static final char H = 'h';
     public static final String MIN = "min";
     public static final String LESS_MIN = "less than min";
+
+    public static final String DEFAULT_AUTH_ROLE="default-auth-role";
 }

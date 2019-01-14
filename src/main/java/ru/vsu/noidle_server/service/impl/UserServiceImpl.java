@@ -74,36 +74,12 @@ public class UserServiceImpl implements UserService {
             log.info("Unable to find auth user");
             throw new ServiceException("Unable to find auth user");
         }
-        String email = dataMapper.getEmail((LinkedHashMap<String, String>) ((OAuth2Authentication) user).getUserAuthentication().getDetails());
+        String email = user.getName();
         UserEntity userEntity = userRepository.findByEmail(email);
         if (userEntity == null) {
             throw new ServiceException("Unable to find auth user");
         } else {
             return userEntity;
         }
-    }
-
-    public UserDto save(OAuth2Authentication user) {
-        UserEntity userEntity = dataMapper.toEntity(user);
-        UserEntity existingUser = userRepository.findByEmail(userEntity.getEmail());
-        if (existingUser != null) {
-            existingUser.setName(userEntity.getName());
-            existingUser.setEmail(userEntity.getEmail());
-            existingUser.setPhoto(userEntity.getPhoto());
-
-            save(existingUser);
-            return dataMapper.toDto(existingUser, new CycleAvoidingMappingContext());
-        } else {
-            save(userEntity);
-            return dataMapper.toDto(userEntity, new CycleAvoidingMappingContext());
-        }
-
-    }
-
-    @Override
-    public UserDto getDto(OAuth2Authentication user) {
-        return dataMapper.toDto(
-                userRepository.findByEmail(dataMapper.getEmail(user)),
-                new CycleAvoidingMappingContext());
     }
 }

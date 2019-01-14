@@ -24,7 +24,7 @@
         <div class="container">
             <div class="card horizontal">
                 <div class="card-image">
-                    <img src="${user.photo}" style="max-width:200px">
+                    <img src="${user.photo!""}" style="max-width:200px">
                 </div>
                 <div class="card-stacked">
                     <div class="card-content left-align">

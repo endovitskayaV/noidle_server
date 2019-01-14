@@ -24,38 +24,45 @@
         <div class="container">
             <div class="row center">
                 <h3 class="header col s12 orange-text">Log in to NoIdle</h3>
+                <br><br><br>
+                 <#if errorMessage??>
+                 <br><span style="color: red;">${errorMessage}</span><br><br>
+                 <#else>
+                  <br><br><br>
+                 </#if>
             </div>
         </div>
     </div>
 
-
     <div class="container">
-        <div class="section">
+        <div class="container">
+            <form action="/login" method="post">
 
-            <!--   Icon Section   -->
-            <div class="row">
-                <div class="col s12 m4">
-                    <a href="/callback/github" class="icon-block">
-                        <h2 class="center"><img src="img/github.png"></h2>
-                        <h5 class="center"><span>Github</span></h5>
-                    </a>
+                <div class="row">
+                    <div class="input-field">
+                        <i class="material-icons prefix">account_circle</i>
+                        <#if login??>
+                            <input type="text" required name="name" value="${login}">
+                        <#else>
+                             <input type="text" required name="name">
+                        </#if>
+                        <span class="helper-text">Login</span>
+                    </div>
                 </div>
 
-                <div class="col s12 m4">
-                    <a href="/callback/gitlab" class="icon-block">
-                        <h2 class="center"><img src="img/gitlab.png"></h2>
-                        <h5 class="center"><span>Gitlab</span></h5>
-                    </a>
+                <div class="row">
+                    <div class="input-field">
+                        <i class="material-icons prefix">lock</i>
+                        <input type="password" required name="password">
+                        <span class="helper-text">Password</span>
+                    </div>
                 </div>
 
-                <div class="col s12 m4">
-                    <a href="/callback/google" class="icon-block">
-                        <h2 class="center"><img src="img/google.png"></h2>
-                        <h5 class="center"><span>Google</span></h5>
-                    </a>
-                </div>
-            </div>
 
+                <div class="center">
+                    <button class="waves-effect waves-orange btn-flat" type="submit">Ok</button>
+                </div>
+            </form>
         </div>
     </div>
 </main>
