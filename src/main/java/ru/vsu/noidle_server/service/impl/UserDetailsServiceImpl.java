@@ -28,7 +28,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (userEntity == null) {
             throw new UsernameNotFoundException("Invalid username");
         }
-        return new User(userEntity.getEmail(), userEntity.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(Constants.DEFAULT_AUTH_ROLE)));
+        return new User(
+                userEntity.getEmail(),
+                userEntity.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority(userEntity.getUpdateRole().getShortcut())));
 
     }
 }

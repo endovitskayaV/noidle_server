@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
     <link rel="shortcut icon" href="img/icon.png" type="image/png">
-    <title>NoIdle&nbsp;&bull;&nbsp;Login</title>
+    <title>NoIdle&nbsp;&bull;&nbsp;Setup</title>
 
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -23,33 +23,23 @@
     <div class="section no-pad-bot" id="index-banner">
         <div class="container">
             <div class="row center">
-                <h3 class="header col s12 orange-text">Log in to NoIdle</h3>
-                <br><br><br>
-                 <#if errorMessage??>
-                 <br><span style="color: red;">${errorMessage}</span><br><br>
-                 <#elseif setupMessage??>
-                 <br><span style="color: green;">${setupMessage}</span><br><br>
-                 <#else>
-                  <br><br><br>
-                 </#if>
+                <h3 class="header col s12 orange-text">Finish NoIdle setup</h3>
+                <br><br><br><br><br><br>
             </div>
         </div>
     </div>
 
     <div class="container">
         <div class="container">
-            <form action="/login" method="post">
+            <form action="/setup" method="post">
 
                 <div class="row">
                     <div class="input-field">
                         <i class="material-icons prefix">account_circle</i>
-                        <#if login??>
-                            <input type="text" required name="name" value="${login}">
-                        <#else>
-                             <input type="text" required name="name">
-                        </#if>
+                            <input type="text" required name="name" value="${login}" readonly>
                         <span class="helper-text">Login</span>
                     </div>
+
                 </div>
 
                 <div class="row">

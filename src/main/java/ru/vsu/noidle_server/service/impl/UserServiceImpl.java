@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import ru.vsu.noidle_server.exception.ServiceException;
+import ru.vsu.noidle_server.model.UpdateRole;
 import ru.vsu.noidle_server.model.domain.TeamEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
 import ru.vsu.noidle_server.model.dto.TeamDto;
@@ -18,6 +20,7 @@ import ru.vsu.noidle_server.service.TeamService;
 import ru.vsu.noidle_server.service.UserService;
 import ru.vsu.noidle_server.utils.AuthUtils;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
@@ -30,6 +33,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final DataMapper dataMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserEntity getEntityById(UUID id) throws ServiceException {
@@ -43,6 +47,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(UserEntity userEntity) {
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+
         userRepository.save(userEntity);
         log.info("Saved {}", userEntity);
     }
@@ -81,5 +87,22 @@ public class UserServiceImpl implements UserService {
         } else {
             return userEntity;
         }
+    }
+
+    @Override
+    public boolean anyAdminsExists() {
+        List<UserEntity> admins = userRepository.findAllByUpdateRole(UpdateRole.ADMIN);
+        return admins != null && !admins.isEmpty();
+    }
+
+    @Override
+    public List<String> saveUsers(String userData) {
+        List<String> saved = new ArrayList<>();
+        dataMapper.toEntity(userData).forEach(userEntity -> {
+            save(userEntity);
+            saved.add(userEntity.getName());
+        });
+
+        return saved;
     }
 }

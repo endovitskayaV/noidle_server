@@ -27,7 +27,7 @@ public class AuthController {
         String encoded = new BCryptPasswordEncoder().encode(loginDto.getPassword());
         System.out.println(encoded);
         if (authenticationService.login(loginDto)) {
-            return new ModelAndView("redirect:/dashboard");
+            return new ModelAndView("redirect:/");
         } else {
             modelMap.addAttribute("errorMessage", "Incorrect login or password");
             modelMap.addAttribute("login", loginDto.getName());

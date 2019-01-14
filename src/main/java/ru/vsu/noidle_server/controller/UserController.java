@@ -2,11 +2,14 @@ package ru.vsu.noidle_server.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ru.vsu.noidle_server.exception.ServiceException;
+import ru.vsu.noidle_server.model.UpdateRole;
 import ru.vsu.noidle_server.model.dto.UserDto;
 import ru.vsu.noidle_server.service.TeamService;
 import ru.vsu.noidle_server.service.UserService;
@@ -89,5 +92,19 @@ public class UserController {
             modelMap.addAttribute("error", "User not found");
             return "error";
         }
+    }
+
+    @Secured(UpdateRole.ROLE_ADMIN)
+    @GetMapping("/users/save")
+    public String saveUsers(ModelMap modelMap) {
+        modelMap.addAttribute("admin", true);
+        return "add_users";
+    }
+
+    @Secured(UpdateRole.ROLE_ADMIN)
+    @PostMapping("/users/save")
+    public String saveUsers(String userData, ModelMap modelMap) {
+        modelMap.addAttribute("savedUsers", userService.saveUsers(userData));
+        return "users_save_result";
     }
 }

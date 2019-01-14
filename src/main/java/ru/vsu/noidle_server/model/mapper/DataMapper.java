@@ -3,13 +3,17 @@ package ru.vsu.noidle_server.model.mapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Index;
 import org.jetbrains.annotations.NotNull;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import ru.vsu.noidle_server.Constants;
 import ru.vsu.noidle_server.model.StatisticsType;
+import ru.vsu.noidle_server.model.UpdateRole;
 import ru.vsu.noidle_server.model.domain.*;
 import ru.vsu.noidle_server.model.dto.*;
 import ru.vsu.noidle_server.utils.TimeUtils;
@@ -19,6 +23,35 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface DataMapper {
+
+    default List<UserEntity> toEntity(String usersData) {
+        List<UserEntity> userEntities = new ArrayList<>();
+        for (String userData : usersData.split(Constants.USERS__SEPARATOR)) {
+            try {
+                int index = userData.indexOf(Constants.USER_DATA_SEPARATOR);
+                String name = userData.substring(0, index);
+                userData = usersData.substring(index + 1, userData.length());
+
+                index = userData.indexOf(Constants.USER_DATA_SEPARATOR);
+                String email = userData.substring(0, index);
+                userData = usersData.substring(index + 1, userData.length());
+
+                index = userData.indexOf(Constants.USER_DATA_SEPARATOR);
+                String password = userData.substring(0, index);
+
+                String photo = null;
+                if (index < userData.length()) {
+                    userData = usersData.substring(index + 1, userData.length());
+                    photo = userData;
+                }
+
+                userEntities.add(new UserEntity(email, name, password, photo, UpdateRole.USER));
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+        }
+        return userEntities;
+    }
 
     @Mapping(source = "statisticsDto.id", target = "id")
     @Mapping(source = "userEntity", target = "user")

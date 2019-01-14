@@ -2,6 +2,8 @@ package ru.vsu.noidle_server.model.domain;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import ru.vsu.noidle_server.model.UpdateRole;
+import ru.vsu.noidle_server.model.converter.UpdateRoleConverter;
 
 import javax.persistence.*;
 import java.util.*;
@@ -32,6 +34,11 @@ public class UserEntity {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Convert(converter = UpdateRoleConverter.class)
+    @Column(name = "update_role", nullable = false)
+    private UpdateRole updateRole;
+
 
     @Column(name = "photo")
     private String photo;
@@ -74,9 +81,15 @@ public class UserEntity {
         this.personalNotifications = personalNotifications;
     }
 
-    public UserEntity(String email, String name, String photo) {
+    public UserEntity(String email, String name, String password, UpdateRole updateRole) {
         this.email = email;
         this.name = name;
+        this.password = password;
+        this.updateRole = updateRole;
+    }
+
+    public UserEntity(String email, String name, String password, String photo, UpdateRole updateRole) {
+        this(email, name, password, updateRole);
         this.photo = photo;
     }
 

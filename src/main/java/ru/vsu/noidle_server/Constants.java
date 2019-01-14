@@ -8,5 +8,11 @@ public class Constants {
     public static final String MIN = "min";
     public static final String LESS_MIN = "less than min";
 
-    public static final String DEFAULT_AUTH_ROLE="default-auth-role";
+    public static final String DEFAULT_AUTH_ROLE = "default-auth-role";
+    public static final String ADMIN_NAME = "admin";
+    public static final String ADMIN_EMAIL = "admin_email";
+
+    public static final char USER_DATA_SEPARATOR = '|';
+    public static final String USERS__SEPARATOR = "\r\n";
+
 }

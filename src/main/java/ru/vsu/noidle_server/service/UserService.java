@@ -22,4 +22,8 @@ public interface UserService {
     UserDto getByAuth() throws ServiceException;
 
     UserEntity getEntityByAuth() throws ServiceException;
+
+    boolean anyAdminsExists();
+
+    List<String> saveUsers(String userData);
 }
