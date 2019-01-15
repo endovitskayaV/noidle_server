@@ -26,13 +26,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/login", "/setup", "/teams/short**", "/teams/short/**",
                         "/img/**", "/login**", "/webjars/**", "/error**", "/callback**", "/statistics/**",
-                        "/users/**",
+                        "/users/**","/admin/setup",
                         "/notifications**",
                         "/js/**", "/css/**")
                 .permitAll()
 
                 //prefix is added automatically
                 .antMatchers("/admin/users/**").hasRole(SecurityRole.ROLE_ADMIN.substring(SecurityRole.PREFIX.length()))
+                .antMatchers("/about").authenticated()
                 .anyRequest().hasRole(SecurityRole.ROLE_USER.substring(SecurityRole.PREFIX.length()))
                 .and().logout().logoutSuccessUrl("/").permitAll();
     }
