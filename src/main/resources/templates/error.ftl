@@ -45,7 +45,7 @@
     <div class="container">
         <h1 class="header center orange-text">Page not found</h1>
         <div class="row center">
-            <div class="header col s12"><img src="img/error.png"></div>
+            <div class="header col s12"><img id="img" src="img/error.png" onerror='$("#img").attr("src", "/img/error.png")'></div>
         </div>
         <div class="row center">
             <br><br>
