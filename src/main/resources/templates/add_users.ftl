@@ -20,14 +20,25 @@
 
  <#include "nav_auth.ftl">
 <main>
-    <br> <br> <br> <br> <br>
+    <br>
+
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <div class="row center">
+                <h5 class="header col s12 orange-text">Add users</h5>
+            </div>
+        </div>
+    </div>
+    <br>
+
     <div class="container">
         <div class="container">
-            <form action="/users/save" method="post">
+            <form action="/admin/users/save" method="post">
                 <div class="row">
                     <div class="input-field">
-                        <textarea id="users_string" class="materialize-textarea" name="userData"></textarea>
+                        <textarea placeholder="name | email | password[ | photo]" id="users_string" class="materialize-textarea" name="userData"></textarea>
                         <label for="users_string">Users</label>
+                        <span class="helper-text">name | email | password[ | photo]</span>
                     </div>
                 </div>
                 <div class="center">

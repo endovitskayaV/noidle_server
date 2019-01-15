@@ -36,7 +36,7 @@
                 <div class="row">
                     <div class="input-field">
                         <i class="material-icons prefix">account_circle</i>
-                            <input type="text" required name="name" value="${login}" readonly>
+                            <input type="text" required name="name" value="${login}" disabled>
                         <span class="helper-text">Login</span>
                     </div>
 

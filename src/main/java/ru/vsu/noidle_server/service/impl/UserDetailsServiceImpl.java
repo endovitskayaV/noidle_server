@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.vsu.noidle_server.Constants;
+import ru.vsu.noidle_server.model.SecurityRole;
 import ru.vsu.noidle_server.model.domain.UserEntity;
 import ru.vsu.noidle_server.model.repository.UserRepository;
 
@@ -29,9 +29,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("Invalid username");
         }
         return new User(
-                userEntity.getEmail(),
+                userEntity.getName(),
                 userEntity.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority(userEntity.getUpdateRole().getShortcut())));
+                Collections.singletonList(new SimpleGrantedAuthority(SecurityRole.byUpdateRole(userEntity.getUpdateRole()).getShortcut())));
 
     }
 }

@@ -9,8 +9,6 @@ public enum UpdateRole {
     ADMIN("admin"),
     USER("user");
 
-    public static final String ROLE_ADMIN = "admin";
-
     private String shortcut;
 
     UpdateRole(String shortcut) {

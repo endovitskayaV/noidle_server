@@ -2,29 +2,22 @@ package ru.vsu.noidle_server.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.UpdateRole;
-import ru.vsu.noidle_server.model.domain.TeamEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
-import ru.vsu.noidle_server.model.dto.TeamDto;
 import ru.vsu.noidle_server.model.dto.UserDto;
 import ru.vsu.noidle_server.model.mapper.CycleAvoidingMappingContext;
 import ru.vsu.noidle_server.model.mapper.DataMapper;
 import ru.vsu.noidle_server.model.repository.UserRepository;
-import ru.vsu.noidle_server.service.TeamService;
 import ru.vsu.noidle_server.service.UserService;
 import ru.vsu.noidle_server.utils.AuthUtils;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,9 +39,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(UserEntity userEntity) {
+    public void save(UserEntity userEntity) throws ServiceException {
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-
+        if (userRepository.findByEmailOrNameOrId(userEntity.getEmail(), userEntity.getName(), userEntity.getId()) != null) {
+            throw new ServiceException("Not unique user: " + dataMapper.toString(userEntity));
+        }
         userRepository.save(userEntity);
         log.info("Saved {}", userEntity);
     }
@@ -96,13 +91,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> saveUsers(String userData) {
-        List<String> saved = new ArrayList<>();
-        dataMapper.toEntity(userData).forEach(userEntity -> {
+    @Transactional(rollbackFor = ServiceException.class)
+    public void saveUsers(String userData) throws ServiceException {
+        List<UserEntity> userEntities = dataMapper.toEntity(userData);
+        if (userEntities == null) {
+            throw new ServiceException("Error while parsing input string");
+        }
+        for (UserEntity userEntity : userEntities) {
             save(userEntity);
-            saved.add(userEntity.getName());
-        });
-
-        return saved;
+        }
     }
 }

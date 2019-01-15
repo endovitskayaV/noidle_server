@@ -12,7 +12,7 @@ public class Constants {
     public static final String ADMIN_NAME = "admin";
     public static final String ADMIN_EMAIL = "admin_email";
 
-    public static final char USER_DATA_SEPARATOR = '|';
-    public static final String USERS__SEPARATOR = "\r\n";
+    public static final String USER_DATA_SEPARATOR = " | ";
+    public static final String USERS_SEPARATOR = "\r\n";
 
 }

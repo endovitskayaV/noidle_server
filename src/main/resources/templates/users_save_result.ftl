@@ -20,18 +20,23 @@
 
  <#include "nav_auth.ftl">
 <main>
-    <br><br><br><br>
+    <br>
+
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <div class="row center">
+                <h5 class="header col s12 orange-text">Save</h5>
+            </div>
+        </div>
+    </div>
+    <br>
     <div class="container">
         <div class="container">
             <div class="card horizontal">
                 <div class="card-stacked">
                     <div class="card-content">
-                        <p class="center-align"><span>Saved ${savedUsers?size} users:</span></p>
-                        <ul>
-                        <#list savedUsers as user>
-                            <li color="#03a9f4 !important;">${user}</li>
-                        </#list>
-                        </ul>
+                        <p class="center-align"><span>${message}</span></p>
+
                     </div>
                 </div>
             </div>

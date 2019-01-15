@@ -3,14 +3,11 @@ package ru.vsu.noidle_server.model.mapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Index;
 import org.jetbrains.annotations.NotNull;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import ru.vsu.noidle_server.Constants;
 import ru.vsu.noidle_server.model.StatisticsType;
 import ru.vsu.noidle_server.model.UpdateRole;
@@ -24,30 +21,48 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface DataMapper {
 
+    default String toString(UserEntity userEntity) {
+        if (userEntity == null) {
+            return "";
+        }
+        String result = "";
+        if (userEntity.getEmail() != null) {
+            result += "email=" + userEntity.getEmail();
+        }
+        if (userEntity.getName() != null) {
+            result += " name=" + userEntity.getName();
+        }
+        return result;
+    }
+
     default List<UserEntity> toEntity(String usersData) {
         List<UserEntity> userEntities = new ArrayList<>();
-        for (String userData : usersData.split(Constants.USERS__SEPARATOR)) {
+        for (String userData : usersData.split(Constants.USERS_SEPARATOR)) {
             try {
                 int index = userData.indexOf(Constants.USER_DATA_SEPARATOR);
                 String name = userData.substring(0, index);
-                userData = usersData.substring(index + 1, userData.length());
+                userData = userData.substring(index + Constants.USER_DATA_SEPARATOR.length());
 
                 index = userData.indexOf(Constants.USER_DATA_SEPARATOR);
                 String email = userData.substring(0, index);
-                userData = usersData.substring(index + 1, userData.length());
+                userData = userData.substring(index + Constants.USER_DATA_SEPARATOR.length());
 
-                index = userData.indexOf(Constants.USER_DATA_SEPARATOR);
-                String password = userData.substring(0, index);
-
+                String password;
                 String photo = null;
-                if (index < userData.length()) {
-                    userData = usersData.substring(index + 1, userData.length());
-                    photo = userData;
+                index = userData.indexOf(Constants.USER_DATA_SEPARATOR);
+                if (index == -1) {
+                    password = userData;
+                } else {
+                    password = userData.substring(0, index);
+                    if (index < userData.length()) {
+                        userData = userData.substring(index + Constants.USER_DATA_SEPARATOR.length());
+                        photo = userData;
+                    }
                 }
 
                 userEntities.add(new UserEntity(email, name, password, photo, UpdateRole.USER));
             } catch (IndexOutOfBoundsException e) {
-                e.printStackTrace();
+                return null;
             }
         }
         return userEntities;

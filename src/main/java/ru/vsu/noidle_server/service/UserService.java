@@ -13,7 +13,7 @@ public interface UserService {
 
     UserEntity getEntityById(UUID id) throws ServiceException;
 
-    void save(UserEntity userEntity);
+    void save(UserEntity userEntity) throws ServiceException;
 
     UserDto getById(UUID id) throws ServiceException;
 
@@ -25,5 +25,5 @@ public interface UserService {
 
     boolean anyAdminsExists();
 
-    List<String> saveUsers(String userData);
+    void saveUsers(String userData) throws ServiceException;
 }

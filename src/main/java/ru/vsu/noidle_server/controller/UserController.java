@@ -93,18 +93,4 @@ public class UserController {
             return "error";
         }
     }
-
-    @Secured(UpdateRole.ROLE_ADMIN)
-    @GetMapping("/users/save")
-    public String saveUsers(ModelMap modelMap) {
-        modelMap.addAttribute("admin", true);
-        return "add_users";
-    }
-
-    @Secured(UpdateRole.ROLE_ADMIN)
-    @PostMapping("/users/save")
-    public String saveUsers(String userData, ModelMap modelMap) {
-        modelMap.addAttribute("savedUsers", userService.saveUsers(userData));
-        return "users_save_result";
-    }
 }

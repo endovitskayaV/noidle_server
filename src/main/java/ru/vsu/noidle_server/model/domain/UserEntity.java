@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-@ToString(of = {"id", "email", "name", "photo"})
+@ToString(of = {"id", "email", "name", "photo", "password"})
 public class UserEntity {
 
     @Id
