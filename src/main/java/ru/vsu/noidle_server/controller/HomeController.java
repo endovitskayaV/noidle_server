@@ -1,18 +1,13 @@
 package ru.vsu.noidle_server.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-import ru.vsu.noidle_server.Constants;
 import ru.vsu.noidle_server.model.SecurityRole;
-import ru.vsu.noidle_server.model.UpdateRole;
-import ru.vsu.noidle_server.model.dto.LoginDto;
 import ru.vsu.noidle_server.service.SetupService;
 import ru.vsu.noidle_server.utils.AuthUtils;
 
@@ -41,7 +36,11 @@ public class HomeController {
     }
 
     @GetMapping("/about")
-    public String getAboutPage() {
+    public String getAboutPage(ModelMap modelMap) {
+        Authentication user = AuthUtils.getUser();
+        if (user != null && user.getAuthorities().contains(new SimpleGrantedAuthority(SecurityRole.ROLE_ADMIN))) {
+            modelMap.addAttribute("admin", true);
+        }
         return "about";
     }
 }

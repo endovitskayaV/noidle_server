@@ -4,19 +4,19 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-    <link rel="shortcut icon" href="img/icon.png" type="image/png">
+    <link rel="shortcut icon" href="/img/icon.png" type="image/png">
     <title>NoIdle&nbsp;&bull;&nbsp;Setup</title>
 
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link href="css/custom.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="/css/custom.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
 <!--  Scripts-->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="js/materialize.js"></script>
-<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="/js/materialize.js"></script>
+<script type="text/javascript" src="/js/base.js"></script>
 
  <#include "nav_unauth.ftl">
 <main>
@@ -31,7 +31,7 @@
 
     <div class="container">
         <div class="container">
-            <form action="/setup" method="post">
+            <form action="/admin/setup" method="post">
 
                 <div class="row">
                     <div class="input-field">
