@@ -26,10 +26,10 @@
 </script>
 <#include "nav_auth.ftl">
 <main>
-    <br><br>
+    <br>
     <div class="container">
-
-
+        <h2 class="header center orange-text">Achievements</h2>
+        <br>
         <#if !levels?? && !extras?? && !teams??>
 
             <div class="container">
@@ -50,7 +50,7 @@
         <ul class="col s6 collapsible popout expandable">
             <li>
                 <div class="collapsible-header">
-                        <div class="orange-text"><i class="material-icons">sort</i></div>
+                        <div class="light-blue-text"><i class="material-icons">sort</i></div>
                         <span>Levels</span>
                 </div>
                 <div class="collapsible-body">
@@ -66,7 +66,7 @@
         <ul class="col s6 collapsible popout expandable">
             <li>
                 <div class="collapsible-header">
-                        <div class="orange-text"><i class="material-icons">star</i></div>
+                        <div class="light-blue-text"><i class="material-icons">star</i></div>
                         <span>Extra achievements</span>
                 </div>
                 <div class="collapsible-body">
@@ -80,7 +80,7 @@
         <ul class="col s6 collapsible popout expandable">
             <li>
                 <div class="collapsible-header">
-                        <div class="orange-text"><i class="material-icons">group</i></div>
+                        <div class="light-blue-text"><i class="material-icons">group</i></div>
                         <span>Team contributions</span>
                 </div>
                 <div class="collapsible-body">
