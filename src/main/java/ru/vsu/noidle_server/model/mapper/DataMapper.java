@@ -71,7 +71,8 @@ public interface DataMapper {
 
         String teamContributionRate = null;
         if (requirementEntity.getTeamContributionRate() != null) {
-            teamContributionRate = requirementEntity.getTeamContributionRate().toString();
+            teamContributionRate = String.format("%.0f",
+                    requirementEntity.getTeamContributionRate() * 100) + "%";
         }
         return name == null ? null : new ImmutableTriple<>(name, value, teamContributionRate);
     }
@@ -88,7 +89,7 @@ public interface DataMapper {
 
         } else {
             StringBuilder nameBuilder = new StringBuilder(requirementEntity.getStatisticsSubType().getDto());
-            nameBuilder.insert(14, name + " ");
+            nameBuilder.insert(14, " "+name + " ");
             name = nameBuilder.toString();
         }
 

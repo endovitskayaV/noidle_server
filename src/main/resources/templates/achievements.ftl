@@ -53,11 +53,18 @@
                         <div class="light-blue-text"><i class="material-icons">sort</i></div>
                         <span>Levels</span>
                 </div>
+
                 <div class="collapsible-body">
                     <#list levels as level>
+                        <#if level.requirements?? && level.requirements?size gt 0>
+                        <p><span><i><b><u>${level.level}.&nbsp;${level.name}</u></b></i></span></p>
+                        <div style="margin-left: 20px">
+                    <#list level.requirements as req>
+                        <p>&bull;<i>${req.left}:</i>&nbsp;${req.middle}</p>
                     </#list>
-                <#--<p><span><i>overall</i>:&emsp;</span><span><b>${statistics["timeper_day"]}</b></span></p>-->
-
+                        </div>
+                        </#if>
+                    </#list>
                 </div>
             </li>
         </ul>
@@ -70,6 +77,16 @@
                         <span>Extra achievements</span>
                 </div>
                 <div class="collapsible-body">
+                    <#list extras as extra>
+                         <#if extra.requirements?? && extra.requirements?size gt 0>
+                        <p><span><i><b><u>${extra.name}</u></b></i></span></p>
+                        <div style="margin-left: 20px">
+                    <#list extra.requirements as req>
+                        <p>&bull;<i>${req.left}</i>:&nbsp;${req.middle}</p>
+                    </#list>
+                        </div>
+                         </#if>
+                    </#list>
                 </div>
             </li>
         </ul>
@@ -84,6 +101,23 @@
                         <span>Team contributions</span>
                 </div>
                 <div class="collapsible-body">
+                    <#assign i=0>
+                    <#list teams as team>
+                        <#if team.requirements?? && team.requirements?size gt 0>
+                        <p><span><i><b><u>${team.name}</u></b></i></span></p>
+                    <div style="margin-left: 20px">
+                    <#list team.requirements as req>
+                    <p> &bull; <i>${req.left}:&nbsp;${req.middle}
+                     <#if req.right??>
+                     (${req.right})<#if i==0>* <#assign i=1></#if>
+                     </#if></i></p>
+                    </#list>
+                    </div>
+                        </#if>
+                    </#list>
+
+                    <br><br>
+                    <span>* of overall team contribution</span>
                 </div>
             </li>
         </ul>

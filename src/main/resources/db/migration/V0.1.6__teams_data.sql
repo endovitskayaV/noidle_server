@@ -22,6 +22,6 @@ values (5000, 'commit', 'per_life', 79, 'successful', 10, 0.3),
 
        (5015, 'time', 'per_day', 87, null, 12960000000, 0.8), --6h
 
-       (5016, 'commit', 'per_day', 88, null, 10, 0.8),
-       (5017, 'commit', 'per_day', 89, null, 20, 0.8),
-       (5018, 'commit', 'per_day', 90, null, 30, 0.8);
+       (5016, 'commit', 'per_day', 88, 'successful', 10, 0.8),
+       (5017, 'commit', 'per_day', 89, 'successful', 20, 0.8),
+       (5018, 'commit', 'per_day', 90, 'successful', 30, 0.8);
