@@ -10,6 +10,7 @@ import ru.vsu.noidle_server.model.mapper.DataMapper;
 import ru.vsu.noidle_server.model.repository.AchievementRepository;
 import ru.vsu.noidle_server.model.repository.RequirementRepository;
 import ru.vsu.noidle_server.service.AchievementService;
+import ru.vsu.noidle_server.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;

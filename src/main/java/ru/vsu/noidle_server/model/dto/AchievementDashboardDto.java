@@ -18,5 +18,5 @@ public class AchievementDashboardDto {
     private String name;
 
     //name-value-team_contribution_rate
-    private List<Triple<String, String, String>> requirements;
+    private List<Triple<String, String, Float>> requirements;
 }

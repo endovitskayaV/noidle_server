@@ -12,7 +12,7 @@ create table notification (
   achievement_id  bigint    not null references achievement (id),
   is_sent         boolean   not null,
   date            timestamp not null,
-  unique (about_user_id, to_whom_user_id, achievement_id)
+  constraint unique_notification unique (about_user_id, to_whom_user_id, achievement_id)
 );
 
 create table requirement (

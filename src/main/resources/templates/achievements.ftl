@@ -60,7 +60,23 @@
                         <p><span><i><b><u>${level.level}.&nbsp;${level.name}</u></b></i></span></p>
                         <div style="margin-left: 20px">
                     <#list level.requirements as req>
-                        <p>&bull;<i>${req.left}:</i>&nbsp;${req.middle}</p>
+
+                    <#if req.left?contains("time")>
+                        <p style="display: flex"><i class="light-blue-text material-icons">access_time</i>
+                    <#elseif req.left?contains("symbols")>
+                        <p style="display: flex"><i class="orange-text material-icons">text_rotation_none</i>
+                    <#elseif req.left?contains("executions") && req.left?contains("successful")>
+                        <p style="display: flex"><i class="green-text material-icons">play_arrow</i>
+                    <#elseif req.left?contains("executions") && req.left?contains("failed")>
+                        <p style="display: flex"><i class="red-text material-icons">play_arrow</i>
+                    <#elseif req.left?contains("commits") && req.left?contains("successful")>
+                         <p style="display: flex"><i class="green-text material-icons">done</i>
+                    <#elseif req.left?contains("commits") && req.left?contains("failed")>
+                         <p style="display: flex"><i class="red-text material-icons">close</i>
+                    <#else>
+                         <p style="display: flex"><i class="material-icons">keyboard</i>
+                    </#if>
+                        <span style="margin-left: 5px"><i style="color:#78909c">${req.left}:</i>&nbsp;${req.middle}</span></p>
                     </#list>
                         </div>
                         </#if>
@@ -82,7 +98,22 @@
                         <p><span><i><b><u>${extra.name}</u></b></i></span></p>
                         <div style="margin-left: 20px">
                     <#list extra.requirements as req>
-                        <p>&bull;<i>${req.left}</i>:&nbsp;${req.middle}</p>
+                    <#if req.left?contains("time")>
+                        <p style="display: flex"><i class="light-blue-text material-icons">access_time</i>
+                    <#elseif req.left?contains("symbols")>
+                        <p style="display: flex"><i class="orange-text material-icons">text_rotation_none</i>
+                    <#elseif req.left?contains("executions") && req.left?contains("successful")>
+                        <p style="display: flex"><i class="green-text material-icons">play_arrow</i>
+                    <#elseif req.left?contains("executions") && req.left?contains("failed")>
+                        <p style="display: flex"><i class="red-text material-icons">play_arrow</i>
+                    <#elseif req.left?contains("commits") && req.left?contains("successful")>
+                         <p style="display: flex"><i class="green-text material-icons">done</i>
+                    <#elseif req.left?contains("commits") && req.left?contains("failed")>
+                         <p style="display: flex"><i class="red-text material-icons">close</i>
+                    <#else>
+                         <p style="display: flex"><i class="material-icons">keyboard</i>
+                    </#if>
+                        <span style="margin-left: 5px"><i style="color:#78909c">${req.left}:</i>&nbsp;${req.middle}</span></p>
                     </#list>
                         </div>
                          </#if>
@@ -107,16 +138,39 @@
                         <p><span><i><b><u>${team.name}</u></b></i></span></p>
                     <div style="margin-left: 20px">
                     <#list team.requirements as req>
-                    <p> &bull; <i>${req.left}:&nbsp;${req.middle}
+                    <#if req.left?contains("time")>
+                        <p style="display: flex"><i class="light-blue-text material-icons">access_time</i>
+                    <#elseif req.left?contains("symbols")>
+                        <p style="display: flex"><i class="orange-text material-icons">text_rotation_none</i>
+                    <#elseif req.left?contains("executions") && req.left?contains("successful")>
+                        <p style="display: flex"><i class="green-text material-icons">play_arrow</i>
+                    <#elseif req.left?contains("executions") && req.left?contains("failed")>
+                        <p style="display: flex"><i class="red-text material-icons">play_arrow</i>
+                    <#elseif req.left?contains("commits") && req.left?contains("successful")>
+                         <p style="display: flex"><i class="green-text material-icons">done</i>
+                    <#elseif req.left?contains("commits") && req.left?contains("failed")>
+                         <p style="display: flex"><i class="red-text material-icons">close</i>
+                    <#else>
+                         <p style="display: flex"><i class="material-icons">keyboard</i>
+                    </#if>
+                        <span style="margin-left: 5px"><i style="color:#78909c">${req.left}:</i>&nbsp;${req.middle}&emsp;
                      <#if req.right??>
-                     (${req.right})<#if i==0>* <#assign i=1></#if>
+                     <#if req.right gt 0.79>
+                     <i style="color:#F44336">
+                     <#elseif req.right gt 0.49>
+                     <i style="color:#ff9800">
+                     <#else>
+                     <i style="color:#4CAF50">
+                     </#if>
+                     ${req.right?string.percent}
+                         <#if i==0>* <#assign i=1></#if>
                      </#if></i></p>
                     </#list>
                     </div>
                         </#if>
                     </#list>
 
-                    <br><br>
+                    <br><br><br>
                     <span>* of overall team contribution</span>
                 </div>
             </li>

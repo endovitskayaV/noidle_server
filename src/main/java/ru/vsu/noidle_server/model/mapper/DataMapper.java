@@ -23,13 +23,13 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface DataMapper {
 
-    default List<Triple<String, String, String>> toDashboardRequirements(List<RequirementEntity> requirementEntities) {
+    default List<Triple<String, String, Float>> toDashboardRequirements(List<RequirementEntity> requirementEntities) {
         if (requirementEntities == null || requirementEntities.isEmpty()) {
             return Collections.emptyList();
         }
-        List<Triple<String, String, String>> dashboardRequirements = new ArrayList<>();
+        List<Triple<String, String, Float>> dashboardRequirements = new ArrayList<>();
         requirementEntities.forEach(requirementEntity -> {
-            Triple<String, String, String> triple = toDashboardRequirement(requirementEntity);
+            Triple<String, String, Float> triple = toDashboardRequirement(requirementEntity);
             if (triple != null) {
                 dashboardRequirements.add(triple);
             }
@@ -37,7 +37,7 @@ public interface DataMapper {
         return dashboardRequirements;
     }
 
-    default Triple<String, String, String> toDashboardRequirement(RequirementEntity requirementEntity) {
+    default Triple<String, String, Float> toDashboardRequirement(RequirementEntity requirementEntity) {
         if (requirementEntity == null
                 || requirementEntity.getStatisticsType() == null
                 || requirementEntity.getStatisticsSubType() == null
@@ -69,10 +69,9 @@ public interface DataMapper {
             value = TimeUtils.toPretty(requirementEntity.getValue());
         }
 
-        String teamContributionRate = null;
+        Float teamContributionRate = null;
         if (requirementEntity.getTeamContributionRate() != null) {
-            teamContributionRate = String.format("%.0f",
-                    requirementEntity.getTeamContributionRate() * 100) + "%";
+            teamContributionRate = requirementEntity.getTeamContributionRate();
         }
         return name == null ? null : new ImmutableTriple<>(name, value, teamContributionRate);
     }
@@ -89,7 +88,7 @@ public interface DataMapper {
 
         } else {
             StringBuilder nameBuilder = new StringBuilder(requirementEntity.getStatisticsSubType().getDto());
-            nameBuilder.insert(14, " "+name + " ");
+            nameBuilder.insert(14, " " + name + " ");
             name = nameBuilder.toString();
         }
 
