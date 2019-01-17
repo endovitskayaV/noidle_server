@@ -73,7 +73,7 @@ values  (1000, 'time', 'per_life', 35, null, 88128000000), --17d
 
 
         (1053, 'time', 'per_life', 72, null, 1892160000000), --1year
-        (1054, 'symbols', 'per_life', 73, null, 1000000),
+        (1054, 'symbol', 'per_life', 73, null, 1000000),
         (1059, 'single_key', 'per_life', 78, 'Ctrl', 1000),
         (1056, 'exec', 'per_life', 75, 'successful', 1000),
         (1058, 'exec', 'per_life', 77, 'failed', 1000),

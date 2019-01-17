@@ -19,4 +19,10 @@ public class AchievementDashboardDto {
 
     //name-value-team_contribution_rate
     private List<Triple<String, String, Float>> requirements;
+
+    /**
+     * list contains elements (comments) if this was achieved
+     */
+    private List<String> achievedComments;
+
 }
