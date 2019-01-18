@@ -24,27 +24,27 @@ public class TimeUtils {
         }
         StringBuilder text = new StringBuilder();
 
-        if (millis >  YEAR) {
+        if (millis >=  YEAR) {
             text.append(millis / YEAR).append(" " + Constants.Y + " ");
             millis %= YEAR;
         }
 
-        if (millis >  MONTH) {
+        if (millis >=  MONTH) {
             text.append(millis / MONTH).append(" " + Constants.MON + " ");
             millis %= MONTH;
         }
 
-        if (millis >  DAY) {
+        if (millis >=  DAY) {
             text.append(millis / DAY).append(" " + Constants.D + " ");
             millis %= DAY;
         }
 
-        if (millis > HOUR) {
+        if (millis >= HOUR) {
             text.append(millis / HOUR).append(" " + Constants.H + " ");
             millis %= HOUR;
         }
 
-        if (millis > MINUTE) {
+        if (millis >= MINUTE) {
             text.append(millis / MINUTE).append(" " + Constants.MIN + " ");
             millis %= MINUTE;
         }
