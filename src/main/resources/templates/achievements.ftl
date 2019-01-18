@@ -87,7 +87,13 @@
                     <#else>
                          <i class="material-icons">keyboard</i>
                     </#if>
-                            <span style="margin-left: 5px"><i style="color:#78909c">${req.left}:</i>&nbsp;${req.middle}</span>
+                            <span style="margin-left: 5px"><i style="color:#78909c">${req.left}:</i>&nbsp;
+                                <#if !req.left?contains("time")>
+                                    ${req.middle?number}
+                                <#else>
+                                    ${req.middle}
+                                </#if>
+                            </span>
                         </p>
                     </#list>
                         </div>
@@ -136,7 +142,14 @@
                     <#else>
                         <i class="material-icons">keyboard</i>
                     </#if>
-                            <span style="margin-left: 5px"><i style="color:#78909c">${req.left}:</i>&nbsp;${req.middle}</span>
+                            <span style="margin-left: 5px"><i style="color:#78909c">${req.left}:</i>&nbsp;
+
+                                 <#if !req.left?contains("time")>
+                                    ${req.middle?number}
+                                 <#else>
+                                     ${req.middle}
+                                 </#if>
+                            </span>
                         </p>
                     </#list>
                         </div>
@@ -189,7 +202,13 @@
                          <i class="material-icons">keyboard</i>
                     </#if>
                             <span style="margin-left: 5px"><i
-                                    style="color:#78909c">${req.left}:</i>&nbsp;${req.middle}&emsp;
+                                    style="color:#78909c">${req.left}:</i>&nbsp;
+                                     <#if !req.left?contains("time")>
+                                         ${req.middle?number}
+                                     <#else>
+                                         ${req.middle}
+                                     </#if>
+                                &emsp;
                      <#if req.right??>
                          <#if req.right gt 0.79>
                      <i style="color:#F44336">
