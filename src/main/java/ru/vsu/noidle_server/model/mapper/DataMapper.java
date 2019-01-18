@@ -65,7 +65,8 @@ public interface DataMapper {
         }
 
         String value = requirementEntity.getValue().toString();
-        if (StatisticsType.TIME.equals(requirementEntity.getStatisticsType())) {
+        if (StatisticsType.TIME.equals(requirementEntity.getStatisticsType())
+                || StatisticsType.LANG_TIME.equals(requirementEntity.getStatisticsType())) {
             value = TimeUtils.toPretty(requirementEntity.getValue());
         }
 
