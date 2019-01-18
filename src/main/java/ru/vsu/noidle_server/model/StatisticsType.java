@@ -7,17 +7,25 @@ import lombok.ToString;
 @ToString(of = "shortcut")
 public enum StatisticsType {
     TIME("time"),
-    SYMBOL("symbol"),
-    COMMIT("commit"),
-    EXEC("exec"),
-    LANG_TIME("lang_time"),
-    LANG_SYMBOL("lang_symbol"),
-    SINGLE_KEY("single_key");
+    SYMBOL("symbol", "symbols"),
+    COMMIT("commit", "commits"),
+    EXEC("exec", "executions"),
+    LANG_TIME("lang_time", "time in"),
+    LANG_SYMBOL("lang_symbol", "symbols in"),
+    SINGLE_KEY("single_key", "key quantity");
 
     private String shortcut;
 
+    private String dto;
+
+    StatisticsType(String shortcut, String dto) {
+        this.shortcut = shortcut;
+        this.dto=dto;
+    }
+
     StatisticsType(String shortcut) {
         this.shortcut = shortcut;
+        this.dto=shortcut;
     }
 
     public static StatisticsType byShortcut(String name) {

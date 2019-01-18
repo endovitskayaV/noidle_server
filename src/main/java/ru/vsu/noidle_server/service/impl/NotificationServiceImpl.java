@@ -149,7 +149,7 @@ public class NotificationServiceImpl implements NotificationService {
                                     requirements.stream().allMatch(requirement -> {
                                         TeamRateModel teamRate = rates.get(teamMember.getId());
 
-                                        boolean fit = !teamMember.getNonLevelAchievements().contains(achievement) &&
+                                        boolean fit = !teamMember.hasTeamAchievement(team.getId(), achievement.getId()) &&
                                                 teamRate != null &&
                                                 requirement.getValue().compareTo(teamRate.getStatisticValue()) <= 0 &&
                                                 requirement.getTeamContributionRate().compareTo(teamRate.getRate()) <= 0;

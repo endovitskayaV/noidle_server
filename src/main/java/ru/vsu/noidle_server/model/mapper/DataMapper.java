@@ -3,12 +3,15 @@ package ru.vsu.noidle_server.model.mapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import ru.vsu.noidle_server.model.StatisticsSubType;
 import ru.vsu.noidle_server.model.StatisticsType;
 import ru.vsu.noidle_server.model.domain.*;
 import ru.vsu.noidle_server.model.dto.*;
@@ -19,6 +22,79 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface DataMapper {
+
+    default List<Triple<String, String, Float>> toDashboardRequirements(List<RequirementEntity> requirementEntities) {
+        if (requirementEntities == null || requirementEntities.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<Triple<String, String, Float>> dashboardRequirements = new ArrayList<>();
+        requirementEntities.forEach(requirementEntity -> {
+            Triple<String, String, Float> triple = toDashboardRequirement(requirementEntity);
+            if (triple != null) {
+                dashboardRequirements.add(triple);
+            }
+        });
+        return dashboardRequirements;
+    }
+
+    default Triple<String, String, Float> toDashboardRequirement(RequirementEntity requirementEntity) {
+        if (requirementEntity == null
+                || requirementEntity.getStatisticsType() == null
+                || requirementEntity.getStatisticsSubType() == null
+                || requirementEntity.getValue() == null) {
+            return null;
+        }
+
+        String name = null;
+        if (StatisticsType.TIME.equals(requirementEntity.getStatisticsType())
+                || StatisticsType.SYMBOL.equals(requirementEntity.getStatisticsType())) {
+
+            name = addSubType(requirementEntity, requirementEntity.getStatisticsType().getDto());
+
+        } else if (requirementEntity.getExtraValue() != null) {
+
+            if (StatisticsType.COMMIT.equals(requirementEntity.getStatisticsType())
+                    || StatisticsType.EXEC.equals(requirementEntity.getStatisticsType())
+                    || StatisticsType.SINGLE_KEY.equals(requirementEntity.getStatisticsType())) {
+
+                name = addSubType(requirementEntity, requirementEntity.getExtraValue() + " " + requirementEntity.getStatisticsType().getDto());
+
+            } else {
+                name = addSubType(requirementEntity, requirementEntity.getStatisticsType().getDto() + " " + requirementEntity.getExtraValue());
+            }
+        }
+
+        String value = requirementEntity.getValue().toString();
+        if (StatisticsType.TIME.equals(requirementEntity.getStatisticsType())
+                || StatisticsType.LANG_TIME.equals(requirementEntity.getStatisticsType())) {
+            value = TimeUtils.toPretty(requirementEntity.getValue());
+        }
+
+        Float teamContributionRate = null;
+        if (requirementEntity.getTeamContributionRate() != null) {
+            teamContributionRate = requirementEntity.getTeamContributionRate();
+        }
+        return name == null ? null : new ImmutableTriple<>(name, value, teamContributionRate);
+    }
+
+    default String addSubType(RequirementEntity requirementEntity, String name) {
+        if (StatisticsSubType.PER_DAY.equals(requirementEntity.getStatisticsSubType())) {
+
+            name += " " + requirementEntity.getStatisticsSubType().getDto();
+
+        } else if (StatisticsSubType.PER_LIFE.equals(requirementEntity.getStatisticsSubType())
+                || StatisticsSubType.CONTINUOUS_PER_LIFE.equals(requirementEntity.getStatisticsSubType())) {
+
+            name = requirementEntity.getStatisticsSubType().getDto() + " " + name;
+
+        } else {
+            StringBuilder nameBuilder = new StringBuilder(requirementEntity.getStatisticsSubType().getDto());
+            nameBuilder.insert(14, " " + name + " ");
+            name = nameBuilder.toString();
+        }
+
+        return name;
+    }
 
     @Mapping(source = "statisticsDto.id", target = "id")
     @Mapping(source = "userEntity", target = "user")

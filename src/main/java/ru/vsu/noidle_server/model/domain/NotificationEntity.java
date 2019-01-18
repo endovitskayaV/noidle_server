@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"id", "achievement", "aboutUser", "toWhomUser"}) //not just id for new instances (id=null) correct comparison
+@EqualsAndHashCode(of = {"id", "achievement", "aboutUser", "toWhomUser", "team"}) //not just id for new instances (id=null) correct comparison
 @ToString
 public class NotificationEntity {
 

@@ -7,7 +7,7 @@ import ru.vsu.noidle_server.model.AchievementType;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "levelNumber")
+@EqualsAndHashCode
 @ToString
 public class AchievementDto {
 

@@ -60,6 +60,24 @@ public class UserEntity {
         }
     }
 
+    public boolean hasAchievement(Long achievementId) {
+        return allNotifications.stream()
+                .anyMatch(notification -> notification.getAchievement().getId().equals(achievementId));
+    }
+
+    /**
+     * @param achievementId
+     * @return teams in which user has  achievement with specified id
+     */
+    public List<TeamEntity> getTeamsByAchievementId(Long achievementId) {
+        return hasAchievement(achievementId) ?
+                allNotifications.stream()
+                        .filter(notification -> notification.getAchievement().getId().equals(achievementId))
+                        .map(NotificationEntity::getTeam)
+                        .collect(Collectors.toList()) :
+                Collections.emptyList();
+    }
+
     @OneToMany(mappedBy = "aboutUser", cascade = CascadeType.ALL)
     private Set<NotificationEntity> personalNotifications;
 
@@ -92,6 +110,18 @@ public class UserEntity {
                         .filter(notificationEntity -> !notificationEntity.getAchievement().isLevel())
                         .map(NotificationEntity::getAchievement))
                 .collect(Collectors.toSet());
+    }
+
+    public boolean hasTeamAchievement(UUID teamId, Long achievementId) {
+        if (teamId == null || achievementId == null) {
+            return false;
+        }
+        return allNotifications.stream()
+                .filter(notification->notification.getTeam()!=null)
+                .anyMatch(notification ->
+                        notification.getTeam().getId().equals(teamId)
+                                && notification.getAchievement().getId().equals(achievementId)
+                                && notification.getAboutUser().getId().equals(id));
     }
 
     public Set<UserEntity> getColleagues() {
