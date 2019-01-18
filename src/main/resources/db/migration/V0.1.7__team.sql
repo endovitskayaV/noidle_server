@@ -24,3 +24,9 @@ alter table statistics
 alter table notification
   add column
   team_id uuid references team (id);
+
+alter table notification
+  drop constraint unique_notification;
+
+alter table notification
+  add constraint unique_notification unique (about_user_id, to_whom_user_id, achievement_id, team_id);

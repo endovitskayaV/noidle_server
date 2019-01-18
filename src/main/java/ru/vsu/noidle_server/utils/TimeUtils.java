@@ -1,8 +1,11 @@
 package ru.vsu.noidle_server.utils;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.vsu.noidle_server.Constants;
 
+import javax.validation.constraints.Null;
 import java.time.OffsetDateTime;
 
 public class TimeUtils {
@@ -10,37 +13,57 @@ public class TimeUtils {
     private static int SECOND = 1000;
     private static int MINUTE = 60 * SECOND;
     private static int HOUR = 60 * MINUTE;
+    private static long DAY = 24 * HOUR;
+    private static long MONTH = 31 * DAY;
+    private static long YEAR = 12 * MONTH;
 
-    public static String toPretty(Long millis) {
+    @Contract("null -> null")
+    public static String toPretty(@Nullable Long millis) {
         if (millis == null) {
             return null;
         }
         StringBuilder text = new StringBuilder();
-        if (millis > HOUR) {
+
+        if (millis >=  YEAR) {
+            text.append(millis / YEAR).append(" " + Constants.Y + " ");
+            millis %= YEAR;
+        }
+
+        if (millis >=  MONTH) {
+            text.append(millis / MONTH).append(" " + Constants.MON + " ");
+            millis %= MONTH;
+        }
+
+        if (millis >=  DAY) {
+            text.append(millis / DAY).append(" " + Constants.D + " ");
+            millis %= DAY;
+        }
+
+        if (millis >= HOUR) {
             text.append(millis / HOUR).append(" " + Constants.H + " ");
             millis %= HOUR;
         }
-        if (millis > MINUTE) {
+
+        if (millis >= MINUTE) {
             text.append(millis / MINUTE).append(" " + Constants.MIN + " ");
             millis %= MINUTE;
         }
-//        if (millis > SECOND) {
-//            text.append(millis / SECOND).append(" sec ")
-//            millis %= SECOND
-//        }
+
         if (text.toString().isEmpty()) {
             text.append(Constants.LESS_MIN);
         }
         return text.toString();
     }
 
-    public static OffsetDateTime toOffsetDateTime(String date) {
+    @Contract("null -> null")
+    public static OffsetDateTime toOffsetDateTime(@Nullable String date) {
         if (date == null) {
             return null;
         }
         return doToOffsetDateTime(date);
     }
 
+    @Nullable
     private static OffsetDateTime doToOffsetDateTime(@NotNull String date) {
         try {
             int index = date.indexOf('.');
@@ -61,18 +84,20 @@ public class TimeUtils {
         }
     }
 
-    public static boolean canParseToOffsetDateTimeOrNull(String date) {
+    @Contract("null -> true")
+    public static boolean canParseToOffsetDateTimeOrNull(@Nullable String date) {
         return date == null || doToOffsetDateTime(date) != null;
     }
 
-    public static String toDMYYYFormat(OffsetDateTime date) {
+    @NotNull
+    public static String toDMYYYFormat(@Nullable OffsetDateTime date) {
         if (date == null) {
             return "";
         }
         return date.getDayOfMonth() + "." + date.getMonth().getValue() + "." + date.getYear();
     }
 
-    public static boolean differentDay(OffsetDateTime firstDate, OffsetDateTime secondDate) {
+    public static boolean differentDay(@NotNull OffsetDateTime firstDate, @NotNull OffsetDateTime secondDate) {
         return firstDate.getYear() != secondDate.getYear() &&
                 firstDate.getDayOfYear() != secondDate.getDayOfYear();
     }

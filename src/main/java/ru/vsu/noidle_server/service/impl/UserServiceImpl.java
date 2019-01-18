@@ -75,8 +75,8 @@ public class UserServiceImpl implements UserService {
             log.info("Unable to find auth user");
             throw new ServiceException("Unable to find auth user");
         }
-        String email = user.getName();
-        UserEntity userEntity = userRepository.findByEmail(email);
+        String name = user.getName();
+        UserEntity userEntity = userRepository.findByName(name);
         if (userEntity == null) {
             throw new ServiceException("Unable to find auth user");
         } else {

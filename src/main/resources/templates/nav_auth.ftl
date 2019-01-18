@@ -12,6 +12,7 @@
         <ul class="right hide-on-med-and-down">
             <li><a href="/dashboard"><i class="material-icons left">dashboard</i>Dashboard</a></li>
             <li><a href="/teams"><i class="material-icons left">group</i>Teams</a></li>
+            <li><a href="/achievements"><i class="material-icons left">folder_special</i>Achievements</a></li>
             <li><a href="/profile"><i class="material-icons left">person</i>Profile</a></li>
             <li><a href="/logout"><i class="material-icons left">exit_to_app</i>Log out</a></li>
         </ul>
@@ -26,6 +27,7 @@
         <ul id="nav-mobile" class="sidenav">
             <li><a href="/dashboard"><i class="material-icons left">dashboard</i>Dashboard</a></li>
             <li><a href="/teams"><i class="material-icons left">group</i>Teams</a></li>
+            <li><a href="/achievements"><i class="material-icons left">folder_special</i>Achievements</a></li>
             <li><a href="/profile"><i class="material-icons left">person</i>Profile</a></li>
             <li><a href="/logout"><i class="material-icons left">exit_to_app</i>Log out</a></li>
         </ul>
