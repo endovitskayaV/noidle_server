@@ -39,9 +39,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(UserEntity userEntity) throws ServiceException {
-        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-        if (userRepository.findByEmailOrNameOrId(userEntity.getEmail(), userEntity.getName(), userEntity.getId()) != null) {
+    public void save(UserEntity userEntity, boolean update) throws ServiceException {
+        if (!update && userRepository.findByEmailOrNameOrId(userEntity.getEmail(), userEntity.getName(), userEntity.getId()) != null) {
+            userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
             throw new ServiceException("Not unique user: " + dataMapper.toString(userEntity));
         }
         userRepository.save(userEntity);
@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException("Error while parsing input string");
         }
         for (UserEntity userEntity : userEntities) {
-            save(userEntity);
+            save(userEntity, false);
         }
     }
 

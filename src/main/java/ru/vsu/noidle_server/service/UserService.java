@@ -15,7 +15,7 @@ public interface UserService {
 
     UserEntity getEntityByName(String name) throws ServiceException;
 
-    void save(UserEntity userEntity) throws ServiceException;
+    void save(UserEntity userEntity, boolean update) throws ServiceException;
 
     UserDto getById(UUID id) throws ServiceException;
 

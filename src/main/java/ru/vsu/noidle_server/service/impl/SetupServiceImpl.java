@@ -19,7 +19,7 @@ public class SetupServiceImpl implements SetupService {
 
     @Override
     public void finishSetup(String password) throws ServiceException {
-        userService.save(new UserEntity(Constants.ADMIN_EMAIL, Constants.ADMIN_NAME, password, UpdateRole.ADMIN));
+        userService.save(new UserEntity(Constants.ADMIN_EMAIL, Constants.ADMIN_NAME, password, UpdateRole.ADMIN), false);
     }
 
     @Override

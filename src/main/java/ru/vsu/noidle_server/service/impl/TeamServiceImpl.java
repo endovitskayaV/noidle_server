@@ -39,7 +39,7 @@ public class TeamServiceImpl implements TeamService {
             teamEntity = new TeamEntity(teamDto.getName(), OffsetDateTime.now());
             teamEntity = teamRepository.save(teamEntity);
             userEntity.addTeam(teamEntity);
-            userService.save(userEntity);
+            userService.save(userEntity, true);
         } catch (DataIntegrityViolationException e) {
             throw new ServiceException(teamDto.getName() + " team already exists");
         }
@@ -115,7 +115,7 @@ public class TeamServiceImpl implements TeamService {
         UserEntity userEntity = userService.getEntityById(userId);
 
         userEntity.addTeam(teamEntity);
-        userService.save(userEntity);
+        userService.save(userEntity, true);
     }
 
     @Override
@@ -124,6 +124,6 @@ public class TeamServiceImpl implements TeamService {
         UserEntity userEntity = userService.getEntityById(userId);
 
         userEntity.removeTeam(teamEntity);
-        userService.save(userEntity);
+        userService.save(userEntity, true);
     }
 }
