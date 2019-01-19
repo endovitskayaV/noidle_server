@@ -40,9 +40,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(UserEntity userEntity, boolean update) throws ServiceException {
-        if (!update && userRepository.findByEmailOrNameOrId(userEntity.getEmail(), userEntity.getName(), userEntity.getId()) != null) {
+        if (!update) {
             userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-            throw new ServiceException("Not unique user: " + dataMapper.toString(userEntity));
+
+            if (userRepository.findByEmailOrNameOrId(userEntity.getEmail(), userEntity.getName(), userEntity.getId()) != null) {
+               throw new ServiceException("Not unique user: " + dataMapper.toString(userEntity));
+            }
         }
         userRepository.save(userEntity);
         log.info("Saved {}", userEntity);
