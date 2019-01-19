@@ -160,4 +160,13 @@ public class UserEntity {
     public void removeTeam(TeamEntity teamEntity) {
         teams.remove(teamEntity);
     }
+
+    public boolean isTeammateWith(UserEntity teammember) {
+        return teams.stream().anyMatch(team ->
+                team.getUsers().stream()
+                        .anyMatch(userEntity ->
+                                userEntity.getId().equals(teammember.getId())
+                        )
+        );
+    }
 }

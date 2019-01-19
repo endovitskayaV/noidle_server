@@ -5,7 +5,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
     <link rel="shortcut icon" href="img/icon.png" type="image/png">
-
     <link rel="shortcut icon" href="/img/icon.png" type="image/png">
     <title>NoIdle&nbsp;&bull;&nbsp;Error</title>
 
@@ -22,7 +21,6 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
 <script type="text/javascript" src="js/base.js"></script>
-
 <script type="text/javascript" src="/js/materialize.js"></script>
 <script type="text/javascript" src="/js/base.js"></script>
 
@@ -45,7 +43,7 @@
     <div class="container">
         <h1 class="header center orange-text">Page not found</h1>
         <div class="row center">
-            <div class="header col s12"><img id="img" src="img/error.png" onerror='$("#img").attr("src", "/img/error.png")'></div>
+            <div class="header col s12"><img src="img/error.png"></div>
         </div>
         <div class="row center">
             <br><br>

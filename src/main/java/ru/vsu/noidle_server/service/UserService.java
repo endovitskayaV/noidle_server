@@ -13,6 +13,8 @@ public interface UserService {
 
     UserEntity getEntityById(UUID id) throws ServiceException;
 
+    UserEntity getEntityByName(String name) throws ServiceException;
+
     void save(UserEntity userEntity) throws ServiceException;
 
     UserDto getById(UUID id) throws ServiceException;
@@ -20,6 +22,16 @@ public interface UserService {
     UserDto getByName(String name) throws ServiceException;
 
     UserDto getByAuth() throws ServiceException;
+
+    boolean areTeammates(UserDto user1, UserDto user2);
+
+    /**
+     * with current user
+     *
+     * @param user1
+     * @return
+     */
+    boolean areTeammates(UserDto user1);
 
     UserEntity getEntityByAuth() throws ServiceException;
 

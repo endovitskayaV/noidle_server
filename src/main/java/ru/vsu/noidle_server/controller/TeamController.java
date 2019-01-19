@@ -12,6 +12,7 @@ import ru.vsu.noidle_server.model.dto.TeamDto;
 import ru.vsu.noidle_server.model.dto.TeamDtoShort;
 import ru.vsu.noidle_server.service.TeamService;
 import ru.vsu.noidle_server.service.UserService;
+import ru.vsu.noidle_server.utils.AuthUtils;
 
 import java.util.Collections;
 import java.util.UUID;
@@ -53,6 +54,11 @@ public class TeamController {
             modelMap.addAttribute("teams", teamService.getAll());
         } catch (ServiceException e) {
             modelMap.addAttribute("teams", Collections.EMPTY_LIST);
+        }
+        try {
+            modelMap.addAttribute("currentUser", userService.getByAuth());
+        } catch (ServiceException e) {
+            return "error";
         }
         return "teams";
     }

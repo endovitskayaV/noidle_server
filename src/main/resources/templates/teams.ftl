@@ -24,7 +24,12 @@
 <script type="text/javascript" src="js/editTeam.js"></script>
 <script type="text/javascript" src="js/deleteTeam.js"></script>
 <script type="text/javascript" src="js/addTeam.js"></script>
-
+<script>
+    var currentUserName;
+    document.addEventListener('DOMContentLoaded', function () {
+        currentUserName = '${currentUser.name}';
+    });
+</script>
  <#include "nav_auth.ftl">
 
 <main>
@@ -117,6 +122,14 @@
                                  },
                                  onChipDelete: function (e, data) {
                                      onChipDeleteHandler(data, document.querySelector('#chips${i}'), '${i}', '${team.id}', '${team.name}')
+                                 },
+                                 onChipSelect: function (e, data) {
+                                     var user = "";
+                                     var userName = data.childNodes[0].data;
+                                     if (currentUserName!=='undefined' && currentUserName !== userName) {
+                                         user = "/" + userName.replace(/ /g, "_");
+                                     }
+                                     window.location.href = document.location.origin + '/achievements' + user;
                                  }
                              });
                          </script>
