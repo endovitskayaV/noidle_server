@@ -21,6 +21,7 @@ import ru.vsu.noidle_server.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,48 +35,58 @@ public class AchievementServiceImpl implements AchievementService {
     private final DataMapper dataMapper;
 
     @Override
-    public List<AchievementDashboardDto> getLevels() {
-        return doGetAchievementDashboardDtos(AchievementType.LEVEL);
+    public List<AchievementDashboardDto> getLevels(String userName) {
+        return doGetAchievementDashboardDtos(userName, AchievementType.LEVEL);
     }
 
     @Override
-    public List<AchievementDashboardDto> getExtras() {
-        return doGetAchievementDashboardDtos(AchievementType.EXTRA);
+    public List<AchievementDashboardDto> getExtras(String userName) {
+        return doGetAchievementDashboardDtos(userName, AchievementType.EXTRA);
     }
 
     @Override
-    public List<AchievementDashboardDto> getTeams() {
-        return doGetAchievementDashboardDtos(AchievementType.TEAM);
+    public List<AchievementDashboardDto> getTeams(String userName) {
+        return doGetAchievementDashboardDtos(userName, AchievementType.TEAM);
     }
 
     @Nullable
-    private List<AchievementDashboardDto> doGetAchievementDashboardDtos(@NotNull AchievementType type) {
+    private List<AchievementDashboardDto> doGetAchievementDashboardDtos(@Nullable String userName, @NotNull AchievementType type) {
         List<AchievementDashboardDto> achievements = new ArrayList<>();
         UserEntity user;
         try {
-            user = userService.getEntityByAuth();
+            user = userName == null ?
+                    userService.getEntityByAuth() :
+                    userService.getEntityByName(userName);
         } catch (ServiceException e) {
             return null;
         }
 
         achievementRepository.getAllByType(type)
                 .forEach(achievement -> {
-                    List<RequirementEntity> requirements = requirementRepository.getAllByAchievementId(achievement.getId());
-                    List<String> achievedComments = new ArrayList<>();
-                    if (user.hasAchievement(achievement.getId())) {
-                        if (AchievementType.TEAM.equals(achievement.getType())) {
-                            achievedComments.addAll(
-                                    user.getTeamsByAchievementId(achievement.getId()).stream()
-                                            .map(TeamEntity::getName).collect(Collectors.toList()));
-                        } else {
-                            achievedComments.add(Constants.ACHIEVED);
+
+                    //add achievement only
+                    // if it`s current user
+                    // or if it is team member and achieved
+                    if (userName == null || user.hasAchievement(achievement.getId())) {
+                        List<RequirementEntity> requirements =
+                                requirementRepository.getAllByAchievementId(achievement.getId());
+                        List<String> achievedComments = new ArrayList<>();
+                        if (user.hasAchievement(achievement.getId())) {
+                            if (AchievementType.TEAM.equals(achievement.getType())) {
+                                achievedComments.addAll(
+                                        user.getTeamsByAchievementId(achievement.getId()).stream()
+                                                .map(TeamEntity::getName).collect(Collectors.toList()));
+                            } else {
+                                achievedComments.add(Constants.ACHIEVED);
+                            }
                         }
+
+                        achievements.add(new AchievementDashboardDto(
+                                achievement.getLevelNumber(),
+                                achievement.getName(),
+                                dataMapper.toDashboardRequirements(requirements),
+                                achievedComments));
                     }
-                    achievements.add(new AchievementDashboardDto(
-                            achievement.getLevelNumber(),
-                            achievement.getName(),
-                            dataMapper.toDashboardRequirements(requirements),
-                            achievedComments));
                 });
         return achievements.size() == 0 ? null : achievements;
     }

@@ -42,6 +42,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity getEntityByName(String name) throws ServiceException {
+        UserEntity user = userRepository.findByName(name);
+        if (user == null) {
+            log.info("Unable to find user with name " + name);
+            throw new ServiceException("Unable to find user with name " + name);
+        }
+        return user;
+    }
+
+    @Override
     public void save(UserEntity userEntity) {
         userRepository.save(userEntity);
         log.info("Saved {}", userEntity);
@@ -98,6 +108,24 @@ public class UserServiceImpl implements UserService {
             return dataMapper.toDto(userEntity, new CycleAvoidingMappingContext());
         }
 
+    }
+
+    @Override
+    public boolean areTeammates(UserDto user1, UserDto user2) {
+        try {
+            return getEntityById(user1.getId()).isTeammateWith(getEntityById(user2.getId()));
+        } catch (ServiceException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean areTeammates(UserDto user1) {
+        try {
+            return areTeammates(user1, getByAuth());
+        } catch (ServiceException e) {
+            return false;
+        }
     }
 
     @Override

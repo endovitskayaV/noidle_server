@@ -5,18 +5,23 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
     <link rel="shortcut icon" href="img/icon.png" type="image/png">
+    <link rel="shortcut icon" href="/img/icon.png" type="image/png">
     <title>NoIdle&nbsp;&bull;&nbsp;Dashboard</title>
 
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="css/custom.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="/css/custom.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
 <!--  Scripts-->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.js"></script>
 <script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="/js/materialize.js"></script>
+<script type="text/javascript" src="/js/base.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var elemsCol = document.querySelectorAll('.collapsible');
@@ -30,6 +35,9 @@
     <br>
     <div class="container">
         <h2 class="header center orange-text">Achievements</h2>
+        <#if user?? && user.name??>
+        <h6 class="center">of <i>${user.name}</i></h6>
+        </#if>
         <br>
         <#if !levels?? && !extras?? && !teams??>
 

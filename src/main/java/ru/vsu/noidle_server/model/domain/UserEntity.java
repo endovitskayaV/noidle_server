@@ -117,7 +117,7 @@ public class UserEntity {
             return false;
         }
         return allNotifications.stream()
-                .filter(notification->notification.getTeam()!=null)
+                .filter(notification -> notification.getTeam() != null)
                 .anyMatch(notification ->
                         notification.getTeam().getId().equals(teamId)
                                 && notification.getAchievement().getId().equals(achievementId)
@@ -143,5 +143,14 @@ public class UserEntity {
 
     public void removeTeam(TeamEntity teamEntity) {
         teams.remove(teamEntity);
+    }
+
+    public boolean isTeammateWith(UserEntity teammember) {
+        return teams.stream().anyMatch(team ->
+                team.getUsers().stream()
+                        .anyMatch(userEntity ->
+                                userEntity.getId().equals(teammember.getId())
+                        )
+        );
     }
 }
