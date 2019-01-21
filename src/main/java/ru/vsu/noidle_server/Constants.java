@@ -20,4 +20,6 @@ public class Constants {
 
 
     public  static final String ACHIEVED="Achieved";
+
+    public static final String ERROR_URI = "/error";
 }
