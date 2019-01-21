@@ -43,15 +43,14 @@ public class StatisticsServiceImpl implements StatisticsService {
         UserEntity user = userService.getEntityById(userId);
 
         statistics.forEach(statisticsDto -> {
-
             StatisticsEntity dbEntity = statisticsRepository.getByTypeAndSubTypeAndExtraValueAndUserIdAndTeamId(
-                    statisticsDto.getType(),
-                    statisticsDto.getSubType(),
-                    statisticsDto.getExtraValue(),
-                    userId,
-                    teamId);
+                        statisticsDto.getType(),
+                        statisticsDto.getSubType(),
+                        statisticsDto.getExtraValue(),
+                        userId,
+                        teamId);
 
-            boolean canSave;
+            boolean canSave = false;
 
             if (dbEntity != null) { //not new statistics
                 statisticsDto.setId(dbEntity.getId());
@@ -62,20 +61,33 @@ public class StatisticsServiceImpl implements StatisticsService {
                     canSave = (dbEntity.getDate().isBefore(statisticsDto.getDate())) &&
                             (dbEntity.getValue() < statisticsDto.getValue());
                 }
-            } else { //new statistics
-                canSave = true;
-            }
 
-            if (canSave) {
-                TeamEntity teamEntity = teamId == null ? null : teamRepository.findById(teamId).orElse(null);
-                StatisticsEntity statisticsEntity = statisticsRepository.save(
-                        dataMapper.toEntity(statisticsDto, user, teamEntity, new CycleAvoidingMappingContext())
-                );
-                log.info("Saved {}", statisticsEntity);
+                if (canSave) {
+                    dbEntity.setValue(statisticsDto.getValue());
+                    dbEntity.setDate(dbEntity.getDate());
+                    statisticsRepository.save(dbEntity);
+                    log.info("Saved {}", dbEntity);
+                }
+            } else { //new statistics
+                TeamEntity teamEntity = null;
+                if (teamId == null) {
+                    canSave = true;
+                } else {
+                    teamEntity = teamRepository.findById(teamId).orElse(null);
+                    if (teamEntity != null) {
+                        canSave = true;
+                    }
+                }
+                if (canSave) {
+                    StatisticsEntity statisticsEntity = statisticsRepository.save(
+                            dataMapper.toEntity(statisticsDto, user, teamEntity, new CycleAvoidingMappingContext())
+                    );
+                    log.info("Saved {}", statisticsEntity);
+                }
             }
         });
 
-        notificationService.setNotifications(userId, teamId);
+           notificationService.setNotifications(userId, teamId);
     }
 
     @Override
