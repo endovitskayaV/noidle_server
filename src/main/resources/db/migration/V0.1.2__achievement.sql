@@ -20,7 +20,7 @@ create table requirement (
   type                   text   not null,
   sub_type               text   not null,
   achievement_id         bigint not null references achievement (id),
-  extra_value            text,
+  extra_value            text   not null,
   value                  bigint not null,
   team_contribution_rate real,
   unique (type, sub_type, achievement_id, extra_value, value, team_contribution_rate)

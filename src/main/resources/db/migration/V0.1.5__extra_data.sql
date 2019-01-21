@@ -1,9 +1,9 @@
 insert into requirement (id, "type", sub_type, achievement_id, extra_value, "value")
-values  (1000, 'time', 'per_life', 35, null, 1468800000), --17d
-        (1001, 'time', 'per_life', 36, null, 13392000000), --5month
+values  (1000, 'time', 'per_life', 35, '', 1468800000), --17d
+        (1001, 'time', 'per_life', 36, '', 13392000000), --5month
 
-        (1002, 'symbol', 'per_life', 37, null, 100000),
-        (1003, 'symbol', 'per_life', 38, null, 1000000),
+        (1002, 'symbol', 'per_life', 37, '', 100000),
+        (1003, 'symbol', 'per_life', 38, '', 1000000),
 
         (1004, 'commit', 'per_life', 39, 'failed', 1),
         (1006, 'commit', 'per_life', 40, 'failed', 20),
@@ -18,13 +18,13 @@ values  (1000, 'time', 'per_life', 35, null, 1468800000), --17d
         (1014, 'commit', 'per_life', 48, 'successful', 100000),
         (1015, 'commit', 'per_life', 49, 'successful', 500000),
 
-        (1016, 'time', 'per_day', 50, null, 18000000), --5h
-        (1017, 'time', 'per_day', 51, null, 28800000), --8h
-        (1018, 'time', 'per_day', 52, null, 43200000), --12h
-        (1019, 'time', 'per_day', 53, null, 57600000), --16h
-        (1020, 'time', 'per_day', 54, null, 72000000), --20h
-        (1021, 'time', 'per_day', 55, null, 79200000), --22h
-        (1022, 'time', 'per_day', 56, null, 86400000), --24h
+        (1016, 'time', 'per_day', 50, '', 18000000), --5h
+        (1017, 'time', 'per_day', 51, '', 28800000), --8h
+        (1018, 'time', 'per_day', 52, '', 43200000), --12h
+        (1019, 'time', 'per_day', 53, '', 57600000), --16h
+        (1020, 'time', 'per_day', 54, '', 72000000), --20h
+        (1021, 'time', 'per_day', 55, '', 79200000), --22h
+        (1022, 'time', 'per_day', 56, '', 86400000), --24h
 
         (1023, 'single_key', 'per_life', 57, 'Ctrl', 2000),
         (1024, 'single_key', 'per_life', 57, 'C', 1000),
@@ -72,8 +72,8 @@ values  (1000, 'time', 'per_life', 35, null, 1468800000), --17d
         (1052, 'exec', 'per_life', 71, 'failed', 50000),
 
 
-        (1053, 'time', 'per_life', 72, null, 32140800000), --1year
-        (1054, 'symbol', 'per_life', 73, null, 1000000),
+        (1053, 'time', 'per_life', 72, '', 32140800000), --1year
+        (1054, 'symbol', 'per_life', 73, '', 1000000),
         (1059, 'single_key', 'per_life', 78, 'Ctrl', 1000),
         (1056, 'exec', 'per_life', 75, 'successful', 1000),
         (1058, 'exec', 'per_life', 77, 'failed', 1000),

@@ -62,17 +62,21 @@ public class StatisticsServiceImpl implements StatisticsService {
                     canSave = (dbEntity.getDate().isBefore(statisticsDto.getDate())) &&
                             (dbEntity.getValue() < statisticsDto.getValue());
                 }
-            } else { //new statistics
-                canSave = true;
-            }
 
-            if (canSave) {
+                if (canSave){
+                    dbEntity.setValue(statisticsDto.getValue());
+                    dbEntity.setDate(dbEntity.getDate());
+                    statisticsRepository.save(dbEntity);
+                    log.info("Saved {}", dbEntity);
+                }
+            } else { //new statistics
                 TeamEntity teamEntity = teamId == null ? null : teamRepository.findById(teamId).orElse(null);
                 StatisticsEntity statisticsEntity = statisticsRepository.save(
                         dataMapper.toEntity(statisticsDto, user, teamEntity, new CycleAvoidingMappingContext())
                 );
                 log.info("Saved {}", statisticsEntity);
             }
+
         });
 
         notificationService.setNotifications(userId, teamId);

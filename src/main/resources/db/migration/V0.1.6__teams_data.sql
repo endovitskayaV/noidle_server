@@ -20,7 +20,7 @@ values (5000, 'commit', 'per_life', 79, 'successful', 10, 0.3),
        (5013, 'single_key', 'per_life', 86, 'C', 10000, 0.8),
        (5014, 'single_key', 'per_life', 86, 'V', 10000, 0.8),
 
-       (5015, 'time', 'per_day', 87, null, 21600000, 0.8), --6h
+       (5015, 'time', 'per_day', 87, '', 21600000, 0.8), --6h
 
        (5016, 'commit', 'per_day', 88, 'successful', 10, 0.8),
        (5017, 'commit', 'per_day', 89, 'successful', 20, 0.8),

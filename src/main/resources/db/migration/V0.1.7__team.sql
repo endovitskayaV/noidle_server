@@ -13,7 +13,11 @@ create table user_data_team (
 
 alter table statistics
   add column
-  team_id uuid references team (id);
+  team_id uuid references team (id) on delete cascade;
+
+alter table statistics
+  alter column
+  team_id set not null;
 
 alter table statistics
   drop constraint unique_statistics;
@@ -21,9 +25,14 @@ alter table statistics
 alter table statistics
   add constraint unique_statistics unique (type, sub_type, extra_value, user_id, team_id);
 
+
 alter table notification
   add column
-  team_id uuid references team (id);
+  team_id uuid references team (id) on delete cascade;
+
+alter table notification
+  alter column
+  team_id set not null;
 
 alter table notification
   drop constraint unique_notification;
