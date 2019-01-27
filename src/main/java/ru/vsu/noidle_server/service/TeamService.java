@@ -28,5 +28,7 @@ public interface TeamService {
 
     void addTeamMember(UUID userId, UUID teamId) throws ServiceException;
 
+    boolean checkIfAddedTeamMember(UUID userId, UUID teamId);
+
     void removeTeamMember(UUID userId, UUID teamId) throws ServiceException;
 }
