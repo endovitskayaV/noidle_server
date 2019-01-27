@@ -13,6 +13,7 @@ import org.mapstruct.Named;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import ru.vsu.noidle_server.model.StatisticsSubType;
 import ru.vsu.noidle_server.model.StatisticsType;
+import ru.vsu.noidle_server.model.UserRole;
 import ru.vsu.noidle_server.model.domain.*;
 import ru.vsu.noidle_server.model.dto.*;
 import ru.vsu.noidle_server.utils.TimeUtils;
@@ -143,6 +144,8 @@ public interface DataMapper {
 
     UserDto toDto(UserEntity userEntity, @Context CycleAvoidingMappingContext context);
 
+    UserEntity toEntity(UserDto userDto, @Context CycleAvoidingMappingContext context);
+
     StatisticsDto toDto(StatisticsEntity statisticsEntity);
 
     UserDtoForNotification toDtoForNotification(UserEntity userEntity);
@@ -151,8 +154,37 @@ public interface DataMapper {
 
     List<RequirementDto> toDto(List<RequirementEntity> requirementEntity);
 
-    TeamEntity toEntity(TeamDto teamDto, @Context CycleAvoidingMappingContext context);
+    @Named("getUsersEntityRole")
+    default Set<UserTeam> getUsersEntityRole(TeamDto teamDto) {
+        return teamDto.getUsers().stream()
+                .map(userDtoUserRoleEntry -> new UserTeam(
+                        toEntity(teamDto, new CycleAvoidingMappingContext()),
+                        toEntity(userDtoUserRoleEntry, new CycleAvoidingMappingContext()),
+                        UserRole.DEV)
+                )
+                .collect(Collectors.toSet());
+    }
 
+    default TeamEntity toEntity(TeamDto teamDto, @Context CycleAvoidingMappingContext context) {
+        return new TeamEntity(teamDto.getId(),
+                teamDto.getName(), teamDto.getPhoto(),
+                teamDto.getCreated(),
+                getUsersEntityRole(teamDto)
+        );
+    }
+
+    @Named("getUsersDtoRole")
+    default List<UserDto> getUsersDtoRole(Set<UserTeam> usersTeams) {
+//        return usersTeams.stream().collect(Collectors.toMap(
+//                t -> toDto(t.getUser(), new CycleAvoidingMappingContext()),
+//                UserTeam::getUserRole)
+//        );
+
+        return usersTeams.stream().map( t -> toDto(t.getUser(), new CycleAvoidingMappingContext()))
+                .collect(Collectors.toList());
+    }
+
+    @Mapping(source = "usersTeams", target = "users", qualifiedByName = "getUsersDtoRole")
     TeamDto toDto(TeamEntity teamEntity, @Context CycleAvoidingMappingContext context);
 
     TeamDtoShort toDtoShort(TeamEntity teamEntity);

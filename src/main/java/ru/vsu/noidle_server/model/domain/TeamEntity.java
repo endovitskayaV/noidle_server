@@ -3,11 +3,13 @@ package ru.vsu.noidle_server.model.domain;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.jetbrains.annotations.NotNull;
+import ru.vsu.noidle_server.model.UserRole;
+import ru.vsu.noidle_server.model.converter.UserRoleConverter;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
-import java.util.Collection;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "team")
@@ -16,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = "users")
+@ToString(exclude = "usersTeams")
 public class TeamEntity implements Comparable<TeamEntity> {
 
     @Id
@@ -34,9 +36,8 @@ public class TeamEntity implements Comparable<TeamEntity> {
     @Column(name = "created")
     private OffsetDateTime created;
 
-    @ManyToMany(mappedBy = "teams")
-    //refers to UserEntity:  private Collection<TeamEntity> teams
-    private Collection<UserEntity> users;
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    private Set<UserTeam> usersTeams;
 
     public TeamEntity(String name, OffsetDateTime created) {
         this.name = name;
@@ -56,5 +57,9 @@ public class TeamEntity implements Comparable<TeamEntity> {
         } else {
             return created.compareTo(o.getCreated());
         }
+    }
+
+    public Set<UserEntity> getUsers(){
+        return usersTeams.stream().map(UserTeam::getUser).collect(Collectors.toSet());
     }
 }

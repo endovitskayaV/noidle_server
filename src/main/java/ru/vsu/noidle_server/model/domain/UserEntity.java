@@ -2,6 +2,7 @@ package ru.vsu.noidle_server.model.domain;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import ru.vsu.noidle_server.model.UserRole;
 
 import javax.persistence.*;
 import java.util.*;
@@ -36,13 +37,8 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Collection<StatisticsEntity> statistics;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_data_team",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "team_id", referencedColumnName = "id")
-    )
-    private Set<TeamEntity> teams;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserTeam> usersTeams;
 
     @OneToMany(mappedBy = "toWhomUser", cascade = CascadeType.ALL)
     private Set<NotificationEntity> allNotifications;
@@ -126,7 +122,7 @@ public class UserEntity {
 
     public Set<UserEntity> getColleagues() {
         Set<UserEntity> colleagues = new HashSet<>();
-        teams.forEach(teamEntity ->
+        getTeams().forEach(teamEntity ->
                 colleagues.addAll(
                         teamEntity.getUsers().stream()
                                 .filter(colleague -> !colleague.equals(this))
@@ -137,16 +133,35 @@ public class UserEntity {
         return colleagues;
     }
 
+
+//    public Set<UserEntity> getColleagues() {
+//        Set<UserEntity> colleagues = new HashSet<>();
+//        usersTeams.forEach(userTeam ->
+//                colleagues.addAll(
+//                        userTeam.getTeam().getUsersTeams().stream()
+//                                .filter(userTeam1 -> userTeam1.getUser().equals(this))
+//                                .map(UserTeam::getUser)
+//                                .collect(Collectors.toSet())
+//                )
+//        );
+//
+//        return colleagues;
+//    }
+
+    public Set<TeamEntity> getTeams(){
+        return usersTeams.stream().map(UserTeam::getTeam).collect(Collectors.toSet());
+    }
+
     public void addTeam(TeamEntity teamEntity) {
-        teams.add(teamEntity);
+       usersTeams.add(new UserTeam(teamEntity,this, UserRole.LEAD));
     }
 
     public void removeTeam(TeamEntity teamEntity) {
-        teams.remove(teamEntity);
+        usersTeams.remove(new UserTeam(teamEntity,this));
     }
 
     public boolean isTeammateWith(UserEntity teammember) {
-        return teams.stream().anyMatch(team ->
+        return getTeams().stream().anyMatch(team ->
                 team.getUsers().stream()
                         .anyMatch(userEntity ->
                                 userEntity.getId().equals(teammember.getId())

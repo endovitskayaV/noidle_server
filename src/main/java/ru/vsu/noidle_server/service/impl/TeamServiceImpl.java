@@ -6,8 +6,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import ru.vsu.noidle_server.Constants;
 import ru.vsu.noidle_server.exception.ServiceException;
+import ru.vsu.noidle_server.model.UserRole;
 import ru.vsu.noidle_server.model.domain.TeamEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
+import ru.vsu.noidle_server.model.domain.UserTeam;
 import ru.vsu.noidle_server.model.dto.NewTeamDto;
 import ru.vsu.noidle_server.model.dto.TeamDto;
 import ru.vsu.noidle_server.model.dto.TeamDtoShort;
@@ -18,6 +20,7 @@ import ru.vsu.noidle_server.service.TeamService;
 import ru.vsu.noidle_server.service.UserService;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -38,6 +41,7 @@ public class TeamServiceImpl implements TeamService {
             UserEntity userEntity = userService.getEntityByAuth();
             teamEntity = new TeamEntity(teamDto.getName(), OffsetDateTime.now());
             teamEntity = teamRepository.save(teamEntity);
+            teamEntity.setUsersTeams(Collections.singleton(new UserTeam(teamEntity, userEntity, UserRole.LEAD)));
             userEntity.addTeam(teamEntity);
             userService.save(userEntity);
         } catch (DataIntegrityViolationException e) {
