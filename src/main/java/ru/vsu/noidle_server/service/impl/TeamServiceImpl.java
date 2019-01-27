@@ -62,7 +62,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamEntity getEntityById(UUID id) throws ServiceException {
-        TeamEntity team=null;
+        TeamEntity team = null;
         if (id != null) {
             team = teamRepository.findById(id).orElse(null);
         }
@@ -111,11 +111,24 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void addTeamMember(UUID userId, UUID teamId) throws ServiceException {
-        TeamEntity teamEntity =getEntityById(teamId);
+        TeamEntity teamEntity = getEntityById(teamId);
         UserEntity userEntity = userService.getEntityById(userId);
 
         userEntity.addTeam(teamEntity);
         userService.save(userEntity, true);
+    }
+
+    @Override
+    public boolean checkIfAddedTeamMember(UUID userId, UUID teamId) {
+        try {
+            TeamEntity teamEntity = getEntityById(teamId);
+            UserEntity userEntity = userService.getEntityById(userId);
+
+            return teamEntity.getUsers().contains(userEntity);
+        } catch (ServiceException e) {
+            return false;
+        }
+
     }
 
     @Override

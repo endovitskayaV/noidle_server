@@ -70,6 +70,15 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+
+    @PostMapping("/users/{userId}/teams/check/add/{teamId}")
+    @ResponseBody
+    public ResponseEntity checkIfAddedTeamMember(@PathVariable UUID userId, @PathVariable UUID teamId) {
+        return teamService.checkIfAddedTeamMember(userId, teamId) ?
+                ResponseEntity.noContent().build() :
+                ResponseEntity.notFound().build();
+    }
+
     @PostMapping("/users/{userId}/teams/remove/{teamId}")
     @ResponseBody
     public ResponseEntity removeTeamMember(@PathVariable UUID userId, @PathVariable UUID teamId) {
