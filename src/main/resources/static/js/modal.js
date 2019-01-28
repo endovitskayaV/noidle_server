@@ -6,4 +6,9 @@ $(document).ready(function(){
     $('#add-modal').modal({
         dismissible: false
     });
+
+
+    $('#roles-modal').modal({
+        dismissible: false
+    });
 });

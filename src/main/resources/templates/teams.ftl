@@ -183,6 +183,31 @@
             </form>
         </div>
 
+
+        <div class="modal" style="width: 50% !important;" id="roles-modal">
+            <form action="" onsubmit="return false">
+                <div class="modal-content">
+
+                    <p>
+                        <label>
+                            <input name="group1" type="radio" checked id="dev" />
+                            <span>dev</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input name="group1" type="radio" id="lead"/>
+                            <span>lead</span>
+                        </label>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="waves-effect waves-orange btn-flat" onclick="addTeamMemberHandler()">Ok</button>
+                    <button class="modal-close waves-effect waves-orange btn-flat" type="reset">Exit</button>
+                </div>
+            </form>
+        </div>
+
 </main>
 
  <#include "footer_auth.ftl">

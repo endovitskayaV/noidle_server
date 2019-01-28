@@ -114,11 +114,14 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void addTeamMember(UUID userId, UUID teamId) throws ServiceException {
+    public void addTeamMember(UUID userId, UUID teamId, UserRole userRole) throws ServiceException {
+        if (userRole == null) {
+            throw new ServiceException("User role is null");
+        }
         TeamEntity teamEntity = getEntityById(teamId);
         UserEntity userEntity = userService.getEntityById(userId);
 
-       teamEntity.addTeamMember(userEntity, UserRole.LEAD);
+        teamEntity.addTeamMember(userEntity, userRole);
         teamRepository.save(teamEntity);
     }
 

@@ -1,12 +1,14 @@
 package ru.vsu.noidle_server.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.noidle_server.exception.ServiceException;
+import ru.vsu.noidle_server.model.UserRole;
 import ru.vsu.noidle_server.model.dto.UserDto;
 import ru.vsu.noidle_server.service.TeamService;
 import ru.vsu.noidle_server.service.UserService;
@@ -51,11 +53,11 @@ public class UserController {
     }
 
 
-    @PostMapping("/users/{userId}/teams/add/{teamId}")
+    @PostMapping(value = "/users/{userId}/teams/add/{teamId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity addTeamMember(@PathVariable UUID userId, @PathVariable UUID teamId) {
+    public ResponseEntity addTeamMember(@PathVariable UUID userId, @PathVariable UUID teamId, @RequestBody UserRole role) {
         try {
-            teamService.addTeamMember(userId, teamId);
+            teamService.addTeamMember(userId, teamId, role);
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }

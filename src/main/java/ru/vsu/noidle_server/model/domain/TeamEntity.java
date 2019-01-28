@@ -64,14 +64,7 @@ public class TeamEntity implements Comparable<TeamEntity> {
     }
 
     public void removeTeamMember(UserEntity userEntity) {
-        UserTeam userTeamToFind = new UserTeam(this, userEntity);
-//        UserTeam foundUserTeam = usersTeams.stream().filter(userTeam2 -> userTeam2.equals(userTeamToFind))
-//                .findFirst().orElse(new UserTeam());
-//        foundUserTeam.setTeam(null);
-//        foundUserTeam.setUser(null);
-        usersTeams.remove(userTeamToFind);
-
-        //userEntity.getUsersTeams().remove(new UserTeam(this, userEntity));
+        usersTeams.remove(new UserTeam(this, userEntity, null));
     }
 
     public void addTeamMember(UserEntity userEntity, UserRole userRole) {

@@ -14,22 +14,27 @@ function onChipAddHandler(data, elem, teamId) {
             return;
         }
 
-        $.ajax({
-            url: document.location.origin + '/users/' + userId + '/teams/add/' + teamId,
-            type: "POST",
-            statusCode: {
-                404: function () {
-                    M.toast({
-                        html: 'Member&nbsp;<i><b>' + memberName + '</b></i>&nbsp;not found',
-                        classes: 'rounded'
-                    })
-                }
-            }
-        })
+        $('#roles-modal').modal('open');
     });
 }
 
-
+function addTeamMemberHandler() {
+    $('#roles-modal').modal('close');
+    var role=$('#roles-modal');
+    $.ajax({
+        url: document.location.origin + '/users/' + userId + '/teams/add/' + teamId,
+        type: "POST",
+        data: JSON.stringify({role: role}),
+        statusCode: {
+            404: function () {
+                M.toast({
+                    html: 'Member&nbsp;<i><b>' + memberName + '</b></i>&nbsp;not found',
+                    classes: 'rounded'
+                })
+            }
+        }
+    })
+}
 function undoDeleteMember(i, memberName) {
     M.Chips.getInstance($('#chips' + i)).addChip({tag: memberName});
 }

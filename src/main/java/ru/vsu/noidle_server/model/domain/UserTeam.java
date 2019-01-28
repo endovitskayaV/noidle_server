@@ -19,22 +19,16 @@ import java.io.Serializable;
 public class UserTeam implements Serializable {
 
     @Id
-    @ManyToOne//(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "team_id", referencedColumnName = "id")
     private TeamEntity team;
 
     @Id
-    @ManyToOne//(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
     @Convert(converter = UserRoleConverter.class)
     @Column(name = "user_role", nullable = false)
     private UserRole userRole;
-
-    public UserTeam(TeamEntity team, UserEntity user) {
-        this.team = team;
-        this.user = user;
-        userRole=UserRole.LEAD;
-    }
 }

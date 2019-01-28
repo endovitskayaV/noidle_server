@@ -1,6 +1,7 @@
 package ru.vsu.noidle_server.service;
 
 import ru.vsu.noidle_server.exception.ServiceException;
+import ru.vsu.noidle_server.model.UserRole;
 import ru.vsu.noidle_server.model.domain.TeamEntity;
 import ru.vsu.noidle_server.model.dto.NewTeamDto;
 import ru.vsu.noidle_server.model.dto.TeamDto;
@@ -26,7 +27,7 @@ public interface TeamService {
 
     List<TeamDto> getAll() throws ServiceException;
 
-    void addTeamMember(UUID userId, UUID teamId) throws ServiceException;
+    void addTeamMember(UUID userId, UUID teamId, UserRole userRole) throws ServiceException;
 
     boolean checkIfAddedTeamMember(UUID userId, UUID teamId);
 
