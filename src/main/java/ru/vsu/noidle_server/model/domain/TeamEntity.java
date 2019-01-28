@@ -36,7 +36,7 @@ public class TeamEntity implements Comparable<TeamEntity> {
     @Column(name = "created")
     private OffsetDateTime created;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "team", orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<UserTeam> usersTeams;
 
     public TeamEntity(String name, OffsetDateTime created) {
@@ -59,7 +59,22 @@ public class TeamEntity implements Comparable<TeamEntity> {
         }
     }
 
-    public Set<UserEntity> getUsers(){
+    public Set<UserEntity> getUsers() {
         return usersTeams.stream().map(UserTeam::getUser).collect(Collectors.toSet());
+    }
+
+    public void removeTeamMember(UserEntity userEntity) {
+        UserTeam userTeamToFind = new UserTeam(this, userEntity);
+//        UserTeam foundUserTeam = usersTeams.stream().filter(userTeam2 -> userTeam2.equals(userTeamToFind))
+//                .findFirst().orElse(new UserTeam());
+//        foundUserTeam.setTeam(null);
+//        foundUserTeam.setUser(null);
+        usersTeams.remove(userTeamToFind);
+
+        //userEntity.getUsersTeams().remove(new UserTeam(this, userEntity));
+    }
+
+    public void addTeamMember(UserEntity userEntity, UserRole userRole) {
+        usersTeams.add(new UserTeam(this, userEntity, userRole));
     }
 }

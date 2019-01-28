@@ -179,8 +179,10 @@ public interface DataMapper {
 //                t -> toDto(t.getUser(), new CycleAvoidingMappingContext()),
 //                UserTeam::getUserRole)
 //        );
-
-        return usersTeams.stream().map( t -> toDto(t.getUser(), new CycleAvoidingMappingContext()))
+        if (usersTeams == null) {
+            return null;
+        }
+        return usersTeams.stream().map(t -> toDto(t.getUser(), new CycleAvoidingMappingContext()))
                 .collect(Collectors.toList());
     }
 

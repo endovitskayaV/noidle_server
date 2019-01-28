@@ -148,17 +148,18 @@ public class UserEntity {
 //        return colleagues;
 //    }
 
-    public Set<TeamEntity> getTeams(){
+    public Set<TeamEntity> getTeams() {
         return usersTeams.stream().map(UserTeam::getTeam).collect(Collectors.toSet());
     }
 
     public void addTeam(TeamEntity teamEntity) {
-       usersTeams.add(new UserTeam(teamEntity,this, UserRole.LEAD));
+        usersTeams.add(new UserTeam(teamEntity, this, UserRole.LEAD));
     }
-
-    public void removeTeam(TeamEntity teamEntity) {
-        usersTeams.remove(new UserTeam(teamEntity,this));
-    }
+//
+//    public void removeTeamMember(TeamEntity teamEntity) {
+//        usersTeams.remove(new UserTeam(teamEntity, this));
+//        teamEntity.getUsersTeams().remove(new UserTeam(teamEntity, this));
+//    }
 
     public boolean isTeammateWith(UserEntity teammember) {
         return getTeams().stream().anyMatch(team ->

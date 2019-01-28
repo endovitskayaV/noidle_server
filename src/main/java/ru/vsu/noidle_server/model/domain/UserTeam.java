@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "user_data_team")
-//@IdClass(UserTeamId.class)
+@IdClass(UserTeamId.class)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,12 +19,12 @@ import java.io.Serializable;
 public class UserTeam implements Serializable {
 
     @Id
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne//(cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id", referencedColumnName = "id")
     private TeamEntity team;
 
     @Id
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne//(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
@@ -35,5 +35,6 @@ public class UserTeam implements Serializable {
     public UserTeam(TeamEntity team, UserEntity user) {
         this.team = team;
         this.user = user;
+        userRole=UserRole.LEAD;
     }
 }
