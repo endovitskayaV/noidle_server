@@ -13,4 +13,5 @@ This server is used to store plugin and users` data and to process achievements
 ### Deployment
 https://noidle.herokuapp.com
 ### Modificataions
-Self hosting is available, [documentation](https://github.com/endovitskayaV/noidle_server/tree/custom_server)
+Self hosting is available. <br>
+[See documentation](https://github.com/endovitskayaV/noidle_server/tree/custom_server)
