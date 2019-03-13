@@ -14,7 +14,7 @@
                 <h5 class="white-text">Links</h5>
                 <ul>
                     <li><a class="white-text" href="/about">About</a></li>
-                    <li><a class="white-text" href="https://yadi.sk/d/X2B2WL1ohD5KwA" download>Download plugin</a></li>
+                    <li><a class="white-text" href="https://gitlab.com/endovitskayaV/NoIdle/blob/master/README.md">Plugin</a></li>
                 </ul>
             </div>
 
