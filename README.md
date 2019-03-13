@@ -1,5 +1,5 @@
 # NoIdle server
-[Server for NoIdle plugin](https://gitlab.com/endovitskayaV/NoIdle)
+Server for [NoIdle plugin](https://gitlab.com/endovitskayaV/NoIdle)
 
 ## Information
 This server is used to store plugin and users` data and to process achievements
