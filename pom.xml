@@ -8,6 +8,7 @@
     <artifactId>noidle_server</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>noidle_server</name>
+    <packaging>war</packaging>
     <description>Server for no idle plugin</description>
 
     <parent>
