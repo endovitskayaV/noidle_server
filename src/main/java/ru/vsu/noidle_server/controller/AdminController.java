@@ -56,8 +56,10 @@ public class AdminController {
         try {
             userService.saveUsers(userData);
             modelMap.addAttribute("message","Success");
+            modelMap.addAttribute("success",true);
         } catch (ServiceException e) {
-            modelMap.addAttribute("message",e.getMessage()+". Please go back and try again");
+            modelMap.addAttribute("message",e.getMessage());
+            modelMap.addAttribute("success",false);
         }
 
         modelMap.addAttribute("admin", true);

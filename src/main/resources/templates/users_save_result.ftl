@@ -18,7 +18,7 @@
 <script type="text/javascript" src="/js/materialize.js"></script>
 <script type="text/javascript" src="/js/base.js"></script>
 
- <#include "nav_auth.ftl">
+<#include "nav_auth.ftl">
 <main>
     <br>
 
@@ -35,7 +35,16 @@
             <div class="card horizontal">
                 <div class="card-stacked">
                     <div class="card-content">
-                        <p class="center-align"><span>${message}</span></p>
+                        <#if success>
+                            <p class="center-align"><span>${message}</span></p>
+                        <#else>
+                            <p class="center-align">
+                                <span>${message}.</span>
+                                <span>Please go </span><a onclick="window.history.back();" style="cursor: pointer;">back</a>
+                                <span>and correct entered information</span>
+                            </p>
+                        </#if>
+
 
                     </div>
                 </div>
@@ -44,7 +53,7 @@
     </div>
 </main>
 
- <#include "footer_auth.ftl">
+<#include "footer_auth.ftl">
 
 </body>
 </html>
