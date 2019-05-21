@@ -13,7 +13,7 @@
             <div class="col l3 s12 center">
                 <h5 class="white-text">Links</h5>
                 <ul>
-                    <li><a class="white-text" href="/about">About</a></li>
+                    <li><a class="white-text" href="/">About</a></li>
                     <li><a class="white-text" href="https://gitlab.com/endovitskayaV/NoIdle/blob/master/README.md">Plugin</a></li>
                 </ul>
             </div>
