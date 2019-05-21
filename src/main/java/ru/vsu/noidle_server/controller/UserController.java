@@ -23,7 +23,11 @@ public class UserController {
     @GetMapping("/user")
     @ResponseBody
     public UserDto user(OAuth2Authentication user) {
-        return userService.getDto(user);
+        try {
+            return userService.getDto(user);
+        } catch (ServiceException e) {
+            return null;
+        }
     }
 
     @GetMapping("/users/{id}")

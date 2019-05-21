@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public UserDto save(OAuth2Authentication user) {
+    public UserDto save(OAuth2Authentication user) throws ServiceException{
         UserEntity userEntity = dataMapper.toEntity(user);
         UserEntity existingUser = userRepository.findByEmail(userEntity.getEmail());
         if (existingUser != null) {
@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getDto(OAuth2Authentication user) {
+    public UserDto getDto(OAuth2Authentication user) throws ServiceException {
         return dataMapper.toDto(
                 userRepository.findByEmail(dataMapper.getEmail(user)),
                 new CycleAvoidingMappingContext());

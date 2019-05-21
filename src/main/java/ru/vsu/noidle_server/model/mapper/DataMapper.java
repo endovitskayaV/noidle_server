@@ -11,6 +11,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.StatisticsSubType;
 import ru.vsu.noidle_server.model.StatisticsType;
 import ru.vsu.noidle_server.model.domain.*;
@@ -102,7 +103,7 @@ public interface DataMapper {
     StatisticsEntity toEntity(StatisticsDto statisticsDto, UserEntity userEntity, TeamEntity teamEntity, @Context CycleAvoidingMappingContext context);
 
     @SuppressWarnings(value = "unchecked") //aboutUser.getUserAuthentication().getDetails()) - Object
-    default UserEntity toEntity(OAuth2Authentication user) {
+    default UserEntity toEntity(OAuth2Authentication user) throws ServiceException {
         if (user == null) {
             return null;
         }
@@ -114,17 +115,17 @@ public interface DataMapper {
     }
 
     @SuppressWarnings(value = "unchecked") //aboutUser.getUserAuthentication().getDetails()) - Object
-    default String getEmail(OAuth2Authentication user) {
+    default String getEmail(OAuth2Authentication user) throws ServiceException {
         if (user == null) {
             return null;
         }
         LinkedHashMap<String, String> details = ((LinkedHashMap<String, String>) user.getUserAuthentication().getDetails());
-        return details.get("email").toLowerCase();
+       return getEmail(details);
     }
 
-    default String getEmail(LinkedHashMap<String, String> details) {
-        if (details == null || details.isEmpty()) {
-            return null;
+    default String getEmail(LinkedHashMap<String, String> details) throws ServiceException {
+        if (details == null || details.isEmpty() || details.get("email")==null) {
+            throw new ServiceException("No email specified. Please set public email on profile settings in chosen authorization service");
         }
         return details.get("email").toLowerCase();
     }

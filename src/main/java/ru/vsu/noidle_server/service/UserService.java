@@ -23,7 +23,7 @@ public interface UserService {
 
     UserDto getByAuth() throws ServiceException;
 
-    UserDto save(OAuth2Authentication user);
+    UserDto save(OAuth2Authentication user) throws ServiceException;
 
     boolean areTeammates(UserDto user1, UserDto user2);
 
@@ -34,7 +34,7 @@ public interface UserService {
      */
     boolean areTeammates(UserDto user1);
 
-    UserDto getDto(OAuth2Authentication user);
+    UserDto getDto(OAuth2Authentication user) throws ServiceException;
 
     UserEntity getEntityByAuth() throws ServiceException;
 }

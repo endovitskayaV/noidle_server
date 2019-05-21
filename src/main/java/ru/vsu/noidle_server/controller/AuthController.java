@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.servlet.ModelAndView;
+import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.dto.UserDto;
 import ru.vsu.noidle_server.service.UserService;
 import ru.vsu.noidle_server.utils.AuthUtils;
@@ -23,9 +25,14 @@ public class AuthController {
     }
 
     @GetMapping("/oauth")
-    public RedirectView user(OAuth2Authentication user) {
-        userService.save(user);
-        return new RedirectView("/dashboard");
+    public ModelAndView user(OAuth2Authentication user, ModelMap modelMap) {
+        try {
+            userService.save(user);
+            return new ModelAndView("redirect:/dashboard");
+        } catch (ServiceException e) {
+            modelMap.addAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("dashboard", modelMap);
+        }
     }
 
     @RequestMapping(value = "/isauth", method = RequestMethod.GET)
