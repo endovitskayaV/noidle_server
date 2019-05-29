@@ -1,5 +1,3 @@
-var afterAdd = false;
-
 function onChipAddHandler(data, elem, teamId) {
     var memberName = data.childNodes[0].data;
     var userId;
@@ -9,7 +7,6 @@ function onChipAddHandler(data, elem, teamId) {
 
         if (typeof userId === "undefined") {
             var instance = M.Chips.getInstance(elem);
-            afterAdd = true;
             instance.deleteChip(instance.chipsData.length - 1);
             return;
         }
@@ -53,9 +50,6 @@ function onChipDeleteHandler(data, elem, i, teamId, teamName) {
         //-------------------------------------------------------------------------------//
 
             .always(function () {
-                if (afterAdd) {
-                    afterAdd = false;
-                } else {
                     var len = M.Chips.getInstance(elem).chipsData.length;
                     if (len < 1) {
                         deleteTeam(teamId, teamName, true, memberName);
@@ -68,7 +62,6 @@ function onChipDeleteHandler(data, elem, i, teamId, teamName) {
                             classes: 'rounded'
                         });
                     }
-                }
             })
     });
 }
