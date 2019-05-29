@@ -5,17 +5,17 @@ spring:
     url: ${JDBC_DATABASE_URL}
     username: ${JDBC_DATABASE_USERNAME}
     password: ${JDBC_DATABASE_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: ${DRIVER_CLASS_NAME}
   jpa:
     show-sql: true
-    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    database-platform: ${DATABASE_PLATFORM}
     hibernate:
       ddl-auto: none
       use-new-id-generator-mappings: true
     properties:
       hibernate:
         jdbc.lob.non_contextual_creation: true
-        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        dialect: ${DATABASE_DIALECT}
 
   flyway:
     baseline-description: baseline
