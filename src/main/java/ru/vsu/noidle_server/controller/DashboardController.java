@@ -47,7 +47,6 @@ public class DashboardController {
         OffsetDateTime realDate = TimeUtils.toOffsetDateTime(date);
         String outputDate;
         if (date == null) {
-            //modelMap.addAttribute("overallSelected", true);
             outputDate = TimeUtils.toDMYYYFormat(OffsetDateTime.now());
         } else if (realDate == null) {
             outputDate = date;
@@ -96,6 +95,8 @@ public class DashboardController {
         try {
             teams = teamService.getAll();
         } catch (ServiceException e) {
+            //TODO: handle somehow
+            e.printStackTrace();
         }
         modelMap.addAttribute("teams", teams);
     }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import ru.vsu.noidle_server.Constants;
 import ru.vsu.noidle_server.exception.ServiceException;
 import ru.vsu.noidle_server.model.AchievementType;
-import ru.vsu.noidle_server.model.StatisticsType;
 import ru.vsu.noidle_server.model.domain.RequirementEntity;
 import ru.vsu.noidle_server.model.domain.TeamEntity;
 import ru.vsu.noidle_server.model.domain.UserEntity;
@@ -21,9 +20,9 @@ import ru.vsu.noidle_server.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
+//TODO: add logging
 @Service
 @Slf4j
 @RequiredArgsConstructor

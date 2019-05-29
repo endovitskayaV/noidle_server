@@ -28,8 +28,6 @@ public class AuthController {
 
     @PostMapping(value = "/login")
     public ModelAndView login(LoginDto loginDto, ModelMap modelMap) {
-        String encoded = new BCryptPasswordEncoder().encode(loginDto.getPassword());
-        System.out.println(encoded);
         if (authenticationService.login(loginDto)) {
             return new ModelAndView("redirect:/");
         } else {

@@ -25,7 +25,6 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-    //will be shown to the user
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<NotificationDto>> getNotifications(
             @RequestParam("userId") UUID userId, @RequestParam(value = "types", required = false) List<AchievementType> types) {

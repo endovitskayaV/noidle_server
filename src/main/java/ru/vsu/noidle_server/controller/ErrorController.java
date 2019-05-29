@@ -8,6 +8,7 @@ import ru.vsu.noidle_server.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 
+//TODO: implement ControllerAdvice exceptions handling
 @Controller
 public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
 

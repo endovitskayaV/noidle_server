@@ -19,15 +19,18 @@ public class AchievementController {
     private final AchievementService achievementService;
     private final UserService userService;
 
+    /**
+     * can review teammates achievements as well as yourself
+     */
     @GetMapping({"", "/{userName}"})
     public String getAll(ModelMap modelMap, @PathVariable(name = "userName", required = false) String userName) {
-        if (userName!=null){
-            userName=userName.replace(Constants.SPACE_REPLACEMENT, Constants.SPACE);
+        if (userName != null) {
+            userName = userName.replace(Constants.SPACE_REPLACEMENT, Constants.SPACE);
             try {
-                UserDto user=userService.getByName(userName);
-                if (!userService.areTeammates(user)){
+                UserDto user = userService.getByName(userName);
+                if (!userService.areTeammates(user)) {
                     return "error";
-                }else {
+                } else {
                     modelMap.addAttribute("user", user);
                 }
             } catch (ServiceException e) {
